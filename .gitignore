@@ -1,10 +1,12 @@
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
 # Binaries for programs and plugins
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-*.idea
 
 # Test binary, built with `go test -c`
 *.test
@@ -15,5 +17,57 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-# Project runtime log
-logs/*.log
+# Go workspace file
+go.work
+
+.DS_Store
+target/
+!.mvn/wrapper/maven-wrapper.jar
+Thumbs.db
+.DS_Store
+.gradle
+build/
+out/
+micronaut-cli.yml
+.mvn/
+mvnw
+mvnw.bat
+*.log
+package-lock.json
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# dependencies
+node_modules
+.docusaurus
+
+# h2 data
+*.mv.db
+*.trace.db
+
+# debug env
+application-dev.yml
+application-mysql.yml
