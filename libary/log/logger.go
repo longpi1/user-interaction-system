@@ -10,17 +10,17 @@ import (
 var logger *log.Logger
 
 type Options struct {
-	isDebug bool
+	isDebug  bool
 	FilePath string
 }
 
-func NewLogger(options Options){
+func NewLogger(options Options) {
 	if logger == nil {
 		logger = log.New()
 	}
 	if options.isDebug {
 		logger.Level = log.DebugLevel
-	}else{
+	} else {
 		logger.Level = log.InfoLevel
 	}
 
@@ -34,7 +34,6 @@ func NewLogger(options Options){
 
 	logger.SetFormatter(loggerFormatter)
 	logger.SetOutput(os.Stdout)
-
 
 	// 日志输出到文件
 	if options.FilePath != "" {
@@ -63,18 +62,18 @@ func NewLogger(options Options){
 	}
 }
 
-func Info(args ...interface{}){
+func Info(args ...interface{}) {
 	logger.Info(args)
 }
 
-func Debug(args ...interface{}){
+func Debug(args ...interface{}) {
 	logger.Debug(args)
 }
 
-func Error(args ...interface{}){
+func Error(args ...interface{}) {
 	logger.Error(args)
 }
 
-func Fatal(args ...interface{}){
+func Fatal(args ...interface{}) {
 	logger.Fatal(args)
 }
