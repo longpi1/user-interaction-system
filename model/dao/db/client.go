@@ -1,26 +1,45 @@
 package db
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"model-api/libary/conf"
 	"model-api/libary/log"
-	"model-api/model/dao/db/model"
+	"sync"
 )
 
-var db DB
+var db = &DB{}
+var once = sync.Once{}
 
 type DB struct {
 	client *gorm.DB
 }
 
-func GetClient() *gorm.DB{
+func GetClient() *gorm.DB {
+	if db == nil || db.client == nil {
+		once.Do(func() {
+			var dbConfig conf.DBConf
+			// 构建DSN字符串
+			dbConfig.Dsn = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=%t&loc=%s",
+				"root",
+				"123456",
+				"127.0.0.1:3306",
+				"model_api",
+				true,
+				"Local")
+			dbConfig.Type = "mysql"
+			client, err := NewClient(dbConfig)
+			if err != nil && client != nil {
+				log.Fatal("db run err", err)
+			}
+		})
+	}
+
 	return db.client
 }
 
-func NewClient(config conf.DBConf) (*gorm.DB, error){
-	gormConfig := &gorm.Config{
-		DryRun: true,
-	}
+func NewClient(config conf.DBConf) (*gorm.DB, error) {
+	gormConfig := &gorm.Config{}
 	var err error
 	switch config.Type {
 	case conf.TypeMySql:
@@ -32,15 +51,3 @@ func NewClient(config conf.DBConf) (*gorm.DB, error){
 	}
 	return db.client, err
 }
-
-func InitTable() error{
-	// Migrate the schema
-	// 注意表的创建顺序，因为有关联字段
-	err := db.client.AutoMigrate(model.Model{}, model.Permission{})
-	if err != nil {
-		return err
-	}
-	log.Info("初始化数据库表成功")
-	return nil
-}
-

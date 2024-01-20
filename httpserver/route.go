@@ -2,11 +2,12 @@ package httpserver
 
 import (
 	"github.com/gin-gonic/gin"
+	"model-api/httpserver/controller"
 	"model-api/httpserver/middleware"
 	"model-api/libary/log"
 )
 
-func SetRouter(){
+func SetRouter() {
 	router := gin.New()
 	router.Use(gin.Recovery())
 	router.Use(middleware.CORS())
@@ -20,32 +21,49 @@ func SetRouter(){
 	}
 }
 
-func setApiRouter(router *gin.Engine){
+func setApiRouter(router *gin.Engine) {
 	// api相关api
 	apiRouter := router.Group("/api")
+	// 频率限制
 	apiRouter.Use(middleware.GlobalAPIRateLimit())
 	{
 
 		introduceRouter := apiRouter.Group("/introduce")
 		{
+			//todo 网站升级迭代信息查找等
 			introduceRouter.GET("")
 		}
 		oauthRouter := apiRouter.Group("/oauth")
 		{
+			//todo 通过github或者微信认证登录
 			oauthRouter.GET("")
 		}
 		userRouter := apiRouter.Group("/user")
 		{
-			userRouter.GET("")
+			userRouter.GET("register", controller.Register)
+			userRouter.POST("/login", middleware.CriticalRateLimit(), controller.Login)
+			userRouter.GET("/logout", controller.Logout)
+			//todo 获取用户信息，设置token信息等
+		}
+		logRouter := apiRouter.Group("/log")
+		logRouter.GET("/", middleware.AdminAuth(), controller.GetLogs)
+		logRouter.DELETE("/delete", middleware.AdminAuth(), controller.DeleteLogs)
+		groupRoute := apiRouter.Group("/group")
+		groupRoute.Use(middleware.AdminAuth())
+		{
+			groupRoute.GET("/")
 		}
 	}
 }
 
-func setModelRouter(router *gin.Engine){
+func setModelRouter(router *gin.Engine) {
 	groupRouter := router.Group("/v1")
+	// 认证
+	groupRouter.Use(middleware.Auth())
 	{
 		groupRouter.Use()
 		{
+			//todo 模型相关操作实现
 			groupRouter.POST("/completions")
 			groupRouter.POST("/chat/completions")
 			groupRouter.POST("/edits")

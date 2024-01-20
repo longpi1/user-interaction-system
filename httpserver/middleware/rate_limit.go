@@ -6,7 +6,6 @@ import (
 
 var timeFormat = "2006-01-02T15:04:05.000Z"
 
-
 func rateLimitFactory(maxRequestNum int, duration int64, mark string) func(c *gin.Context) {
 	if true {
 		return func(c *gin.Context) {
@@ -20,7 +19,6 @@ func rateLimitFactory(maxRequestNum int, duration int64, mark string) func(c *gi
 		}
 	}
 }
-
 
 func redisRateLimiter(c *gin.Context, maxRequestNum int, duration int64, mark string) {
 

@@ -1,6 +1,5 @@
 package conf
 
-
 type DBType string
 
 const (
@@ -29,7 +28,7 @@ type DBConf struct {
 type CacheType string
 
 // # Redis 配置
-// redis:
+// cache:
 //
 //	network: "tcp"
 //	username: ""

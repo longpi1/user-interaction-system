@@ -18,4 +18,3 @@ func OpenPostgreSQL(dsn string, gormConfig *gorm.Config) (*gorm.DB, error) {
 func OpenSqlServer(dsn string, gormConfig *gorm.Config) (*gorm.DB, error) {
 	return gorm.Open(sqlserver.Open(dsn), gormConfig)
 }
-

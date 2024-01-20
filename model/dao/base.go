@@ -3,10 +3,13 @@ package dao
 import (
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"
-	"model-api/libary/conf"
-	"model-api/libary/log"
+	"model-api/model/dao/cache"
 	"model-api/model/dao/db"
+	"sync"
 )
+
+var dao *Dao
+var once sync.Once
 
 type Dao struct {
 	db *gorm.DB
@@ -20,23 +23,25 @@ type Dao struct {
 	cache *redis.Client
 }
 
+func GetDao() *Dao {
+	if dao == nil {
+		once.Do(func() {
+			dao = NewDao()
+		})
+	}
+	return dao
+}
+
 // Create new dao instance
 //
 // This function will auto migrate database tables
-func NewDao(config conf.DBConf) *Dao {
+func NewDao() *Dao {
 	// 启动db与redis
-	db,err := db.NewClient(config)
-	if err != nil {
-		log.Fatal("db run err", err)
-	}
-	dao := &Dao{
-		db: db,
-	}
-
+	dao.db = db.GetClient()
+	dao.cache, _ = cache.GetClient()
 	return dao
 }
 
 func (dao *Dao) DB() *gorm.DB {
 	return dao.db
 }
-
