@@ -1,8 +1,8 @@
 package model
 
 import (
-	"model-api/libary/log"
-	"model-api/model/dao/db"
+	"user-interaction-system/libary/log"
+	"user-interaction-system/model/dao/db"
 )
 
 func InitTable() error {

@@ -2,8 +2,8 @@ package data
 
 import (
 	"errors"
-	"model-api/libary/log"
-	"model-api/model/dao/db/model"
+	"user-interaction-system/libary/log"
+	"user-interaction-system/model/dao/db/model"
 )
 
 func SearchLogs(param model.Param) ([]model.Log, error) {

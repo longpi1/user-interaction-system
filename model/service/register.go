@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
-	userdao "model-api/model/dao/db/model"
-	userdata "model-api/model/data"
+	userdao "user-interaction-system/model/dao/db/model"
+	userdata "user-interaction-system/model/data"
 )
 
 func Register(user *userdao.User) error {

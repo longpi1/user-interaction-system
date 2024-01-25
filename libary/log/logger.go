@@ -9,16 +9,11 @@ import (
 
 var logger *log.Logger
 
-type Options struct {
-	isDebug  bool
-	FilePath string
-}
-
-func NewLogger(options Options) {
+func NewLogger(isDebug bool, filePath string) {
 	if logger == nil {
 		logger = log.New()
 	}
-	if options.isDebug {
+	if isDebug {
 		logger.Level = log.DebugLevel
 	} else {
 		logger.Level = log.InfoLevel
@@ -36,7 +31,7 @@ func NewLogger(options Options) {
 	logger.SetOutput(os.Stdout)
 
 	// 日志输出到文件
-	if options.FilePath != "" {
+	if filePath != "" {
 		fileFormatter := &prefixed.TextFormatter{
 			FullTimestamp:   true,
 			TimestampFormat: "2006-01-02.15:04:05.000000",
@@ -46,9 +41,9 @@ func NewLogger(options Options) {
 		}
 
 		pathMap := lfshook.PathMap{
-			log.InfoLevel:  options.FilePath,
-			log.DebugLevel: options.FilePath,
-			log.ErrorLevel: options.FilePath,
+			log.InfoLevel:  filePath,
+			log.DebugLevel: filePath,
+			log.ErrorLevel: filePath,
 		}
 
 		newHooks := make(log.LevelHooks)

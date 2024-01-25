@@ -1,0 +1,12 @@
+# configuration for dev
+db:
+  dsn: root:123456@tcp(127.0.0.1:3306)/model_api?charset=utf8mb4&parseTime=true&loc=Local
+  type: mysql
+redis:
+  addr: 127.0.0.1:6379
+  db: 0
+  password: ""
+app:
+  port: 8888
+  debug: true
+  log_path: ./log/api.log

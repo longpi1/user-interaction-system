@@ -2,8 +2,8 @@ package model
 
 import (
 	"gorm.io/gorm"
-	"model-api/libary/constant"
-	"model-api/model/dao/db"
+	"user-interaction-system/libary/constant"
+	"user-interaction-system/model/dao/db"
 )
 
 type Log struct {

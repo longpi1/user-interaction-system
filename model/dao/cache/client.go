@@ -2,9 +2,9 @@ package cache
 
 import (
 	"github.com/go-redis/redis"
-	"model-api/libary/conf"
-	"model-api/libary/log"
 	"sync"
+	"user-interaction-system/libary/conf"
+	"user-interaction-system/libary/log"
 )
 
 var redisClient *redis.Client

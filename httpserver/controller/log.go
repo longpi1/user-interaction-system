@@ -3,11 +3,11 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
-	"model-api/libary/constant"
-	"model-api/model/dao/db/model"
-	"model-api/model/service"
 	"net/http"
 	"strconv"
+	"user-interaction-system/libary/constant"
+	"user-interaction-system/model/dao/db/model"
+	"user-interaction-system/model/service"
 )
 
 func GetLogs(c *gin.Context) {

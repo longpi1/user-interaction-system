@@ -3,9 +3,9 @@ package data
 import (
 	"errors"
 	_ "fmt"
-	"model-api/libary/log"
-	"model-api/libary/utils"
-	userdao "model-api/model/dao/db/model"
+	"user-interaction-system/libary/log"
+	"user-interaction-system/libary/utils"
+	userdao "user-interaction-system/model/dao/db/model"
 )
 
 func InsertUser(user *userdao.User) error {

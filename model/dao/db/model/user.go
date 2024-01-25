@@ -1,13 +1,14 @@
 package model
 
 import (
-	"model-api/libary/constant"
-	"model-api/libary/log"
-	"model-api/model/dao/db"
+	"gorm.io/gorm"
+	"user-interaction-system/libary/constant"
+	"user-interaction-system/libary/log"
+	"user-interaction-system/model/dao/db"
 )
 
 type User struct {
-	Id               int    `json:"id"`
+	gorm.Model
 	Username         string `json:"username" gorm:"unique;index" validate:"max=12"`
 	Password         string `json:"password" gorm:"not null;" validate:"min=8,max=20"`
 	DisplayName      string `json:"display_name" gorm:"index" validate:"max=20"`
@@ -16,14 +17,10 @@ type User struct {
 	Email            string `json:"email" gorm:"index" validate:"max=50"`
 	GitHubId         string `json:"github_id" gorm:"column:github_id;index"`
 	WeChatId         string `json:"wechat_id" gorm:"column:wechat_id;index"`
-	VerificationCode string `json:"verification_code" gorm:"-:all"`                                    // this field is only for Email verification, don't save it to database!
-	AccessToken      string `json:"access_token" gorm:"type:char(32);column:access_token;uniqueIndex"` // this token is for system management
-	Quota            int    `json:"quota" gorm:"type:int;default:0"`
-	UsedQuota        int    `json:"used_quota" gorm:"type:int;default:0;column:used_quota"` // used quota
-	RequestCount     int    `json:"request_count" gorm:"type:int;default:0;"`               // request number
-	Group            string `json:"group" gorm:"type:varchar(32);default:'default'"`
-	AffCode          string `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex"`
-	InviterId        int    `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
+	VerificationCode string `json:"verification_code" gorm:"-:all"` // this field is only for Email verification, don't save it to database!
+	LastIP           string
+	LastUA           string
+	IsAdmin          bool
 }
 
 func GetUserList(limit int, offset int) (user []*User, err error) {

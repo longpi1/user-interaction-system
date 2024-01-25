@@ -1,42 +1,83 @@
 package conf
 
-type DBType string
-
-const (
-	TypeMySql      DBType = "mysql"
-	TypePostgreSQL DBType = "pgsql"
-	TypeMSSQL      DBType = "mssql"
+import (
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
+	"os"
+	"user-interaction-system/libary/log"
 )
 
-type DBConf struct {
-	Type DBType `koanf:"type" json:"type"`
-	Dsn  string `koanf:"dsn" json:"dsn"` // 最高优先级
+var conf *Config
 
-	File string `koanf:"file" json:"file"`
-	Name string `koanf:"name" json:"name"`
+const (
+	SchemaTypeDev    = "dev"
+	SchemaTypeOnline = "online"
+)
 
-	Host     string `koanf:"host" json:"host"`
-	Port     int    `koanf:"port" json:"port"`
-	User     string `koanf:"user" json:"user"`
-	Password string `koanf:"password" json:"password"`
+const (
+	SchemaPathDev    = "dev/"
+	SchemaPathOnline = "online/"
+)
 
-	TablePrefix string `koanf:"table_prefix" json:"table_prefix"`
-	Charset     string `koanf:"charset" json:"charset"`
-	SSL         bool   `koanf:"ssl" json:"ssl"`
+// 数据库类型
+const (
+	TypeMySql      = "mysql"
+	TypePostgreSQL = "pgsql"
+	TypeMSSQL      = "mssql"
+)
+
+type Config struct {
+	DBConfig struct {
+		Type string `json:"type"`
+		Dsn  string `json:"dsn"` // 最高优先级
+	} `json:"db"  mapstructure:"db"`
+	RedisConfig struct {
+		Address  string `json:"addr"`
+		Db       string `json:"db"`
+		Password string `json:"password"`
+	} `json:"redis" mapstructure:"redis"`
+	AppConfig struct {
+		Port        string `json:"port"`
+		Debug       bool   `json:"debug"`
+		LogFilePath string `json:"log_path" mapstructure:"log_path"`
+	} `json:"app" mapstructure:"app"`
 }
 
-type CacheType string
+func GetConfig() *Config {
+	return conf
+}
 
-// # Redis 配置
-// cache:
-//
-//	network: "tcp"
-//	username: ""
-//	password: ""
-//	db: 0
-type RedisConf struct {
-	Network  string `koanf:"network" json:"network"` // tcp or unix
-	Username string `koanf:"username" json:"username"`
-	Password string `koanf:"password" json:"password"`
-	DB       int    `koanf:"db" json:"db"` // Redis 默认数据库 0
+func init() {
+	var filePath string
+	// 通过环境变量获取开发模式
+	schema := os.Getenv("schema")
+
+	switch schema {
+	case SchemaTypeDev:
+		filePath = SchemaPathDev
+	case SchemaTypeOnline:
+		filePath = SchemaPathOnline
+	default:
+		filePath = SchemaPathDev
+	}
+
+	appFullPath := "./conf/" + filePath
+	// 解析 config
+	viper.SetConfigName("web")
+	viper.AddConfigPath(appFullPath)
+	viper.SetConfigType("yaml")
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatal("解析文件失败: ", err)
+	}
+	if err := viper.Unmarshal(&conf); err != nil {
+		log.Fatal("解析文件失败: ", err)
+	}
+	// 监听配置更新
+	viper.WatchConfig()
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		if err := viper.Unmarshal(&conf); err != nil {
+			log.Fatal("解析文件失败: ", err)
+		}
+	})
 }

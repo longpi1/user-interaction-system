@@ -2,9 +2,9 @@ package httpserver
 
 import (
 	"github.com/gin-gonic/gin"
-	"model-api/httpserver/controller"
-	"model-api/httpserver/middleware"
-	"model-api/libary/log"
+	"user-interaction-system/httpserver/controller"
+	"user-interaction-system/httpserver/middleware"
+	"user-interaction-system/libary/log"
 )
 
 func SetRouter() {

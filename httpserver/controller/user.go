@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"model-api/libary/utils"
-	"model-api/model/dao/db/model"
-	"model-api/model/service"
 	"net/http"
+	"user-interaction-system/libary/constant"
+	"user-interaction-system/libary/utils"
+	"user-interaction-system/model/dao/db/model"
+	"user-interaction-system/model/service"
 )
 
 func Register(c *gin.Context) {
@@ -77,7 +78,7 @@ func Login(c *gin.Context) {
 // setup session & cookies and then return user info
 func setupLogin(user *model.User, c *gin.Context) {
 	session := sessions.Default(c)
-	session.Set("id", user.Id)
+	session.Set("id", user.ID)
 	session.Set("username", user.Username)
 	session.Set("role", user.Role)
 	session.Set("status", user.Status)
@@ -90,7 +91,6 @@ func setupLogin(user *model.User, c *gin.Context) {
 		return
 	}
 	cleanUser := model.User{
-		Id:          user.Id,
 		Username:    user.Username,
 		DisplayName: user.DisplayName,
 		Role:        user.Role,

@@ -3,9 +3,9 @@ package dao
 import (
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"
-	"model-api/model/dao/cache"
-	"model-api/model/dao/db"
 	"sync"
+	"user-interaction-system/model/dao/cache"
+	"user-interaction-system/model/dao/db"
 )
 
 var dao *Dao

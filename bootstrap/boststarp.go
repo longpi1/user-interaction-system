@@ -1,27 +1,16 @@
 package bootstrap
 
 import (
-	"fmt"
-	"model-api/libary/conf"
-	"model-api/libary/log"
-	"model-api/model/dao/cache"
-	"model-api/model/dao/db"
-	"model-api/model/dao/db/model"
+	"user-interaction-system/libary/conf"
+	"user-interaction-system/libary/log"
+	"user-interaction-system/model/dao/cache"
+	"user-interaction-system/model/dao/db"
+	"user-interaction-system/model/dao/db/model"
 )
 
-func Boostrap() error {
-	var dbConfig conf.DBConf
-	// 构建DSN字符串
-	dbConfig.Dsn = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=%t&loc=%s",
-		"root",
-		"123456",
-		"127.0.0.1:3306",
-		"model_api",
-		true,
-		"Local")
-	dbConfig.Type = "mysql"
+func Boostrap(config *conf.Config) error {
 	// 启动db与redis
-	client, err := db.NewClient(dbConfig)
+	client, err := db.NewClient(config)
 	if err != nil && client != nil {
 		log.Fatal("db run err", err)
 	}
@@ -29,8 +18,7 @@ func Boostrap() error {
 	if err != nil {
 		log.Fatal("初始化表失败")
 	}
-	var redisConfig conf.RedisConf
-	_, err = cache.NewClient(redisConfig)
+	_, err = cache.NewClient(config)
 	if err != nil {
 		log.Fatal("cache run err", err)
 	}

@@ -2,9 +2,9 @@ package service
 
 import (
 	"errors"
-	"model-api/libary/utils"
-	userdao "model-api/model/dao/db/model"
-	userservice "model-api/model/data"
+	"user-interaction-system/libary/utils"
+	userdao "user-interaction-system/model/dao/db/model"
+	userservice "user-interaction-system/model/data"
 )
 
 func Login(user userdao.User) error {
