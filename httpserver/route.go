@@ -7,15 +7,16 @@ import (
 	"user-interaction-system/libary/log"
 )
 
-func SetRouter() {
+func SetRouter(port string) {
 	router := gin.New()
 	router.Use(gin.Recovery())
 	router.Use(middleware.CORS())
 	// 设置api相关的路由
 	setApiRouter(router)
-	// 设置大模型相关的路由
-	setModelRouter(router)
-	err := router.Run(":" + "8888")
+	// 设置评论相关的路由
+	setCommentRouter(router)
+
+	err := router.Run(":" + port)
 	if err != nil {
 		log.Error("server run fail")
 	}
@@ -56,43 +57,19 @@ func setApiRouter(router *gin.Engine) {
 	}
 }
 
-func setModelRouter(router *gin.Engine) {
-	groupRouter := router.Group("/v1")
+func setCommentRouter(router *gin.Engine) {
+	groupRouter := router.Group("/v1/comment")
 	// 认证
 	groupRouter.Use(middleware.Auth())
 	{
 		groupRouter.Use()
 		{
-			//todo 模型相关操作实现
-			groupRouter.POST("/completions")
-			groupRouter.POST("/chat/completions")
-			groupRouter.POST("/edits")
-			groupRouter.POST("/images/generations")
-			groupRouter.POST("/images/edits")
-			groupRouter.POST("/images/variations")
-			groupRouter.POST("/embeddings")
-			groupRouter.POST("/engines/:model/embeddings")
-			groupRouter.POST("/audio/transcriptions")
-			groupRouter.POST("/audio/translations")
-			groupRouter.POST("/audio/speech")
-			groupRouter.GET("/files")
-			groupRouter.POST("/files")
-			groupRouter.DELETE("/files/:id")
-			groupRouter.GET("/files/:id")
-			groupRouter.GET("/files/:id/content")
-			groupRouter.POST("/fine_tuning/jobs")
-			groupRouter.GET("/fine_tuning/jobs")
-			groupRouter.GET("/fine_tuning/jobs/:id")
-			groupRouter.POST("/fine_tuning/jobs/:id/cancel")
-			groupRouter.GET("/fine_tuning/jobs/:id/events")
+			//todo 评论相关操作实现
+			groupRouter.POST("/add", controller.AddComment)
+			groupRouter.POST("/delete")
+			groupRouter.POST("/list")
+			groupRouter.POST("/detail")
 		}
-		modelRouter := groupRouter.Group("/models")
-		{
-			modelRouter.GET("")
-			modelRouter.GET("/:model")
-			modelRouter.DELETE("/models/:model")
-		}
-
 	}
 
 }

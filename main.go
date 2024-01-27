@@ -16,5 +16,5 @@ func main() {
 		log.Fatal("boostrap fail", err)
 	}
 	// 启动http服务路由
-	httpserver.SetRouter()
+	httpserver.SetRouter(config.AppConfig.Port)
 }

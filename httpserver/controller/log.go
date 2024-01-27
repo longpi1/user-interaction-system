@@ -12,7 +12,7 @@ import (
 
 func GetLogs(c *gin.Context) {
 	var logs []model.Log
-	var param model.Param
+	var param model.LogParam
 	err := json.NewDecoder(c.Request.Body).Decode(&param)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{

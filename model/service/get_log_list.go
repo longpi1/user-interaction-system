@@ -5,7 +5,7 @@ import (
 	"user-interaction-system/model/data"
 )
 
-func SearchLogs(param model.Param) ([]model.Log, error) {
+func SearchLogs(param model.LogParam) ([]model.Log, error) {
 	logs, err := data.SearchLogs(param)
 	return logs, err
 }

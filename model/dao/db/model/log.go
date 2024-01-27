@@ -17,13 +17,12 @@ type Log struct {
 	CompletionTokens int    `json:"completion_tokens" gorm:"default:0"`
 }
 
-type Param struct {
-	Limit     int    `json:"limit"`
-	Offset    int    `json:"offset"`
-	Username  string `json:"username"`
-	ModelName string `json:"model_name"`
-	Content   string `json:"content"`
-	Type      int    `json:"type"`
+type LogParam struct {
+	Limit    int    `json:"limit"`
+	Offset   int    `json:"offset"`
+	Username string `json:"username"`
+	Content  string `json:"content"`
+	Type     int    `json:"type"`
 }
 
 func InsertLog(log *Log) error {
@@ -52,13 +51,10 @@ func UpdateLog(log *Log) error {
 	return err
 }
 
-func GetLogList(param Param) (logs []Log, err error) {
+func GetLogList(param LogParam) (logs []Log, err error) {
 	tx := db.GetClient()
 	if param.Type != 0 {
 		tx = tx.Where(constant.WhereByType, param.Type)
-	}
-	if param.ModelName != "" {
-		tx = tx.Where(constant.WhereByModelName, param.ModelName)
 	}
 	if param.Username != "" {
 		tx = tx.Where(constant.WhereByUserName, param.Username)
