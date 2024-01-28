@@ -15,7 +15,6 @@ floor 记录评论层级，也需要更新主题表中的楼层数，
 */
 type CommentIndex struct {
 	gorm.Model
-	CommentId       uint `gorm:"index"` // 评论id
 	ResourceId      uint `gorm:"index"` // 评论所关联的资源id
 	UserID          uint `gorm:"index"` //  发表者id
 	UserName        string
@@ -34,9 +33,9 @@ type CommentIndex struct {
 	FloorCount      uint // 评论层数
 }
 
-func InsertCommentIndex(commentIndex *CommentIndex) error {
+func InsertCommentIndex(commentIndex *CommentIndex) (uint, error) {
 	err := db.GetClient().Create(&commentIndex).Error
-	return err
+	return commentIndex.ID, err
 }
 
 func InsertBatchCommentIndex(commentIndexs []*CommentIndex) error {

@@ -9,7 +9,7 @@ type CommentParamsList struct {
 	OrderBy  string `json:"oderby"`
 }
 
-type CommenParamsAdd struct {
+type CommentParamsAdd struct {
 	UserName      string `form:"username"`
 	Content       string `form:"content" validate:"required"`
 	ResourceId    uint   `form:"content" validate:"required"` // 评论所关联的资源id

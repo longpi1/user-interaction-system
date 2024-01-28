@@ -12,7 +12,9 @@ comment_content：评论内容表
 */
 type CommentContent struct {
 	gorm.Model
-	CommentId     uint   `gorm:"index"` // 评论id
+	CommentIndex CommentIndex `gorm:"foreignKey:CommentId"`
+	// 使用 CommentId 作为外键
+	CommentId     uint   // 评论id
 	ResourceId    uint   `gorm:"index"` // 评论所关联的资源id
 	ResourceTitle string // 资源的title
 	Content       string // 文本信息
