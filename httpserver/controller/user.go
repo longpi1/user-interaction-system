@@ -45,19 +45,13 @@ func Login(c *gin.Context) {
 	var loginRequest model.LoginRequest
 	err := json.NewDecoder(c.Request.Body).Decode(&loginRequest)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"message": constant.InvalidParam,
-			"success": false,
-		})
+		utils.RespError(c, constant.InvalidParam)
 		return
 	}
 	username := loginRequest.Username
 	password := loginRequest.Password
 	if username == "" || password == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"message": constant.InvalidParam,
-			"success": false,
-		})
+		utils.RespError(c, constant.InvalidParam)
 		return
 	}
 	user := model.User{
@@ -66,10 +60,7 @@ func Login(c *gin.Context) {
 	}
 	err = service.Login(user)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"message": err.Error(),
-			"success": false,
-		})
+		utils.RespError(c, err.Error())
 		return
 	}
 	setupLogin(&user, c)
@@ -84,10 +75,7 @@ func setupLogin(user *model.User, c *gin.Context) {
 	session.Set("status", user.Status)
 	err := session.Save()
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "无法保存会话信息，请重试",
-			"success": false,
-		})
+		utils.RespError(c, "无法保存会话信息，请重试")
 		return
 	}
 	cleanUser := model.User{
@@ -96,11 +84,7 @@ func setupLogin(user *model.User, c *gin.Context) {
 		Role:        user.Role,
 		Status:      user.Status,
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "",
-		"success": true,
-		"data":    cleanUser,
-	})
+	utils.RespData(c, "登录成功", cleanUser)
 }
 
 func Logout(c *gin.Context) {
@@ -108,14 +92,8 @@ func Logout(c *gin.Context) {
 	session.Clear()
 	err := session.Save()
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"message": err.Error(),
-			"success": false,
-		})
+		utils.RespError(c, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "",
-		"success": true,
-	})
+	utils.RespSuccess(c, "退出登录成功")
 }

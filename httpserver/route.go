@@ -11,8 +11,8 @@ func SetRouter(port string) {
 	router := gin.New()
 	router.Use(gin.Recovery())
 	router.Use(middleware.CORS())
-	// 设置api相关的路由
-	setApiRouter(router)
+	// 设置基础的api相关的由
+	setBaseRouter(router)
 	// 设置评论相关的路由
 	setCommentRouter(router)
 
@@ -22,7 +22,7 @@ func SetRouter(port string) {
 	}
 }
 
-func setApiRouter(router *gin.Engine) {
+func setBaseRouter(router *gin.Engine) {
 	// api相关api
 	apiRouter := router.Group("/api")
 	// 频率限制
@@ -66,9 +66,9 @@ func setCommentRouter(router *gin.Engine) {
 		{
 			//todo 评论相关操作实现
 			groupRouter.POST("/add", controller.AddComment)
-			groupRouter.POST("/delete")
-			groupRouter.POST("/list")
-			groupRouter.POST("/detail")
+			groupRouter.POST("/delete", middleware.AdminAuth(), controller.DeleteComment)
+			groupRouter.POST("/list", controller.CommentList)
+			groupRouter.POST("/detail", controller.CommentDetail)
 		}
 	}
 
