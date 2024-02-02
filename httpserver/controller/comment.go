@@ -31,7 +31,24 @@ func validateParamsAdd(params model.CommentParamsAdd) bool {
 }
 
 func CommentList(c *gin.Context) {
+	var params model.CommentParamsList
+	err := json.NewDecoder(c.Request.Body).Decode(&params)
+	// 校验参数是否正确
+	if err != nil && !validateParamsList(params) {
+		utils.RespError(c, constant.InvalidParam)
+		return
+	}
+	list, err = service.GetCommentList(params)
+	if err != nil {
+		utils.RespError(c, err.Error())
+		return
+	}
+	utils.RespData(c, "添加评论成功", list)
+}
 
+func validateParamsList(params model.CommentParamsList) bool {
+	// 参数校验
+	return true
 }
 
 func DeleteComment(c *gin.Context) {
@@ -39,5 +56,5 @@ func DeleteComment(c *gin.Context) {
 }
 
 func CommentDetail(c *gin.Context) {
-	
+
 }

@@ -46,3 +46,7 @@ func FormatCommentInfo(param model.CommentParamsAdd) (model.CommentIndex, model.
 	}
 	return commentIndex, commentContent
 }
+
+func GetCommentList(param model.CommentParamsList) {
+	mod
+}
