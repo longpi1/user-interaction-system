@@ -23,6 +23,11 @@ type User struct {
 	IsAdmin          bool
 }
 
+// TableName 自定义表名
+func (User) TableName() string {
+	return "user"
+}
+
 func GetUserList(limit int, offset int) (user []*User, err error) {
 	err = db.GetClient().Limit(limit).Offset(offset).Find(&user).Error
 	return user, err

@@ -8,7 +8,7 @@ import (
 func InitTable() error {
 	// Migrate the schema
 	// 注意表的创建顺序，因为有关联字段
-	err := db.GetClient().AutoMigrate(&Model{}, &Permission{})
+	err := db.GetClient().AutoMigrate(&CommentIndex{}, &UserComment{}, &User{}, &CommentContent{}, &Permission{}, &Log{})
 	if err != nil {
 		return err
 	}

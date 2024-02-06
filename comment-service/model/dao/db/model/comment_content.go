@@ -12,18 +12,22 @@ comment_content：评论内容表
 */
 type CommentContent struct {
 	gorm.Model
-	CommentIndex CommentIndex `gorm:"foreignKey:CommentId"`
-	// 使用 CommentId 作为外键
-	CommentId     uint   // 评论id
-	ResourceId    uint   `gorm:"index"` // 评论所关联的资源id
-	ResourceTitle string // 资源的title
-	Content       string // 文本信息
-	ContentMeta   string // 存储一些关键的附属信息
-	ContentRich   string
-	Pid           uint   // 父评论 ID
-	UserID        uint   `gorm:"index"` //  发表者id
-	UserName      string // 发表者名称
-	Ext           string // 额外信息存储
+	CommentIndex  CommentIndex `gorm:"foreignKey:CommentId;comment:'主键'"`
+	CommentId     uint         `gorm:"comment:'评论id'"`             // 评论id
+	ResourceId    uint         `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
+	ResourceTitle string       `gorm:"comment:'资源的title'"`         // 资源的title
+	Content       string       `gorm:"comment:'文本信息'"`             // 文本信息
+	ContentMeta   string       `gorm:"comment:'存储一些关键的附属信息'"`      // 存储一些关键的附属信息
+	ContentRich   string       `gorm:"comment:'富文本'"`              // 富文本
+	Pid           uint         `gorm:"comment:'父评论id'"`            // 父评论 ID
+	UserID        uint         `gorm:"index;comment:'发表者id'"`      // 发表者id
+	UserName      string       `gorm:"comment:'发表者名称'"`            // 发表者名称
+	Ext           string       `gorm:"comment:'额外信息存储'"`           // 额外信息存储
+}
+
+// TableName 自定义表名
+func (CommentContent) TableName() string {
+	return "comment_content"
 }
 
 func InsertCommentContent(commentContent *CommentContent) error {

@@ -25,6 +25,11 @@ type LogParam struct {
 	Type     int    `json:"type"`
 }
 
+// TableName 自定义表名
+func (Log) TableName() string {
+	return "log"
+}
+
 func InsertLog(log *Log) error {
 	err := db.GetClient().Create(&log).Error
 	return err

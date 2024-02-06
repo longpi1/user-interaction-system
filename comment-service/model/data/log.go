@@ -6,7 +6,7 @@ import (
 	"user-interaction-system/model/dao/db/model"
 )
 
-func SearchLogs(param model.Param) ([]model.Log, error) {
+func SearchLogs(param model.LogParam) ([]model.Log, error) {
 	logs, err := model.GetLogList(param)
 	if err != nil {
 		log.Error("获取日志失败")

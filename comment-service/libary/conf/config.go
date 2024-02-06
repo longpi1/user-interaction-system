@@ -33,7 +33,7 @@ type Config struct {
 	} `json:"db"  mapstructure:"db"`
 	RedisConfig struct {
 		Address  string `json:"addr"`
-		Db       string `json:"db"`
+		Db       int    `json:"db"`
 		Password string `json:"password"`
 	} `json:"redis" mapstructure:"redis"`
 	AppConfig struct {

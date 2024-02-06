@@ -80,7 +80,43 @@
 
 #### 数据库表设计
 
-todo
+**content_index 索引表**
+
+```
+comment_index：索引表
+记录评论的索引
+同样记录对应的主题，方便后续查询
+通过 pid 记录是否是根评论以及子评论的上级
+floor 记录评论层级，也需要更新主题表中的楼层数
+```
+
+![comment_index.png](https://s2.loli.net/2024/02/06/Oj93XsuS4WTRvy6.png)
+
+
+
+**comment_content 评论内容表**
+
+```
+comment_content：评论内容表
+记录核心评论的内容，避免检索的时候内容过多导致效率低。
+```
+
+![评论内容表.png](https://s2.loli.net/2024/02/06/URbga1C6IXhw9nE.png)
+
+**UserComment**
+
+```
+UserComment：用户评论相关表
+查看用户发表评论数量，以及收评数量
+```
+
+![用户评论相关表.png](https://s2.loli.net/2024/02/06/EX9sRTHPKduIkt7.png)
+
+**数据写入**：事务更新 `comment_index`，`comment_content` 二张表。`content` 属于非强制需要一致性考虑的。可以先写入 `content`，之后事务更新其他表。即便 `content` 先成功，后续失败仅仅存在一条 `ghost` 数据。
+
+**数据读取**：基于 `resource_id` 在 `comment_index` 表找到评论列表， `WHERE pid= 0 ORDER BY floor_count`。之后根据 `comment_index` 的 `id` 字段获取出 `comment_content` 的评论内容。对于二级的子楼层， `WHERE pid IN (id...)`。
+
+
 
 #### 缓存设计
 
@@ -114,11 +150,9 @@ todo
 
 [singleflight](https://pkg.go.dev/golang.org/x/sync/singleflight)
 
-![image-20231007113032203](https://raw.githubusercontent.com/xiaoyeshiyu/image-hosting-service/main/uPic/2023/10/image-20231007113032203.png)
+同进程只交给一个请求去获取 `mysql` 数据，然后批量返回。同时这个 `lease owner` 投递一个 `kafka` 消息，做 `index cache` 的 `recovery` 操作。这样可以大大减少 `mysql` 的压力，以及大量穿透导致的密集写 `kafka` 的问题。
 
-同进程只交给一个人去获取 `mysql` 数据，然后批量返回。同时这个 `lease owner` 投递一个 `kafka` 消息，做 `index cache` 的 `recovery` 操作。这样可以大大减少 `mysql` 的压力，以及大量穿透导致的密集写 `kafka` 的问题。
-
-更进一步的，后续连续的请求，仍然可能会短时 `cache miss` ，我们可以在进程内设置了一个 `short-lived flag`，标记最近有一个人投递了 `cache rebuild` 的消息，直接 `drop`。
+更进一步的，后续连续的请求，仍然可能会短时 `cache miss` ，我们可以在进程内设置了一个 `short-lived flag`，标记最近有一个请求投递了 `cache rebuild` 的消息，直接 `drop`。
 
 可以看到，这里说明的都是单进程下的解决思路。那么在多进程下，能否使用分布式锁来解决。理论上可以，但是实际操作起来，容易将这个简单问题复杂化，不推荐使用分布式锁。（PS：`redis` 作者不推荐使用 `redis` 实现分布式锁。）
 
@@ -136,7 +170,7 @@ todo
 
 在内存中使用 `hashmap` 统计每个 `key` 的访问频次，这里可以使用滑动窗口（左角标和右角标一起移动，统计区间内部的数据量）统计，即每个窗口中，维护一个 `hashmap`，之后统计所有未过去的 `bucket`，汇总所有 `key` 的数据。
 
-之后使用小堆计算 `TopK` 的数据，自动进行热点识别。
+之后使用小顶堆计算 `TopK` 的数据，自动进行热点识别。
 
 
 
@@ -152,11 +186,13 @@ todo
 
 #### 评论列表
 
-数据写入：事务更新 `comment_subject`，`comment_index`，`comment_content` 三张表。`content` 属于非强制需要一致性考虑的。可以先写入 `content`，之后事务更新其他表。即便 `content` 先成功，后续失败仅仅存在一条 `ghost` 数据。
 
-数据读取：基于 `obj_id` + `obj_type` 在 `comment_index` 表找到评论列表， `WHERE root = 0 ORDER BY floor`。之后根据 `comment_index` 的 `id` 字段获取出 `comment_content` 的评论内容。对于二级的子楼层， `WHERE parent/root IN (id...)`。
+
+
 
 #### 添加评论
+
+
 
 
 

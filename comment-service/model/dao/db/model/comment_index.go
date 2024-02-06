@@ -15,22 +15,27 @@ floor 记录评论层级，也需要更新主题表中的楼层数，
 */
 type CommentIndex struct {
 	gorm.Model
-	ResourceId      uint `gorm:"index"` // 评论所关联的资源id
-	UserID          uint `gorm:"index"` //  发表者id
-	UserName        string
-	IP              string
-	IPArea          string
-	Pid             uint // 父评论 ID
-	Type            uint // 评论类型，文字评论、图评等
-	IsCollapsed     bool `gorm:"default:false"` // 折叠
-	IsPending       bool `gorm:"default:false"` // 待审
-	IsPinned        bool `gorm:"default:false"` // 置顶
-	State           uint // 状态
-	LikeCount       uint // 点赞数
-	HateCount       uint // 点踩数
-	ReplyCount      uint // 回复数
-	RootReplayCount uint // 根评论回复数
-	FloorCount      uint // 评论层数
+	ResourceId      uint   `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
+	UserID          uint   `gorm:"index;comment:'发表者id'"`      // 发表者id
+	UserName        string `gorm:"comment:'发表者名称'"`            // 发表者名称
+	IP              string `gorm:"comment:'发表者ip'"`            // 发表者ip
+	IPArea          string `gorm:"comment:'ip属地'"`             // ip属地
+	Pid             uint   `gorm:"comment:'父评论ID'"`            // 父评论 ID
+	Type            uint   `gorm:"comment:'评论类型'"`             // 评论类型，文字评论、图评等
+	IsCollapsed     bool   `gorm:"default:false;comment:'折叠'"` // 折叠
+	IsPending       bool   `gorm:"default:false;comment:'待审'"` // 待审
+	IsPinned        bool   `gorm:"default:false;comment:'置顶'"` // 置顶
+	State           uint   `gorm:"comment:'状态'"`               // 状态
+	LikeCount       uint   `gorm:"comment:'点赞数'"`              // 点赞数
+	HateCount       uint   `gorm:"comment:'点踩数'"`              // 点踩数
+	ReplyCount      uint   `gorm:"comment:'回复数'"`              // 回复数
+	RootReplayCount uint   `gorm:"comment:'根评论回复数'"`           // 根评论回复数
+	FloorCount      uint   `gorm:"comment:'评论层数'"`             // 评论层数
+}
+
+// TableName 自定义表名
+func (CommentIndex) TableName() string {
+	return "comment_index"
 }
 
 func InsertCommentIndex(commentIndex *CommentIndex) (uint, error) {

@@ -8,16 +8,18 @@ import (
 
 /*
 UserComment：用户评论相关表
-记录评论的索引
-同样记录对应的主题，方便后续查询
-通过 root 和 parent 记录是否是根评论以及子评论的上级
-floor 记录评论层级，也需要更新主题表中的楼层数，
+查看用户发表评论数量，以及收评数量
 */
 type UserComment struct {
 	gorm.Model
-	UserID       uint `gorm:"index"` //  发表者id
-	PublishCount uint // 发表评论数量
-	ReceiveCount uint // 收到评论数量
+	UserID       uint `gorm:"index;comment:'发表者id'"` //  发表者id
+	PublishCount uint `gorm:"comment:'发表评论数量'"`      // 发表评论数量
+	ReceiveCount uint `gorm:"comment:'收到评论数量'"`      // 收到评论数量
+}
+
+// TableName 自定义表名
+func (UserComment) TableName() string {
+	return "user_comment"
 }
 
 func InsertUserComment(userComment *UserComment) error {

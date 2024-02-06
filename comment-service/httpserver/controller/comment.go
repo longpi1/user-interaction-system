@@ -38,12 +38,12 @@ func CommentList(c *gin.Context) {
 		utils.RespError(c, constant.InvalidParam)
 		return
 	}
-	list, err = service.GetCommentList(params)
+	listResponse, err := service.GetCommentList(params)
 	if err != nil {
 		utils.RespError(c, err.Error())
 		return
 	}
-	utils.RespData(c, "添加评论成功", list)
+	utils.RespData(c, "添加评论成功", listResponse)
 }
 
 func validateParamsList(params model.CommentParamsList) bool {

@@ -3,17 +3,15 @@ package service
 import (
 	"fmt"
 	"user-interaction-system/model/dao/db/model"
+	"user-interaction-system/model/data"
 )
 
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
-
-	if !isPass {
-		return nil, fmt.Errorf("评论审核未通过")
-	}
-
+	commentList, err := data.GetCommentList(param)
 	if err != nil {
-		return nil, fmt.Errorf("添加评论失败")
+		return model.CommentListResponse{}, fmt.Errorf("添加评论失败")
 	}
+	listResponse := data.FormatCommentListResponse(commentList)
 
-	return nil, nil
+	return listResponse, nil
 }
