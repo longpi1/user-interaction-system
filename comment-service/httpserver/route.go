@@ -15,6 +15,8 @@ func SetRouter(port string) {
 	setBaseRouter(router)
 	// 设置评论相关的路由
 	setCommentRouter(router)
+	// 设置资源的相关路由
+	setResourceRoute(router)
 
 	err := router.Run(":" + port)
 	if err != nil {
@@ -71,5 +73,16 @@ func setCommentRouter(router *gin.Engine) {
 			groupRouter.POST("/detail", controller.CommentDetail)
 		}
 	}
+}
 
+func setResourceRoute(router *gin.Engine) {
+	resourceRouter := router.Group("/v1/resource")
+	// 认证
+	resourceRouter.Use(middleware.Auth())
+	{
+		resourceRouter.POST("/add", middleware.AdminAuth(), controller.AddResource)
+		resourceRouter.POST("/delete", middleware.AdminAuth(), controller.DeleteResource)
+		resourceRouter.POST("/list", controller.GetResourceList)
+		resourceRouter.POST("/detail", controller.ResourceDetail)
+	}
 }

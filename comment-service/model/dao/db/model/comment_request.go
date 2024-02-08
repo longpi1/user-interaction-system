@@ -14,7 +14,7 @@ type CommentParamsAdd struct {
 	Content       string `form:"content" validate:"required"`
 	ResourceId    uint   `form:"content" validate:"required"` // 评论所关联的资源id
 	ResourceTitle string `form:"content" validate:"required"` // 资源的title
-	ContentMeta   string `form:"cotent_meta"`                 // 存储一些关键的附属信息
+	ContentMeta   string `form:"content_meta"`                // 存储一些关键的附属信息
 	Pid           uint   `form:"pid"`                         // 父评论 ID
 	UserID        uint   `form:"user_id" validate:"required"` //  发表者id
 	Ext           string `form:"ext"`
