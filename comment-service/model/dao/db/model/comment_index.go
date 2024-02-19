@@ -20,7 +20,7 @@ type CommentIndex struct {
 	UserName        string `gorm:"comment:'发表者名称'"`            // 发表者名称
 	IP              string `gorm:"comment:'发表者ip'"`            // 发表者ip
 	IPArea          string `gorm:"comment:'ip属地'"`             // ip属地
-	Pid             uint   `gorm:"comment:'父评论ID'"`            // 父评论 ID
+	PID             uint   `gorm:"comment:'父评论ID'"`            // 父评论 ID
 	Type            uint   `gorm:"comment:'评论类型'"`             // 评论类型，文字评论、图评等
 	IsCollapsed     bool   `gorm:"default:false;comment:'折叠'"` // 折叠
 	IsPending       bool   `gorm:"default:false;comment:'待审'"` // 待审
@@ -43,12 +43,22 @@ func InsertCommentIndex(commentIndex *CommentIndex) (uint, error) {
 	return commentIndex.ID, err
 }
 
+func InsertCommentIndexWithTx(tx *gorm.DB, commentIndex *CommentIndex) (uint, error) {
+	if err := tx.Where("resource_id = ? AND pid = ?", commentIndex.ResourceId, commentIndex.PID).Last(&commentIndex).Error; err != nil {
+		commentIndex.FloorCount = 1
+	} else {
+		commentIndex.FloorCount++
+	}
+	err := db.GetClient().Create(&commentIndex).Error
+	return commentIndex.ID, err
+}
+
 func InsertBatchCommentIndex(commentIndexs []*CommentIndex) error {
 	err := db.GetClient().Create(&commentIndexs).Error
 	return err
 }
 
-func DeletCommentIndex(commentIndex *CommentIndex) error {
+func DeleteCommentIndex(commentIndex *CommentIndex) error {
 	err := db.GetClient().Unscoped().Delete(&commentIndex).Error
 	return err
 }
@@ -59,7 +69,7 @@ func FindCommentIndexById(id string) (CommentIndex, error) {
 	return commentIndex, err
 }
 
-func UpdatCommentIndex(commentIndex *CommentIndex) error {
+func UpdateCommentIndex(commentIndex *CommentIndex) error {
 	err := db.GetClient().Updates(&commentIndex).Error
 	return err
 }

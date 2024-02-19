@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"user-interaction-system/model/dao/db"
 	"user-interaction-system/model/dao/db/model"
 	"user-interaction-system/model/data"
 )
@@ -13,11 +14,25 @@ func AddComment(param model.CommentParamsAdd) error {
 	if !isPass {
 		return fmt.Errorf("评论审核未通过")
 	}
+	// 开始事务
+	tx := db.GetClient().Begin()
 
-	id, err := data.AddCommentIndex(&commentIndex)
+	// 更新评论索引
+	id, err := data.AddCommentIndex(tx, &commentIndex)
+
+	// 写入评论内容
 	commentContent.CommentId = id
-	err = data.AddCommentContent(&commentContent)
+	err = data.AddCommentContent(tx, &commentContent)
+
+	// 更新用户评论数量
+	var userComment model.UserComment
+	userComment.UserID = param.UserID
+	err = data.UpdateUserComment(tx, &userComment)
+
+	// 提交事务
+	err = tx.Commit().Error
 	if err != nil {
+		tx.Rollback()
 		return fmt.Errorf("添加评论失败")
 	}
 

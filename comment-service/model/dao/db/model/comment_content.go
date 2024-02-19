@@ -35,6 +35,11 @@ func InsertCommentContent(commentContent *CommentContent) error {
 	return err
 }
 
+func InsertCommentContentWithTx(tx *gorm.DB, commentContent *CommentContent) error {
+	err := tx.Create(commentContent).Error
+	return err
+}
+
 func InsertBatchCommentContent(commentContents []*CommentContent) error {
 	err := db.GetClient().Create(&commentContents).Error
 	return err

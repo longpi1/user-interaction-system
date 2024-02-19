@@ -52,3 +52,8 @@ func DeleteUserCommentByTime(deleteTime int) error {
 	err := db.GetClient().Where(constant.LessThanCreatedAt, deleteTime).Delete(&UserComment{}).Error
 	return err
 }
+
+func UpdateUserCommentWithTx(tx *gorm.DB, userComment *UserComment) error {
+	err := tx.Create(&userComment).Error
+	return err
+}
