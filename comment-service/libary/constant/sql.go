@@ -1,12 +1,15 @@
 package constant
 
 const (
-	WhereByID        = "id = ?"
-	WhereByName      = "name = ?"
-	WhereByUserName  = "username = ?"
-	WhereByModelName = "model_name = ?"
-	WhereByType      = "type = ?"
-	WhereByContent   = "content = ?"
+	WhereByID            = "id = ?"
+	WhereByName          = "name = ?"
+	WhereByUserName      = "username = ?"
+	WhereByModelName     = "model_name = ?"
+	WhereByType          = "type = ?"
+	WhereByContent       = "content = ?"
+	WhereByResourceID    = "resource_id = ?"
+	WhereByResourceTitle = "resource_title = ?"
+	WhereByPID           = "pid = ?"
 )
 
 const (

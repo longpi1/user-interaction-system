@@ -9,7 +9,7 @@ import (
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
 	commentList, err := data.GetCommentList(param)
 	if err != nil {
-		return model.CommentListResponse{}, fmt.Errorf("添加评论失败")
+		return model.CommentListResponse{}, fmt.Errorf("获取评论失败")
 	}
 	listResponse := data.FormatCommentListResponse(commentList)
 

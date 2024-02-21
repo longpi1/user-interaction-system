@@ -76,6 +76,15 @@ func UpdateCommentIndex(commentIndex *CommentIndex) error {
 
 func GetCommentIndexList(param CommentParamsList) (commentIndexs []CommentIndex, err error) {
 	tx := db.GetClient()
+	if param.ResourceId != 0 {
+		tx = tx.Where(constant.WhereByResourceID, param.ResourceId)
+	}
+	if param.ResourceTitle != "" {
+		tx = tx.Where(constant.WhereByResourceTitle, param.ResourceTitle)
+	}
+	if param.Pid != 0 {
+		tx = tx.Where(constant.WhereByPID, param.Pid)
+	}
 	if param.Type != 0 {
 		tx = tx.Where(constant.WhereByType, param.Type)
 	}

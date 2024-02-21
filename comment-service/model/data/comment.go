@@ -1,6 +1,7 @@
 package data
 
 import (
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"user-interaction-system/libary/log"
 	"user-interaction-system/libary/utils"
@@ -60,7 +61,25 @@ func FormatCommentInfo(param model.CommentParamsAdd) (model.CommentIndex, model.
 }
 
 func GetCommentList(param model.CommentParamsList) ([]model.CommentIndex, error) {
+	// 查询评论索引
+	var indexes []CommentIndex
+
+	// 查询评论内容
+	var comments []Comment
+	for _, index := range indexes {
+		var comment Comment
+		if err := db.Where("id = ?", index.ID).First(&comment).Error; err != nil {
+			c.JSON(500, gin.H{"error": "failed to query comment content"})
+			return
+		}
+		comments = append(comments, comment)
+	}
+
 	commentIndexs, err := model.GetCommentIndexList(param)
+
+	for _, index := range indexes {
+
+	}
 
 	return commentIndexs, err
 }
