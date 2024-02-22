@@ -1,7 +1,6 @@
 package data
 
 import (
-	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"user-interaction-system/libary/log"
 	"user-interaction-system/libary/utils"
@@ -60,30 +59,49 @@ func FormatCommentInfo(param model.CommentParamsAdd) (model.CommentIndex, model.
 	return commentIndex, commentContent
 }
 
-func GetCommentList(param model.CommentParamsList) ([]model.CommentIndex, error) {
-	// 查询评论索引
-	var indexes []CommentIndex
-
-	// 查询评论内容
-	var comments []Comment
-	for _, index := range indexes {
-		var comment Comment
-		if err := db.Where("id = ?", index.ID).First(&comment).Error; err != nil {
-			c.JSON(500, gin.H{"error": "failed to query comment content"})
-			return
-		}
-		comments = append(comments, comment)
-	}
-
+func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
+	// redis相关操作 todo
+	// 查找评论索引集合
 	commentIndexs, err := model.GetCommentIndexList(param)
 
-	for _, index := range indexes {
-
+	var commentResponses []model.CommentResponse
+	for _, index := range commentIndexs {
+		// 根据index id 查找对应的content
+		if commentContent, err := model.FindCommentContentByCommentId(index.ID); err == nil {
+			commentResponse := FormatCommentResponse(index, commentContent)
+			commentResponses = append(commentResponses, commentResponse)
+		}
+	}
+	listCount, err := model.GetCommentListCount(param)
+	commentListResponse := model.CommentListResponse{
+		CommentResponses: commentResponses,
+		RootReplyCount:   uint(listCount),
 	}
 
-	return commentIndexs, err
+	return commentListResponse, err
 }
 
-func FormatCommentListResponse(comments []model.CommentIndex) model.CommentListResponse {
-	return model.CommentListResponse{}
+func FormatCommentResponse(index model.CommentIndex, content model.CommentContent) model.CommentResponse {
+	return model.CommentResponse{
+		CommentId:   index.ID,
+		ResourceId:  index.ResourceId,
+		Pid:         index.PID,
+		Type:        index.Type,
+		Content:     content.Content,
+		ContentRich: content.ContentRich,
+		ContentMeta: content.ContentMeta,
+		Ext:         content.Ext,
+		IP:          index.IP,
+		IPArea:      index.IPArea,
+		State:       index.State,
+		LikeCount:   index.LikeCount,
+		HateCount:   index.HateCount,
+		FloorCount:  index.FloorCount,
+		ReplyCount:  index.ReplyCount,
+		UserID:      content.UserID,
+		UserName:    content.UserName,
+		IsCollapsed: index.IsCollapsed,
+		IsPending:   index.IsPending,
+		IsPinned:    index.IsPinned,
+	}
 }

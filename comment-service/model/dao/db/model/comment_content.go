@@ -12,17 +12,16 @@ comment_content：评论内容表
 */
 type CommentContent struct {
 	gorm.Model
-	CommentIndex  CommentIndex `gorm:"foreignKey:CommentId;comment:'主键'"`
-	CommentId     uint         `gorm:"comment:'评论id'"`             // 评论id
-	ResourceId    uint         `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
-	ResourceTitle string       `gorm:"comment:'资源的title'"`         // 资源的title
-	Content       string       `gorm:"comment:'文本信息'"`             // 文本信息
-	ContentMeta   string       `gorm:"comment:'存储一些关键的附属信息'"`      // 存储一些关键的附属信息
-	ContentRich   string       `gorm:"comment:'富文本'"`              // 富文本
-	Pid           uint         `gorm:"comment:'父评论id'"`            // 父评论 ID
-	UserID        uint         `gorm:"index;comment:'发表者id'"`      // 发表者id
-	UserName      string       `gorm:"comment:'发表者名称'"`            // 发表者名称
-	Ext           string       `gorm:"comment:'额外信息存储'"`           // 额外信息存储
+	CommentIndex CommentIndex `gorm:"foreignKey:CommentId;comment:'主键'"`
+	CommentId    uint         `gorm:"comment:'评论id'"`             // 评论id
+	ResourceId   uint         `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
+	Content      string       `gorm:"comment:'文本信息'"`             // 文本信息
+	ContentMeta  string       `gorm:"comment:'存储一些关键的附属信息'"`      // 存储一些关键的附属信息
+	ContentRich  string       `gorm:"comment:'富文本'"`              // 富文本
+	Pid          uint         `gorm:"comment:'父评论id'"`            // 父评论 ID
+	UserID       uint         `gorm:"index;comment:'发表者id'"`      // 发表者id
+	UserName     string       `gorm:"comment:'发表者名称'"`            // 发表者名称
+	Ext          string       `gorm:"comment:'额外信息存储'"`           // 额外信息存储
 }
 
 // TableName 自定义表名
@@ -50,9 +49,9 @@ func DeleteCommentContent(commentContent *CommentContent) error {
 	return err
 }
 
-func FindCommentContentById(id string) (CommentContent, error) {
+func FindCommentContentByCommentId(commentId uint) (CommentContent, error) {
 	var commentContent CommentContent
-	err := db.GetClient().Where(constant.WhereByID, id).First(&commentContent).Error
+	err := db.GetClient().Where(constant.WhereByCommentID, commentId).First(&commentContent).Error
 	return commentContent, err
 }
 

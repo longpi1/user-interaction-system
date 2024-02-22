@@ -11,7 +11,6 @@ func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, e
 	if err != nil {
 		return model.CommentListResponse{}, fmt.Errorf("获取评论失败")
 	}
-	listResponse := data.FormatCommentListResponse(commentList)
 
-	return listResponse, nil
+	return commentList, nil
 }

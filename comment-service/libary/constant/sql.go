@@ -1,7 +1,7 @@
 package constant
 
 const (
-	WhereByID            = "id = ?"
+	WhereByCommentID     = "comment_id = ?"
 	WhereByName          = "name = ?"
 	WhereByUserName      = "username = ?"
 	WhereByModelName     = "model_name = ?"
@@ -13,7 +13,8 @@ const (
 )
 
 const (
-	OrderDescById = "id desc"
+	OrderDescById         = "id desc"
+	OrderDescByFloorCount = "floor_count desc"
 )
 
 const (

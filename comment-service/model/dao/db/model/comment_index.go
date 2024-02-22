@@ -65,7 +65,7 @@ func DeleteCommentIndex(commentIndex *CommentIndex) error {
 
 func FindCommentIndexById(id string) (CommentIndex, error) {
 	var commentIndex CommentIndex
-	err := db.GetClient().Where(constant.WhereByID, id).First(&commentIndex).Error
+	err := db.GetClient().Where(constant.WhereByCommentID, id).First(&commentIndex).Error
 	return commentIndex, err
 }
 
@@ -99,6 +99,30 @@ func GetCommentIndexList(param CommentParamsList) (commentIndexs []CommentIndex,
 	}
 	err = tx.Order(constant.OrderDescById).Limit(param.Limit).Offset(param.Offset).Find(&commentIndexs).Error
 	return commentIndexs, err
+}
+
+func GetCommentListCount(param CommentParamsList) (count int64, err error) {
+	tx := db.GetClient()
+	if param.ResourceId != 0 {
+		tx = tx.Where(constant.WhereByResourceID, param.ResourceId)
+	}
+	if param.ResourceTitle != "" {
+		tx = tx.Where(constant.WhereByResourceTitle, param.ResourceTitle)
+	}
+	if param.Pid != 0 {
+		tx = tx.Where(constant.WhereByPID, param.Pid)
+	}
+	if param.Type != 0 {
+		tx = tx.Where(constant.WhereByType, param.Type)
+	}
+	if param.Username != "" {
+		tx = tx.Where(constant.WhereByUserName, param.Username)
+	}
+	if param.Content != "" {
+		tx = tx.Where(constant.WhereByContent, constant.FuzzySearch+param.Content+constant.FuzzySearch)
+	}
+	err = tx.Count(&count).Error
+	return count, err
 }
 
 func DeleteCommentIndexByTime(deleteTime int) error {
