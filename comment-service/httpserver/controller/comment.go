@@ -38,6 +38,7 @@ func CommentList(c *gin.Context) {
 		utils.RespError(c, constant.InvalidParam)
 		return
 	}
+
 	listResponse, err := service.GetCommentList(params)
 	if err != nil {
 		utils.RespError(c, err.Error())

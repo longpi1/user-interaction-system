@@ -37,14 +37,14 @@ type ResourceParamsAdd struct {
 	ContentMeta   string `form:"content_meta"`                // 存储一些关键的附属信息
 	Pid           uint   `form:"pid"`                         // 父评论 ID
 	UserID        uint   `form:"user_id" validate:"required"` //  发表者id
-	Ext           string `form:"ext"`
+	Ext           string `form:"ext"`                         // 额外信息存储
 	IP            string `form:"ip"`
 	ContentRich   string `form:"content_rich"`
-	Type          uint   `form:"type"` // 评论类型，文字评论、图评等"`                         // 额外信息存储
+	Type          uint   `form:"type"` // 评论类型，文字评论、图评等"`
 }
 
 func TableName() string {
-	return "resource"
+	return constant.ResourceTableName
 }
 
 func InsertResource(resource *Resource) error {

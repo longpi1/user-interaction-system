@@ -29,7 +29,8 @@ const (
 type Config struct {
 	DBConfig struct {
 		Type string `json:"type"`
-		Dsn  string `json:"dsn"` // 最高优先级
+		// 最高优先级
+		Dsn string `json:"dsn"`
 	} `json:"db"  mapstructure:"db"`
 	RedisConfig struct {
 		Address  string `json:"addr"`

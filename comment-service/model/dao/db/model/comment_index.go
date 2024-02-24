@@ -35,7 +35,7 @@ type CommentIndex struct {
 
 // TableName 自定义表名
 func (CommentIndex) TableName() string {
-	return "comment_index"
+	return constant.CommentIndexTableName
 }
 
 func InsertCommentIndex(commentIndex *CommentIndex) (uint, error) {

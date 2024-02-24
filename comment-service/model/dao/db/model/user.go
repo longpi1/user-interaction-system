@@ -25,7 +25,7 @@ type User struct {
 
 // TableName 自定义表名
 func (User) TableName() string {
-	return "user"
+	return constant.UserTableName
 }
 
 func GetUserList(limit int, offset int) (user []*User, err error) {

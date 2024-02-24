@@ -19,7 +19,7 @@ type UserComment struct {
 
 // TableName 自定义表名
 func (UserComment) TableName() string {
-	return "user_comment"
+	return constant.UserCommentTableName
 }
 
 func InsertUserComment(userComment *UserComment) error {

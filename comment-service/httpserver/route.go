@@ -9,8 +9,11 @@ import (
 
 func SetRouter(port string) {
 	router := gin.New()
-	router.Use(gin.Recovery())
 	router.Use(middleware.CORS())
+	// 设置Recovery中间件，主要用于拦截paic错误，不至于导致进程崩掉
+	router.Use(gin.Recovery())
+	// 日志记录耗时
+	router.Use(middleware.Logger())
 	// 设置基础的api相关的由
 	setBaseRouter(router)
 	// 设置评论相关的路由

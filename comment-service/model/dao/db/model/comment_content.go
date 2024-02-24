@@ -26,7 +26,7 @@ type CommentContent struct {
 
 // TableName 自定义表名
 func (CommentContent) TableName() string {
-	return "comment_content"
+	return constant.CommentContentTableName
 }
 
 func InsertCommentContent(commentContent *CommentContent) error {

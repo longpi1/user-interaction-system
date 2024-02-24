@@ -1,6 +1,7 @@
 package constant
 
 const (
+	WhereByID            = "id = ?"
 	WhereByCommentID     = "comment_id = ?"
 	WhereByName          = "name = ?"
 	WhereByUserName      = "username = ?"
@@ -24,4 +25,12 @@ const (
 const (
 	GreaterThanCreatedAt = "created_at > ?"
 	LessThanCreatedAt    = "created_at < ?"
+)
+
+const (
+	ResourceTableName       = "resource"
+	CommentIndexTableName   = "comment_index"
+	CommentContentTableName = "comment_content"
+	UserTableName           = "user"
+	UserCommentTableName    = "user_comment"
 )
