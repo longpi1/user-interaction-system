@@ -3,6 +3,7 @@ module user-interaction-system
 go 1.21
 
 require (
+	github.com/allegro/bigcache v1.2.1
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gin-contrib/cors v1.5.0
 	github.com/gin-contrib/sessions v0.0.5

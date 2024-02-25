@@ -1,4 +1,4 @@
-package cache
+package redis
 
 import (
 	"github.com/go-redis/redis"
@@ -10,22 +10,18 @@ import (
 var redisClient *redis.Client
 var once sync.Once
 
-func GetClient() (*redis.Client, error) {
+func GetClient() *redis.Client {
 	var err error
 	if redisClient == nil {
 		once.Do(func() {
 			redisClient, err = NewClient(conf.GetConfig())
 			if err != nil {
-				log.Fatal("cache run err", err)
+				log.Fatal("redis cache run err", err)
 			}
 		})
 	}
-	// 测试连接是否成功
-	err = redisClient.Ping().Err()
-	if err != nil {
-		return nil, err
-	}
-	return redisClient, nil
+
+	return redisClient
 }
 
 func NewClient(config *conf.Config) (*redis.Client, error) {

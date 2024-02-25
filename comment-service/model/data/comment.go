@@ -60,6 +60,16 @@ func FormatCommentInfo(param model.CommentParamsAdd) (model.CommentIndex, model.
 }
 
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
+	// localcache相关操作
+	if response, err := GetCommentListFromLocalCache(param); err == nil {
+		return response, nil
+	}
+
+	// redis相关操作
+	if response, err := GetCommentListFromRedisCache(param); err == nil {
+		return response, nil
+	}
+
 	// redis相关操作 todo
 	// 查找评论索引集合
 	commentIndexs, err := model.GetCommentIndexList(param)

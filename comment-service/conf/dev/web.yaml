@@ -6,6 +6,8 @@ redis:
   addr: 127.0.0.1:6379
   db: 0
   password: ""
+local_cache:
+  eviction_time: 10
 app:
   port: 8888
   debug: true

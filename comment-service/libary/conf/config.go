@@ -4,6 +4,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"os"
+	"time"
 	"user-interaction-system/libary/log"
 )
 
@@ -37,6 +38,9 @@ type Config struct {
 		Db       int    `json:"db"`
 		Password string `json:"password"`
 	} `json:"redis" mapstructure:"redis"`
+	LocalCache struct {
+		EvictionTime time.Duration `json:"eviction_time" mapstructure:"eviction_time"`
+	} `json:"local_cache" mapstructure:"local_cache"`
 	AppConfig struct {
 		Port        string `json:"port"`
 		Debug       bool   `json:"debug"`
