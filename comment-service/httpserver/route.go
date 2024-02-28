@@ -1,10 +1,10 @@
 package httpserver
 
 import (
+	"comment-service/httpserver/controller"
+	"comment-service/httpserver/middleware"
+	"comment-service/libary/log"
 	"github.com/gin-gonic/gin"
-	"user-interaction-system/httpserver/controller"
-	"user-interaction-system/httpserver/middleware"
-	"user-interaction-system/libary/log"
 )
 
 func SetRouter(port string) {

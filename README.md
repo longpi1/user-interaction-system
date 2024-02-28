@@ -1,4 +1,4 @@
-# user-interaction-system
+# comment-service
 ## 1.项目背景
 
 用golang实现一个用户互动系统，支持评论、关注、投票等操作

@@ -1,10 +1,10 @@
 package model
 
 import (
+	"comment-service/libary/constant"
+	"comment-service/libary/log"
+	"comment-service/model/dao/db"
 	"gorm.io/gorm"
-	"user-interaction-system/libary/constant"
-	"user-interaction-system/libary/log"
-	"user-interaction-system/model/dao/db"
 )
 
 type User struct {

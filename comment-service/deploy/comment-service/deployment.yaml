@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-service
+  labels:
+    app: comment-service
+    env: prod
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: comment-service
+  template:
+    metadata:
+      labels:
+        app: comment-service
+        env: prod
+    spec:
+      containers:
+        - name: comment-service
+          image: longping1999/comment-service
+          ports:
+            - containerPort: 8080
+          env:
+            - name: REDIS_HOST
+              value: redis-service
+            - name: MYSQL_HOST
+              value: mysql-service

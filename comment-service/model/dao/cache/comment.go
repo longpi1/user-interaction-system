@@ -1,12 +1,12 @@
 package cache
 
 import (
+	"comment-service/libary/log"
+	localcache "comment-service/model/dao/cache/local_cache"
+	"comment-service/model/dao/cache/redis"
+	"comment-service/model/dao/db/model"
 	"fmt"
 	"time"
-	"user-interaction-system/libary/log"
-	localcache "user-interaction-system/model/dao/cache/local_cache"
-	"user-interaction-system/model/dao/cache/redis"
-	"user-interaction-system/model/dao/db/model"
 )
 
 func GetCommentListFromLocalCache(param model.CommentParamsList) (response model.CommentListResponse, err error) {

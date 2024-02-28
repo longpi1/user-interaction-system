@@ -1,11 +1,11 @@
 package data
 
 import (
+	"comment-service/libary/log"
+	"comment-service/libary/utils"
+	"comment-service/model/dao/cache"
+	"comment-service/model/dao/db/model"
 	"gorm.io/gorm"
-	"user-interaction-system/libary/log"
-	"user-interaction-system/libary/utils"
-	"user-interaction-system/model/dao/cache"
-	"user-interaction-system/model/dao/db/model"
 )
 
 func AddCommentIndex(tx *gorm.DB, commentIndex *model.CommentIndex) (uint, error) {

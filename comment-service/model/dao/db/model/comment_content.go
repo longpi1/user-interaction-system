@@ -1,9 +1,9 @@
 package model
 
 import (
+	"comment-service/libary/constant"
+	"comment-service/model/dao/db"
 	"gorm.io/gorm"
-	"user-interaction-system/libary/constant"
-	"user-interaction-system/model/dao/db"
 )
 
 /*
@@ -65,8 +65,8 @@ func GetCommentContentList(param CommentParamsList) (CommentContents []CommentCo
 	if param.Type != 0 {
 		tx = tx.Where(constant.WhereByType, param.Type)
 	}
-	if param.Username != "" {
-		tx = tx.Where(constant.WhereByUserName, param.Username)
+	if param.UserID != 0 {
+		tx = tx.Where(constant.WhereByUserID, param.UserID)
 	}
 	if param.Content != "" {
 		tx = tx.Where(constant.WhereByContent, constant.FuzzySearch+param.Content+constant.FuzzySearch)

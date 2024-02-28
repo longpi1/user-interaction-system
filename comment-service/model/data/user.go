@@ -1,11 +1,11 @@
 package data
 
 import (
+	"comment-service/libary/log"
+	"comment-service/libary/utils"
+	userdao "comment-service/model/dao/db/model"
 	"errors"
 	_ "fmt"
-	"user-interaction-system/libary/log"
-	"user-interaction-system/libary/utils"
-	userdao "user-interaction-system/model/dao/db/model"
 )
 
 func InsertUser(user *userdao.User) error {

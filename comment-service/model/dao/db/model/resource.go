@@ -1,9 +1,9 @@
 package model
 
 import (
+	"comment-service/libary/constant"
+	"comment-service/model/dao/db"
 	"gorm.io/gorm"
-	"user-interaction-system/libary/constant"
-	"user-interaction-system/model/dao/db"
 )
 
 type Resource struct {

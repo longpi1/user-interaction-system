@@ -1,13 +1,13 @@
 package controller
 
 import (
+	"comment-service/libary/constant"
+	"comment-service/libary/utils"
+	"comment-service/model/dao/db/model"
+	"comment-service/model/service"
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
 	"strconv"
-	"user-interaction-system/libary/constant"
-	"user-interaction-system/libary/utils"
-	"user-interaction-system/model/dao/db/model"
-	"user-interaction-system/model/service"
 )
 
 func GetLogs(c *gin.Context) {

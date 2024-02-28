@@ -1,11 +1,11 @@
 package localcache
 
 import (
+	"comment-service/libary/conf"
+	"comment-service/libary/log"
 	"github.com/allegro/bigcache"
 	"sync"
 	"time"
-	"user-interaction-system/libary/conf"
-	"user-interaction-system/libary/log"
 )
 
 var localCache *bigcache.BigCache

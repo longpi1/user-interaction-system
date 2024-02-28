@@ -1,4 +1,4 @@
-module user-interaction-system
+module comment-service
 
 go 1.21
 

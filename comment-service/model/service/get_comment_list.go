@@ -1,9 +1,9 @@
 package service
 
 import (
+	"comment-service/model/dao/db/model"
+	"comment-service/model/data"
 	"fmt"
-	"user-interaction-system/model/dao/db/model"
-	"user-interaction-system/model/data"
 )
 
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {

@@ -1,12 +1,12 @@
 package bootstrap
 
 import (
-	"user-interaction-system/libary/conf"
-	"user-interaction-system/libary/log"
-	localcache "user-interaction-system/model/dao/cache/local_cache"
-	"user-interaction-system/model/dao/cache/redis"
-	"user-interaction-system/model/dao/db"
-	"user-interaction-system/model/dao/db/model"
+	"comment-service/libary/conf"
+	"comment-service/libary/log"
+	localcache "comment-service/model/dao/cache/local_cache"
+	"comment-service/model/dao/cache/redis"
+	"comment-service/model/dao/db"
+	"comment-service/model/dao/db/model"
 )
 
 func Boostrap(config *conf.Config) error {

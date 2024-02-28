@@ -1,11 +1,11 @@
 package conf
 
 import (
+	"comment-service/libary/log"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"os"
 	"time"
-	"user-interaction-system/libary/log"
 )
 
 var conf *Config

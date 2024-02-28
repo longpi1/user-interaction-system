@@ -5,6 +5,7 @@ const (
 	WhereByCommentID     = "comment_id = ?"
 	WhereByName          = "name = ?"
 	WhereByUserName      = "username = ?"
+	WhereByUserID        = "user_id = ?"
 	WhereByModelName     = "model_name = ?"
 	WhereByType          = "type = ?"
 	WhereByContent       = "content = ?"

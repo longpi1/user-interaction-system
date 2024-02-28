@@ -1,11 +1,11 @@
 package dao
 
 import (
+	"comment-service/model/dao/cache"
+	"comment-service/model/dao/db"
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"
 	"sync"
-	"user-interaction-system/model/dao/cache"
-	"user-interaction-system/model/dao/db"
 )
 
 var dao *Dao

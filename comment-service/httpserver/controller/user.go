@@ -1,14 +1,14 @@
 package controller
 
 import (
+	"comment-service/libary/constant"
+	"comment-service/libary/utils"
+	"comment-service/model/dao/db/model"
+	"comment-service/model/service"
 	"encoding/json"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"user-interaction-system/libary/constant"
-	"user-interaction-system/libary/utils"
-	"user-interaction-system/model/dao/db/model"
-	"user-interaction-system/model/service"
 )
 
 func Register(c *gin.Context) {

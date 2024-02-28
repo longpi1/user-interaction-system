@@ -1,9 +1,9 @@
 package utils
 
 import (
+	"comment-service/libary/log"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"user-interaction-system/libary/log"
 )
 
 func RespData(c *gin.Context, msg string, data interface{}) {

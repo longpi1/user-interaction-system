@@ -1,10 +1,10 @@
 package main
 
 import (
-	"user-interaction-system/bootstrap"
-	"user-interaction-system/httpserver"
-	"user-interaction-system/libary/conf"
-	"user-interaction-system/libary/log"
+	"comment-service/bootstrap"
+	"comment-service/httpserver"
+	"comment-service/libary/conf"
+	"comment-service/libary/log"
 )
 
 func main() {

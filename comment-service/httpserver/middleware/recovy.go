@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"comment-service/libary/log"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"user-interaction-system/libary/log"
 )
 
 // 自定义Recovery中间件

@@ -1,8 +1,8 @@
 package service
 
 import (
-	"user-interaction-system/model/dao/db/model"
-	"user-interaction-system/model/data"
+	"comment-service/model/dao/db/model"
+	"comment-service/model/data"
 )
 
 func SearchLogs(param model.LogParam) ([]model.Log, error) {

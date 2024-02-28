@@ -1,10 +1,10 @@
 package service
 
 import (
+	"comment-service/libary/utils"
+	userdao "comment-service/model/dao/db/model"
+	userservice "comment-service/model/data"
 	"errors"
-	"user-interaction-system/libary/utils"
-	userdao "user-interaction-system/model/dao/db/model"
-	userservice "user-interaction-system/model/data"
 )
 
 func Login(user userdao.User) error {

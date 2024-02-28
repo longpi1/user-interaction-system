@@ -1,10 +1,10 @@
 package db
 
 import (
+	"comment-service/libary/conf"
+	"comment-service/libary/log"
 	"gorm.io/gorm"
 	"sync"
-	"user-interaction-system/libary/conf"
-	"user-interaction-system/libary/log"
 )
 
 var db = &DB{}

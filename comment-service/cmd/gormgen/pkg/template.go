@@ -1,8 +1,8 @@
 package pkg
 
 import (
+	"comment-service/libary/log"
 	"text/template"
-	"user-interaction-system/libary/log"
 )
 
 // Make sure that the template compiles during package initialization
