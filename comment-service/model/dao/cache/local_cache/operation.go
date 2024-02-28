@@ -22,3 +22,9 @@ func Get(key string, dest interface{}) error {
 	}
 	return json.Unmarshal(entry, dest)
 }
+
+// Delete delete value from bigcache.
+func Delete(key string) error {
+	err := localCache.Delete(key)
+	return err
+}

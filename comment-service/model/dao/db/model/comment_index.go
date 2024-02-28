@@ -79,9 +79,6 @@ func GetCommentIndexList(param CommentParamsList) (commentIndexs []CommentIndex,
 	if param.ResourceId != 0 {
 		tx = tx.Where(constant.WhereByResourceID, param.ResourceId)
 	}
-	if param.ResourceTitle != "" {
-		tx = tx.Where(constant.WhereByResourceTitle, param.ResourceTitle)
-	}
 	if param.Pid != 0 {
 		tx = tx.Where(constant.WhereByPID, param.Pid)
 	}
@@ -105,9 +102,6 @@ func GetCommentListCount(param CommentParamsList) (count int64, err error) {
 	tx := db.GetClient()
 	if param.ResourceId != 0 {
 		tx = tx.Where(constant.WhereByResourceID, param.ResourceId)
-	}
-	if param.ResourceTitle != "" {
-		tx = tx.Where(constant.WhereByResourceTitle, param.ResourceTitle)
 	}
 	if param.Pid != 0 {
 		tx = tx.Where(constant.WhereByPID, param.Pid)

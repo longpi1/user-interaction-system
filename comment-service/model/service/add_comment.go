@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"user-interaction-system/model/dao/cache"
 	"user-interaction-system/model/dao/db"
 	"user-interaction-system/model/dao/db/model"
 	"user-interaction-system/model/data"
@@ -16,7 +17,8 @@ func AddComment(param model.CommentParamsAdd) error {
 	}
 	// 开始事务
 	tx := db.GetClient().Begin()
-
+	// 删除相关评论列表缓存数据
+	cache.DeleteCommentListCache(param)
 	// 更新评论索引
 	id, err := data.AddCommentIndex(tx, &commentIndex)
 

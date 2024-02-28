@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"user-interaction-system/libary/log"
 	"user-interaction-system/libary/utils"
+	"user-interaction-system/model/dao/cache"
 	"user-interaction-system/model/dao/db/model"
 )
 
@@ -61,16 +62,15 @@ func FormatCommentInfo(param model.CommentParamsAdd) (model.CommentIndex, model.
 
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
 	// localcache相关操作
-	if response, err := GetCommentListFromLocalCache(param); err == nil {
+	if response, err := cache.GetCommentListFromLocalCache(param); err == nil {
 		return response, nil
 	}
 
 	// redis相关操作
-	if response, err := GetCommentListFromRedisCache(param); err == nil {
+	if response, err := cache.GetCommentListFromRedisCache(param); err == nil {
 		return response, nil
 	}
 
-	// redis相关操作 todo
 	// 查找评论索引集合
 	commentIndexs, err := model.GetCommentIndexList(param)
 
@@ -87,6 +87,10 @@ func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, e
 		CommentResponses: commentResponses,
 		RootReplyCount:   uint(listCount),
 	}
+
+	// 将查询结果更新到缓存中
+	cache.SetCommentListToLocalCache(param, commentListResponse)
+	cache.SetCommentListToRedisCache(param, commentListResponse)
 
 	return commentListResponse, err
 }

@@ -1,15 +1,14 @@
 package model
 
 type CommentParamsList struct {
-	ResourceId    uint   `form:"content" validate:"required"` // 评论所关联的资源id
-	ResourceTitle string `form:"content" validate:"required"` // 资源的title
-	Pid           uint   `form:"pid"`                         // 父评论 ID
-	Limit         int    `json:"limit"`
-	Offset        int    `json:"offset"`
-	Username      string `json:"username"`
-	Content       string `json:"content"`
-	Type          int    `json:"type"`
-	OrderBy       string `json:"oderby"`
+	ResourceId uint   `form:"content" validate:"required"` // 评论所关联的资源id
+	Pid        uint   `form:"pid"`                         // 父评论 ID
+	Limit      int    `json:"limit"`
+	Offset     int    `json:"offset"`
+	UserID     uint   `form:"user_id" validate:"required"`
+	Content    string `json:"content"`
+	Type       int    `json:"type"`
+	OrderBy    string `json:"oderby"`
 }
 
 type CommentParamsAdd struct {
