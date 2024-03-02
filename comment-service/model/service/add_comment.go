@@ -1,11 +1,12 @@
 package service
 
 import (
+	"fmt"
+
 	"comment-service/model/dao/cache"
 	"comment-service/model/dao/db"
 	"comment-service/model/dao/db/model"
 	"comment-service/model/data"
-	"fmt"
 )
 
 func AddComment(param model.CommentParamsAdd) error {

@@ -1,10 +1,11 @@
 package service
 
 import (
+	"errors"
+
 	"comment-service/libary/utils"
 	userdao "comment-service/model/dao/db/model"
 	userservice "comment-service/model/data"
-	"errors"
 )
 
 func Login(user userdao.User) error {

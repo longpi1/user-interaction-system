@@ -1,10 +1,12 @@
 package redis
 
 import (
+	"sync"
+
 	"comment-service/libary/conf"
 	"comment-service/libary/log"
+
 	"github.com/go-redis/redis"
-	"sync"
 )
 
 var redisClient *redis.Client

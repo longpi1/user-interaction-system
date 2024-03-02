@@ -3,11 +3,12 @@ package model
 import (
 	"comment-service/libary/constant"
 	"comment-service/model/dao/db"
+
 	"gorm.io/gorm"
 )
 
 /*
-comment_content：评论内容表
+CommentContent：评论内容表
 记录核心评论的内容，避免检索的时候内容过多导致效率低。
 */
 type CommentContent struct {

@@ -1,9 +1,10 @@
 package service
 
 import (
+	"fmt"
+
 	userdao "comment-service/model/dao/db/model"
 	userdata "comment-service/model/data"
-	"fmt"
 )
 
 func Register(user *userdao.User) error {

@@ -1,11 +1,13 @@
 package dao
 
 import (
-	"comment-service/model/dao/cache"
-	"comment-service/model/dao/db"
+	"sync"
+
+	_ "comment-service/model/dao/cache"
+	_ "comment-service/model/dao/db"
+
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"
-	"sync"
 )
 
 var dao *Dao
@@ -32,13 +34,11 @@ func GetDao() *Dao {
 	return dao
 }
 
-// Create new dao instance
-//
-// This function will auto migrate database tables
+// NewDao Create new dao instance This function will auto migrate database tables
 func NewDao() *Dao {
 	// 启动db与redis
-	dao.db = db.GetClient()
-	dao.cache, _ = cache.GetClient()
+	//dao.db = db.GetClient()
+	//dao.cache, _ = cache.Gett
 	return dao
 }
 

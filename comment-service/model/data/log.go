@@ -1,9 +1,10 @@
 package data
 
 import (
+	"errors"
+
 	"comment-service/libary/log"
 	"comment-service/model/dao/db/model"
-	"errors"
 )
 
 func SearchLogs(param model.LogParam) ([]model.Log, error) {
