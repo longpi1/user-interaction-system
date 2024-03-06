@@ -5,6 +5,7 @@ import (
 	"comment-service/libary/utils"
 	"comment-service/model/dao/db/model"
 	"comment-service/model/service"
+
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
 )
@@ -13,7 +14,7 @@ func AddComment(c *gin.Context) {
 	var params model.CommentParamsAdd
 	err := json.NewDecoder(c.Request.Body).Decode(&params)
 	// 校验参数是否正确
-	if err != nil && !validateParamsAdd(params) {
+	if err != nil || !validateParamsAdd(params) {
 		utils.RespError(c, constant.InvalidParam)
 		return
 	}
@@ -34,7 +35,7 @@ func CommentList(c *gin.Context) {
 	var params model.CommentParamsList
 	err := json.NewDecoder(c.Request.Body).Decode(&params)
 	// 校验参数是否正确
-	if err != nil && !validateParamsList(params) {
+	if err != nil || !validateParamsList(params) {
 		utils.RespError(c, constant.InvalidParam)
 		return
 	}

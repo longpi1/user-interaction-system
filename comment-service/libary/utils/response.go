@@ -2,8 +2,9 @@ package utils
 
 import (
 	"comment-service/libary/log"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func RespData(c *gin.Context, msg string, data interface{}) {
@@ -36,7 +37,7 @@ func LogWithHttpInfo(c *gin.Context, isError bool) {
 	fields := make(map[string]interface{})
 	req := c.Request
 
-	path := string(req.Method)
+	path := req.Method
 	if path == "" {
 		path = "/"
 	}
@@ -44,7 +45,7 @@ func LogWithHttpInfo(c *gin.Context, isError bool) {
 	fields["params"] = c.Params
 	fields["path"] = path
 	fields["host"] = req.Host
-	fields["status"] = req.Response.Status
+	fields["response"] = req.Response
 	fields["remote_ip"] = req.RemoteAddr
 	fields["client_ip"] = c.ClientIP()
 	fields["error"] = c.Errors.JSON()
