@@ -4,6 +4,7 @@ import (
 	"comment-service/libary/log"
 	"comment-service/libary/utils"
 	"comment-service/model/dao/cache"
+	"comment-service/model/dao/db"
 	"comment-service/model/dao/db/model"
 
 	"gorm.io/gorm"
@@ -119,4 +120,37 @@ func FormatCommentResponse(index model.CommentIndex, content model.CommentConten
 		IsPending:   index.IsPending,
 		IsPinned:    index.IsPinned,
 	}
+}
+
+// DeleteComment 删除评论
+func DeleteComment(commentID int64) error {
+	// 开启事务
+	tx := db.GetClient().Begin()
+	defer tx.Rollback()
+
+	// 删除评论内容
+	if err := model.DeleteCommentContentWithTx(tx, uint(commentID)); err != nil {
+		return err
+	}
+
+	// 删除评论索引并更新楼层计数
+	if err := model.DeleteCommentIndexWithTx(tx, uint(commentID)); err != nil {
+		return err
+	}
+
+	// 递归删除子评论
+	if err := model.DeleteChildComments(tx, commentID); err != nil {
+		return err
+	}
+
+	// 更新用户评论数量
+	if err := model.DecreaseCommentCount(tx, commentID); err != nil {
+		return err
+	}
+
+	// 提交事务
+	if err := tx.Commit().Error; err != nil {
+		return err
+	}
+	return nil
 }

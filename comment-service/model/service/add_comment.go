@@ -1,9 +1,9 @@
 package service
 
 import (
+	"comment-service/model/dao/cache"
 	"fmt"
 
-	"comment-service/model/dao/cache"
 	"comment-service/model/dao/db"
 	"comment-service/model/dao/db/model"
 	"comment-service/model/data"
@@ -18,8 +18,7 @@ func AddComment(param model.CommentParamsAdd) error {
 	}
 	// 开始事务
 	tx := db.GetClient().Begin()
-	// 删除相关评论列表缓存数据
-	cache.DeleteCommentListCache(param)
+
 	// 更新评论索引
 	id, err := data.AddCommentIndex(tx, &commentIndex)
 
@@ -38,6 +37,7 @@ func AddComment(param model.CommentParamsAdd) error {
 		tx.Rollback()
 		return fmt.Errorf("添加评论失败")
 	}
-
+	// 删除相关评论列表缓存数据
+	cache.DeleteCommentListCache(param)
 	return nil
 }

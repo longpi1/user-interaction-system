@@ -10,7 +10,7 @@ import (
 )
 
 func GetCommentListFromLocalCache(param model.CommentParamsList) (response model.CommentListResponse, err error) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%s_%s", param.ResourceId, param.Pid, param.Type, param.UserID, param.Content)
+	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
 	if err = localcache.Get(key, response); err != nil {
 		return response, err
 	}
@@ -19,7 +19,7 @@ func GetCommentListFromLocalCache(param model.CommentParamsList) (response model
 
 // SetCommentListToLocalCache 将评论列表存入localcache
 func SetCommentListToLocalCache(param model.CommentParamsList, response model.CommentListResponse) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%s_%s", param.ResourceId, param.Pid, param.Type, param.UserID, param.Content)
+	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
 	err := localcache.Set(key, response, time.Minute*5)
 	if err != nil {
 		log.Error("评论存入localcache失败: ", key)
@@ -27,7 +27,7 @@ func SetCommentListToLocalCache(param model.CommentParamsList, response model.Co
 }
 
 func GetCommentListFromRedisCache(param model.CommentParamsList) (response model.CommentListResponse, err error) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%s_%s", param.ResourceId, param.Pid, param.Type, param.UserID, param.Content)
+	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
 	if err = redis.Get(key, response); err != nil {
 		return response, err
 	}
@@ -36,7 +36,7 @@ func GetCommentListFromRedisCache(param model.CommentParamsList) (response model
 
 // SetCommentListToRedisCache 将评论列表存入redis
 func SetCommentListToRedisCache(param model.CommentParamsList, response model.CommentListResponse) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%s_%s", param.ResourceId, param.Pid, param.Type, param.UserID, param.Content)
+	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
 	err := redis.Set(key, response, time.Minute*5)
 	if err != nil {
 		log.Error("评论存入redis 失败: ", key)
@@ -44,8 +44,7 @@ func SetCommentListToRedisCache(param model.CommentParamsList, response model.Co
 }
 
 // DeleteCommentListCache 删除相关评论列表缓存
-func DeleteCommentListCache(param model.CommentParamsAdd) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%d_%s", param.ResourceId, param.Pid, param.Type, param.UserID, param.Content)
+func DeleteCommentListCache(key string) {
 	err := localcache.Delete(key)
 	if err != nil {
 		log.Error("删除localcache缓存失败", key)

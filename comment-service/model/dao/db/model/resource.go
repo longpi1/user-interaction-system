@@ -63,7 +63,7 @@ func DeleteResource(resource *Resource) error {
 	return err
 }
 
-func FindResourceById(id string) (Resource, error) {
+func FindResourceById(id int) (Resource, error) {
 	var resource Resource
 	err := db.GetClient().Where(constant.WhereByID, id).First(&resource).Error
 	return resource, err

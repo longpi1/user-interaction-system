@@ -2,9 +2,11 @@ package controller
 
 import (
 	"comment-service/libary/constant"
+	"comment-service/libary/log"
 	"comment-service/libary/utils"
 	"comment-service/model/dao/db/model"
 	"comment-service/model/service"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
@@ -54,7 +56,27 @@ func validateParamsList(params model.CommentParamsList) bool {
 }
 
 func DeleteComment(c *gin.Context) {
+	// 获取评论ID
+	commentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		utils.RespError(c, "无效的评论ID")
+		return
+	}
 
+	// 验证用户权限
+	userID := c.GetInt64("userID") // 假设通过中间件获取了用户ID
+	if err := service.VerifyPermission(commentID, userID); err != nil {
+		utils.RespError(c, err.Error())
+		return
+	}
+
+	// 删除评论
+	if err := service.DeleteComment(commentID); err != nil {
+		log.Error("删除评论失败:", err)
+		utils.RespError(c, "删除评论失败")
+		return
+	}
+	utils.RespSuccess(c, "评论删除成功")
 }
 
 func CommentDetail(c *gin.Context) {

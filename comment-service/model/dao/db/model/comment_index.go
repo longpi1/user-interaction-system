@@ -64,7 +64,12 @@ func DeleteCommentIndex(commentIndex *CommentIndex) error {
 	return err
 }
 
-func FindCommentIndexById(id string) (CommentIndex, error) {
+func DeleteCommentIndexWithTx(tx *gorm.DB, commentID uint) error {
+	err := tx.Where(constant.WhereByID, commentID).Delete(&CommentIndex{}).Error
+	return err
+}
+
+func FindCommentIndexById(id int) (CommentIndex, error) {
 	var commentIndex CommentIndex
 	err := db.GetClient().Where(constant.WhereByCommentID, id).First(&commentIndex).Error
 	return commentIndex, err
