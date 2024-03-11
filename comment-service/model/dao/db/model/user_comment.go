@@ -58,3 +58,19 @@ func UpdateUserCommentWithTx(tx *gorm.DB, userComment *UserComment) error {
 	err := tx.Create(&userComment).Error
 	return err
 }
+
+func DecreaseCommentCount(tx *gorm.DB, userID uint) error {
+	var userComment UserComment
+	if err := tx.First(&userComment).Error; err != nil {
+		return err
+	}
+
+	// Decrease count by 1
+	userComment.PublishCount -= 1
+
+	// Save changes
+	if err := tx.Save(&userComment).Error; err != nil {
+		return err
+	}
+	return nil
+}

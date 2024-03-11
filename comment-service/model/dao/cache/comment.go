@@ -5,12 +5,10 @@ import (
 	localcache "comment-service/model/dao/cache/local_cache"
 	"comment-service/model/dao/cache/redis"
 	"comment-service/model/dao/db/model"
-	"fmt"
 	"time"
 )
 
-func GetCommentListFromLocalCache(param model.CommentParamsList) (response model.CommentListResponse, err error) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
+func GetCommentListFromLocalCache(key string) (response model.CommentListResponse, err error) {
 	if err = localcache.Get(key, response); err != nil {
 		return response, err
 	}
@@ -18,16 +16,14 @@ func GetCommentListFromLocalCache(param model.CommentParamsList) (response model
 }
 
 // SetCommentListToLocalCache 将评论列表存入localcache
-func SetCommentListToLocalCache(param model.CommentParamsList, response model.CommentListResponse) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
+func SetCommentListToLocalCache(key string, response model.CommentListResponse) {
 	err := localcache.Set(key, response, time.Minute*5)
 	if err != nil {
 		log.Error("评论存入localcache失败: ", key)
 	}
 }
 
-func GetCommentListFromRedisCache(param model.CommentParamsList) (response model.CommentListResponse, err error) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
+func GetCommentListFromRedisCache(key string) (response model.CommentListResponse, err error) {
 	if err = redis.Get(key, response); err != nil {
 		return response, err
 	}
@@ -35,8 +31,7 @@ func GetCommentListFromRedisCache(param model.CommentParamsList) (response model
 }
 
 // SetCommentListToRedisCache 将评论列表存入redis
-func SetCommentListToRedisCache(param model.CommentParamsList, response model.CommentListResponse) {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", param.ResourceId, param.Pid, param.Type, param.UserID)
+func SetCommentListToRedisCache(key string, response model.CommentListResponse) {
 	err := redis.Set(key, response, time.Minute*5)
 	if err != nil {
 		log.Error("评论存入redis 失败: ", key)

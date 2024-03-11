@@ -5,9 +5,6 @@ type CommentParamsList struct {
 	Pid        uint   `form:"pid"`                         // 父评论 ID
 	Limit      int    `json:"limit"`
 	Offset     int    `json:"offset"`
-	UserID     uint   `form:"user_id" validate:"required"`
-	Content    string `json:"content"`
-	Type       int    `json:"type"`
 	OrderBy    string `json:"oderby"`
 }
 
@@ -23,4 +20,12 @@ type CommentParamsAdd struct {
 	IP            string `form:"ip"`
 	ContentRich   string `form:"content_rich"`
 	Type          uint   `form:"type"` // 评论类型，文字评论、图评等"`
+}
+
+type CommentParamsDelete struct {
+	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
+	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
+	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
+	Ext        string `form:"ext"`                             // 额外信息存储
+	Pid        uint   `form:"pid"`                             // 父评论 ID
 }

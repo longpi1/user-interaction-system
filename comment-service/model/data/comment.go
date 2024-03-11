@@ -63,13 +63,15 @@ func FormatCommentInfo(param model.CommentParamsAdd) (model.CommentIndex, model.
 }
 
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
+	// 将查询结果更新到缓存中
+	key := cache.GetCommentListKey(param.ResourceId, param.Pid)
 	// localcache相关操作
-	if response, err := cache.GetCommentListFromLocalCache(param); err == nil {
+	if response, err := cache.GetCommentListFromLocalCache(key); err == nil {
 		return response, nil
 	}
 
 	// redis相关操作
-	if response, err := cache.GetCommentListFromRedisCache(param); err == nil {
+	if response, err := cache.GetCommentListFromRedisCache(key); err == nil {
 		return response, nil
 	}
 
@@ -90,9 +92,8 @@ func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, e
 		RootReplyCount:   uint(listCount),
 	}
 
-	// 将查询结果更新到缓存中
-	cache.SetCommentListToLocalCache(param, commentListResponse)
-	cache.SetCommentListToRedisCache(param, commentListResponse)
+	cache.SetCommentListToLocalCache(key, commentListResponse)
+	cache.SetCommentListToRedisCache(key, commentListResponse)
 
 	return commentListResponse, err
 }
@@ -123,34 +124,37 @@ func FormatCommentResponse(index model.CommentIndex, content model.CommentConten
 }
 
 // DeleteComment 删除评论
-func DeleteComment(commentID int64) error {
+func DeleteComment(param model.CommentParamsDelete) error {
 	// 开启事务
 	tx := db.GetClient().Begin()
-	defer tx.Rollback()
 
 	// 删除评论内容
-	if err := model.DeleteCommentContentWithTx(tx, uint(commentID)); err != nil {
+	if err := model.DeleteCommentContentWithTx(tx, param.CommentID); err != nil {
 		return err
 	}
 
 	// 删除评论索引并更新楼层计数
-	if err := model.DeleteCommentIndexWithTx(tx, uint(commentID)); err != nil {
+	if err := model.DeleteCommentIndexWithTx(tx, param.CommentID); err != nil {
 		return err
 	}
 
 	// 递归删除子评论
-	if err := model.DeleteChildComments(tx, commentID); err != nil {
+	if err := model.DeleteChildComments(tx, param.CommentID); err != nil {
 		return err
 	}
 
 	// 更新用户评论数量
-	if err := model.DecreaseCommentCount(tx, commentID); err != nil {
+	if err := model.DecreaseCommentCount(tx, param.UserID); err != nil {
 		return err
 	}
 
 	// 提交事务
 	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
 		return err
 	}
+	// 删除相关评论列表缓存数据
+	key := cache.GetCommentListKey(param.ResourceId, param.Pid)
+	cache.DeleteCommentListCache(key)
 	return nil
 }

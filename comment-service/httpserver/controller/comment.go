@@ -6,7 +6,6 @@ import (
 	"comment-service/libary/utils"
 	"comment-service/model/dao/db/model"
 	"comment-service/model/service"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
@@ -56,27 +55,32 @@ func validateParamsList(params model.CommentParamsList) bool {
 }
 
 func DeleteComment(c *gin.Context) {
-	// 获取评论ID
-	commentID, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		utils.RespError(c, "无效的评论ID")
+	var param model.CommentParamsDelete
+	err := json.NewDecoder(c.Request.Body).Decode(&param)
+	// 校验参数是否正确
+	if err != nil || !validateParamsDelete(param) {
+		utils.RespError(c, constant.InvalidParam)
 		return
 	}
 
 	// 验证用户权限
-	userID := c.GetInt64("userID") // 假设通过中间件获取了用户ID
-	if err := service.VerifyPermission(commentID, userID); err != nil {
+	if err := service.VerifyPermission(param.CommentID, param.UserID); err != nil {
 		utils.RespError(c, err.Error())
 		return
 	}
 
 	// 删除评论
-	if err := service.DeleteComment(commentID); err != nil {
+	if err := service.DeleteComment(param); err != nil {
 		log.Error("删除评论失败:", err)
 		utils.RespError(c, "删除评论失败")
 		return
 	}
 	utils.RespSuccess(c, "评论删除成功")
+}
+
+func validateParamsDelete(params model.CommentParamsDelete) bool {
+	// 参数校验
+	return true
 }
 
 func CommentDetail(c *gin.Context) {

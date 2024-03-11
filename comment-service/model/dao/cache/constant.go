@@ -2,7 +2,17 @@ package cache
 
 import "fmt"
 
-func GetCommentListKey(resourceId int, pid int, sourceType int, userId int) string {
-	key := fmt.Sprintf("comment_list_%d_%d_%d_%d", resourceId, pid, sourceType, userId)
+const (
+	CommentListRedisKey           = "comment_list_%d_%d"
+	CommentListRedisKeyWithNilPid = "comment_list_%d_*"
+)
+
+func GetCommentListKey(resourceId uint, pid uint) string {
+	// 如果pid为默认值也就是零则用_*
+	if pid == 0 {
+		key := fmt.Sprintf(CommentListRedisKeyWithNilPid, resourceId)
+		return key
+	}
+	key := fmt.Sprintf(CommentListRedisKey, resourceId, pid)
 	return key
 }

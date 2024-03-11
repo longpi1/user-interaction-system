@@ -38,6 +38,7 @@ func AddComment(param model.CommentParamsAdd) error {
 		return fmt.Errorf("添加评论失败")
 	}
 	// 删除相关评论列表缓存数据
-	cache.DeleteCommentListCache(param)
+	key := cache.GetCommentListKey(param.ResourceId, param.Pid)
+	cache.DeleteCommentListCache(key)
 	return nil
 }

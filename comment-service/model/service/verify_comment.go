@@ -6,7 +6,7 @@ import (
 )
 
 // VerifyPermission 验证用户是否有权限删除评论
-func VerifyPermission(commentID, userID int64) error {
+func VerifyPermission(commentID, userID uint) error {
 	comment, err := model.FindCommentIndexById(int(commentID))
 	if err != nil {
 		return errors.New("获取对应评论相关信息失败")
