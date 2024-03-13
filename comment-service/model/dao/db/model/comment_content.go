@@ -68,15 +68,6 @@ func UpdateCommentContent(commentContent *CommentContent) error {
 
 func GetCommentContentList(param CommentParamsList) (CommentContents []CommentContent, err error) {
 	tx := db.GetClient()
-	if param.Type != 0 {
-		tx = tx.Where(constant.WhereByType, param.Type)
-	}
-	if param.UserID != 0 {
-		tx = tx.Where(constant.WhereByUserID, param.UserID)
-	}
-	if param.Content != "" {
-		tx = tx.Where(constant.WhereByContent, constant.FuzzySearch+param.Content+constant.FuzzySearch)
-	}
 	if param.Limit == 0 {
 		param.Limit = constant.DefaultLimit
 	}

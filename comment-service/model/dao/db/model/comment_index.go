@@ -111,3 +111,37 @@ func DeleteCommentIndexByTime(deleteTime int) error {
 	err := db.GetClient().Where(constant.LessThanCreatedAt, deleteTime).Delete(&CommentIndex{}).Error
 	return err
 }
+
+// DeleteChildCommentsWithTx 递归删除子评论
+func DeleteChildCommentsWithTx(tx *gorm.DB, commentID uint) error {
+	// 查询当前评论的所有子评论
+	var childComments []CommentIndex
+	if err := tx.Where("pid = ?", commentID).Find(&childComments).Error; err != nil {
+		return err
+	}
+
+	// 遍历子评论
+	for _, childComment := range childComments {
+		// 删除子评论的内容
+		if err := DeleteCommentContentWithTx(tx, childComment.ID); err != nil {
+			return err
+		}
+
+		// 删除子评论的索引
+		if err := DeleteCommentIndexWithTx(tx, childComment.ID); err != nil {
+			return err
+		}
+
+		// 更新用户评论数量
+		if err := DecreaseCommentCount(tx, childComment.UserID); err != nil {
+			return err
+		}
+
+		// 递归删除子评论的子评论
+		if err := DeleteChildCommentsWithTx(tx, childComment.ID); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

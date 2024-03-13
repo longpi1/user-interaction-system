@@ -29,3 +29,25 @@ type CommentParamsDelete struct {
 	Ext        string `form:"ext"`                             // 额外信息存储
 	Pid        uint   `form:"pid"`                             // 父评论 ID
 }
+
+type CommentParamsInteract struct {
+	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
+	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
+	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
+	Ext        string `form:"ext"`                             // 额外信息存储
+	Action     uint   `form:"action"`                          // 行为
+}
+
+type CommentParamsTop struct {
+	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
+	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
+	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
+	Ext        string `form:"ext"`                             // 额外信息存储
+}
+
+type CommentParamsHighLight struct {
+	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
+	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
+	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
+	Ext        string `form:"ext"`                             // 额外信息存储
+}

@@ -4,6 +4,7 @@ import (
 	"comment-service/httpserver/controller"
 	"comment-service/httpserver/middleware"
 	"comment-service/libary/log"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -73,6 +74,9 @@ func setCommentRouter(router *gin.Engine) {
 			groupRouter.POST("/add", controller.AddComment)
 			groupRouter.POST("/delete", middleware.AdminAuth(), controller.DeleteComment)
 			groupRouter.POST("/list", controller.CommentList)
+			groupRouter.POST("/interact", controller.CommentInteract)
+			groupRouter.POST("/top", controller.CommentTop)
+			groupRouter.POST("/highlight", controller.CommentHighlight)
 			groupRouter.POST("/detail", controller.CommentDetail)
 		}
 	}

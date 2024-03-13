@@ -86,3 +86,47 @@ func validateParamsDelete(params model.CommentParamsDelete) bool {
 func CommentDetail(c *gin.Context) {
 
 }
+
+// CommentInteract 用户相关互动行为，点赞、点踩、举报
+func CommentInteract(c *gin.Context) {
+	var param model.CommentParamsInteract
+	err := json.NewDecoder(c.Request.Body).Decode(&param)
+	// 校验参数是否正确
+	if err != nil || !validateParamsInteract(param) {
+		utils.RespError(c, constant.InvalidParam)
+		return
+	}
+
+	if err := service.; err != nil {
+		log.Error("评论失败:", err)
+		utils.RespError(c, "评论失败")
+		return
+	}
+	utils.RespSuccess(c, "评论成功")
+}
+
+func validateParamsInteract(params model.CommentParamsInteract) bool {
+	// 参数校验
+	return true
+}
+
+// CommentTop 置顶某一个评论
+func CommentTop(c *gin.Context) {
+
+}
+
+func validateParamsTop(params model.CommentParamsTop) bool {
+	// 参数校验
+	return true
+}
+
+// CommentHighLight 高亮某一个评论
+func CommentHighLight(c *gin.Context) {
+
+}
+
+
+func validateParamsHighLight(params model.CommentParamsHighLight) bool {
+	// 参数校验
+	return true
+}
