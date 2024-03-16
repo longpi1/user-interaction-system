@@ -7,11 +7,10 @@ import (
 	"comment-service/model/data"
 )
 
-// DeleteComment 删除评论
-func DeleteComment(param model.CommentParamsDelete) error {
-	err := data.DeleteComment(param)
+func CommentInteract(param model.CommentParamsInteract) error {
+	err := data.CommentInteract(param)
 	if err != nil {
-		log.Error("删除评论失败：", err.Error())
+		log.Error("评论互动失败：%v", param)
 		return err
 	}
 	// 删除相关评论列表缓存数据

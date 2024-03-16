@@ -76,7 +76,7 @@ func setCommentRouter(router *gin.Engine) {
 			groupRouter.POST("/list", controller.CommentList)
 			groupRouter.POST("/interact", controller.CommentInteract)
 			groupRouter.POST("/top", controller.CommentTop)
-			groupRouter.POST("/highlight", controller.CommentHighlight)
+			groupRouter.POST("/highlight", controller.CommentHighLight)
 			groupRouter.POST("/detail", controller.CommentDetail)
 		}
 	}

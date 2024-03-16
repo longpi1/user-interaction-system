@@ -36,6 +36,7 @@ type CommentParamsInteract struct {
 	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
 	Ext        string `form:"ext"`                             // 额外信息存储
 	Action     uint   `form:"action"`                          // 行为
+	Pid        uint   `form:"pid"`                             // 父评论 ID
 }
 
 type CommentParamsTop struct {
@@ -43,6 +44,7 @@ type CommentParamsTop struct {
 	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
 	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
 	Ext        string `form:"ext"`                             // 额外信息存储
+	Pid        uint   `form:"pid"`                             // 父评论 ID
 }
 
 type CommentParamsHighLight struct {
@@ -50,4 +52,5 @@ type CommentParamsHighLight struct {
 	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
 	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
 	Ext        string `form:"ext"`                             // 额外信息存储
+	Pid        uint   `form:"pid"`                             // 父评论 ID
 }

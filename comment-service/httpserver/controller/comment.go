@@ -64,7 +64,7 @@ func DeleteComment(c *gin.Context) {
 	}
 
 	// 验证用户权限
-	if err := service.VerifyPermission(param.CommentID, param.UserID); err != nil {
+	if err := service.VerifDeletePermission(param.CommentID, param.UserID); err != nil {
 		utils.RespError(c, err.Error())
 		return
 	}
@@ -97,12 +97,12 @@ func CommentInteract(c *gin.Context) {
 		return
 	}
 
-	if err := service.; err != nil {
-		log.Error("评论失败:", err)
-		utils.RespError(c, "评论失败")
+	if err := service.CommentInteract(param); err != nil {
+		log.Error("评论互动失败:", err)
+		utils.RespError(c, "互动失败")
 		return
 	}
-	utils.RespSuccess(c, "评论成功")
+	utils.RespSuccess(c, "互动失败")
 }
 
 func validateParamsInteract(params model.CommentParamsInteract) bool {
@@ -112,7 +112,20 @@ func validateParamsInteract(params model.CommentParamsInteract) bool {
 
 // CommentTop 置顶某一个评论
 func CommentTop(c *gin.Context) {
+	var param model.CommentParamsTop
+	err := json.NewDecoder(c.Request.Body).Decode(&param)
+	// 校验参数是否正确
+	if err != nil || !validateParamsTop(param) {
+		utils.RespError(c, constant.InvalidParam)
+		return
+	}
 
+	if err := service.CommentTop(param); err != nil {
+		log.Error("评论ga失败:", err)
+		utils.RespError(c, "置顶失败")
+		return
+	}
+	utils.RespSuccess(c, "置顶失败")
 }
 
 func validateParamsTop(params model.CommentParamsTop) bool {
@@ -122,9 +135,21 @@ func validateParamsTop(params model.CommentParamsTop) bool {
 
 // CommentHighLight 高亮某一个评论
 func CommentHighLight(c *gin.Context) {
+	var param model.CommentParamsHighLight
+	err := json.NewDecoder(c.Request.Body).Decode(&param)
+	// 校验参数是否正确
+	if err != nil || !validateParamsHighLight(param) {
+		utils.RespError(c, constant.InvalidParam)
+		return
+	}
 
+	if err := service.CommentHighLight(param); err != nil {
+		log.Error("评论高亮失败:", err)
+		utils.RespError(c, "高亮失败")
+		return
+	}
+	utils.RespSuccess(c, "高亮失败")
 }
-
 
 func validateParamsHighLight(params model.CommentParamsHighLight) bool {
 	// 参数校验

@@ -1,7 +1,6 @@
 package data
 
 import (
-	"comment-service/model/dao/cache"
 	"comment-service/model/dao/db"
 	"comment-service/model/dao/db/model"
 )
@@ -36,8 +35,5 @@ func DeleteComment(param model.CommentParamsDelete) error {
 		tx.Rollback()
 		return err
 	}
-	// 删除相关评论列表缓存数据
-	key := cache.GetCommentListKey(param.ResourceId, param.Pid)
-	cache.DeleteCommentListCache(key)
 	return nil
 }
