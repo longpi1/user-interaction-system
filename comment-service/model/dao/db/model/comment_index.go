@@ -26,6 +26,7 @@ type CommentIndex struct {
 	IsCollapsed     bool   `gorm:"default:false;comment:'折叠'"` // 折叠
 	IsPending       bool   `gorm:"default:false;comment:'待审'"` // 待审
 	IsPinned        bool   `gorm:"default:false;comment:'置顶'"` // 置顶
+	IsHighLight     bool   `gorm:"default:false;comment:'高亮'"` // 高亮
 	State           uint   `gorm:"comment:'状态'"`               // 状态
 	LikeCount       uint   `gorm:"comment:'点赞数'"`              // 点赞数
 	HateCount       uint   `gorm:"comment:'点踩数'"`              // 点踩数

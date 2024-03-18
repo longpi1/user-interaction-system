@@ -64,7 +64,7 @@ func DeleteComment(c *gin.Context) {
 	}
 
 	// 验证用户权限
-	if err := service.VerifDeletePermission(param.CommentID, param.UserID); err != nil {
+	if err := service.VerifyDeletePermission(param.CommentID, param.UserID); err != nil {
 		utils.RespError(c, err.Error())
 		return
 	}
@@ -120,6 +120,12 @@ func CommentTop(c *gin.Context) {
 		return
 	}
 
+	// 验证用户权限
+	if err := service.VerifyTopPermission(param.CommentID, param.UserID); err != nil {
+		utils.RespError(c, err.Error())
+		return
+	}
+
 	if err := service.CommentTop(param); err != nil {
 		log.Error("评论ga失败:", err)
 		utils.RespError(c, "置顶失败")
@@ -140,6 +146,12 @@ func CommentHighLight(c *gin.Context) {
 	// 校验参数是否正确
 	if err != nil || !validateParamsHighLight(param) {
 		utils.RespError(c, constant.InvalidParam)
+		return
+	}
+
+	// 验证用户权限
+	if err := service.VerifyHighLightPermission(param.CommentID, param.UserID); err != nil {
+		utils.RespError(c, err.Error())
 		return
 	}
 

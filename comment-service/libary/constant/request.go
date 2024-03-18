@@ -10,4 +10,6 @@ const (
 	ActionLike = iota
 	ActionDisLike
 	ActionReport
+	ActionHighLight
+	ActionTop
 )

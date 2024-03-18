@@ -24,6 +24,10 @@ func CommentInteract(param model.CommentParamsInteract) error {
 		// 举报操作，需要通知后台审核
 		// TODO: 实现举报逻辑
 		return nil
+	case constant.ActionHighLight:
+		commentIndex.IsHighLight = !commentIndex.IsHighLight
+	case constant.ActionTop:
+		commentIndex.IsPending = !commentIndex.IsPinned
 	default:
 		log.Info("不存在相关互动动作:", param.Action)
 		return errors.New("不存在相关互动动作")

@@ -24,33 +24,35 @@ type CommentParamsAdd struct {
 
 type CommentParamsDelete struct {
 	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
-	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
+	CommentID  uint   `form:"comment_id" validate:"required"`  // 父评论 ID
 	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
 	Ext        string `form:"ext"`                             // 额外信息存储
 	Pid        uint   `form:"pid"`                             // 父评论 ID
 }
 
 type CommentParamsInteract struct {
-	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
-	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
-	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
-	Ext        string `form:"ext"`                             // 额外信息存储
-	Action     uint   `form:"action"`                          // 行为
-	Pid        uint   `form:"pid"`                             // 父评论 ID
+	ResourceId uint   `form:"resource_id" validate:"required"`               // 评论所关联的资源id
+	CommentID  uint   `form:"comment_id" validate:"required"`                // 父评论 ID
+	UserID     uint   `form:"user_id" validate:"required"`                   //  发表者id
+	Ext        string `form:"ext"`                                           // 额外信息存储
+	Action     uint   `form:"action" validate:"required"validate:"required"` // 行为
+	Pid        uint   `form:"pid" validate:"required"`                       // 父评论 ID
 }
 
 type CommentParamsTop struct {
 	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
-	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
+	CommentID  uint   `form:"comment_id" validate:"required"`  // 父评论 ID
 	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
 	Ext        string `form:"ext"`                             // 额外信息存储
-	Pid        uint   `form:"pid"`                             // 父评论 ID
+	IsPinned   bool   `form:"is_pinned" validate:"required"`   // 是否置顶
+	Pid        uint   `form:"pid" validate:"required"`         // 父评论 ID
 }
 
 type CommentParamsHighLight struct {
-	ResourceId uint   `form:"resource_id" validate:"required"` // 评论所关联的资源id
-	CommentID  uint   `form:"comment_id"`                      // 父评论 ID
-	UserID     uint   `form:"user_id" validate:"required"`     //  发表者id
-	Ext        string `form:"ext"`                             // 额外信息存储
-	Pid        uint   `form:"pid"`                             // 父评论 ID
+	ResourceId  uint   `form:"resource_id" validate:"required"`  // 评论所关联的资源id
+	CommentID   uint   `form:"comment_id" validate:"required"`   // 父评论 ID
+	UserID      uint   `form:"user_id" validate:"required"`      //  发表者id
+	Ext         string `form:"ext"`                              // 额外信息存储
+	IsHighLight bool   `form:"is_highlight" validate:"required"` // 是否高亮
+	Pid         uint   `form:"pid" validate:"required"`          // 父评论 ID
 }
