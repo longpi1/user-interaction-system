@@ -1,10 +1,10 @@
 # relation
 
-# comment-service
+## relation-service
 
 ## 1.项目介绍
 
-用golang实现一个评论模块
+用golang实现一个关注模块
 
 
 
