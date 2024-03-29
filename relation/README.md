@@ -8,16 +8,17 @@
 
 
 
+
 ## 2.基础功能模块
 
 ### 关注/取关操作
 
 1. 关注操作:
-   - 先插入Fans表记录,如果插入超时或失败,重试1次。
+   - 先插入Fans表记录,如果插入超时或失败。
    - 如果Fans插入成功,再插入Follows表记录。如果Follows插入失败,回滚Fans表记录。
    - 如果Follows插入失败,查询Follows表是否已经插入成功,如果成功则返回成功,否则返回失败。
 2. 取关操作:
-   - 先删除Follows表记录,如果删除超时或失败,重试1次。
+   - 先删除Follows表记录,如果删除超时或失败。
    - 如果Follows删除成功,再删除Fans表记录。如果Fans删除失败,回滚Follows表记录。
    - 如果Fans删除失败,查询Fans表是否已经删除成功,如果成功则返回成功,否则返回失败。
 
@@ -34,9 +35,20 @@
 5. 查询A和B是否互相关注:
    - 先查询A是否关注B,再查询B是否关注A。
 
+### 关注数、粉丝数
+
+1. 查询用户或者资源的关注数
+2. 查询粉丝数
+
+### 消息推送
+
 
 
 ## 3.架构设计
+
+
+
+
 
 
 
@@ -44,35 +56,23 @@
 
 #### 数据库设计
 
-采用两张表来存储关注关系:
-
-1. Follows表: 存储用户的关注关系,分表键为fromUserId。
+采用relation表来存储关注关系:
 
 ```go
-Explaintype Follow struct {
-    ID         int64 `json:"id"`
-    FromUserID int64 `json:"from_user_id"`
-    ToUserID   int64 `json:"to_user_id"`
-    Source     int64 `json:"source"`
-    Status     int   `json:"status"`
-    CreatedAt  int64 `json:"created_at"`
+type Relation struct {
+    ID         int64 `json:"id"`   //主键id
+    source int64 `json:"source"`  //来源
+    uid   int64 `json:"uid"`   // 用户id，也就是发起关注行为的用户id
+    Type     int64 `json:"type"`   // 资源类型
+    ResourceID int64 `json:"resource_id"` // 被关注的资源或者人
+    Status     int   `json:"status"`   // 状态
+    CreatedAt  int64 `json:"created_at"` // 发起关注时间
+    UpdateAt  int64 `json:"update_at"`
+    Ext       string  `json:"ext"` // 额外信息
 }
 ```
 
-1. Fans表: 存储用户的粉丝关系,分表键为toUserId。
-
-```go
-type Fan struct {
-    ID         int64 `json:"id"`
-    FromUserID int64 `json:"from_user_id"`
-    ToUserID   int64 `json:"to_user_id"`
-    Source     int64 `json:"source"`
-    Status     int   `json:"status"`
-    CreatedAt  int64 `json:"created_at"`
-}
-```
-
-分表可以使用一致性哈希算法,根据fromUserId或toUserId计算分表索引。这样可以提高查询性能,同时也可以应对未来的高并发和海量数据。
+分表可以使用一致性哈希算法,根据uid计算分表索引。这样可以提高查询性能,同时也可以应对未来的高并发和海量数据。
 
 
 
