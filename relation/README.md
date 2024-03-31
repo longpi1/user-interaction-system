@@ -14,24 +14,24 @@
 ### 关注/取关操作
 
 1. 关注操作:
-   - 先插入Fans表记录,如果插入超时或失败。
-   - 如果Fans插入成功,再插入Follows表记录。如果Follows插入失败,回滚Fans表记录。
-   - 如果Follows插入失败,查询Follows表是否已经插入成功,如果成功则返回成功,否则返回失败。
+   - 根据传递的参数判断是否为关注行为。
+   - 插入relation表记录,插入超时或失败则报错返回。
+   - 如果relation插入成功,则删除相关缓存记录。
 2. 取关操作:
-   - 先删除Follows表记录,如果删除超时或失败。
-   - 如果Follows删除成功,再删除Fans表记录。如果Fans删除失败,回滚Follows表记录。
-   - 如果Fans删除失败,查询Fans表是否已经删除成功,如果成功则返回成功,否则返回失败。
+   - 根据传递的参数判断是否为取关行为。
+   - 如果是取关行为查询数据库relation表是否存在对应记录，如果存在则进行删除，不存在则无需处理；
+   - 删除成功后进行缓存更新
 
 ### 查询关注关系
 
 1. 查询我的关注列表:
-   - 根据fromUserId查询Follows表,分页返回结果。
-2. 查询我的粉丝列表:
-   - 根据toUserId查询Fans表,分页返回结果。
+   - 根据uid查询relation表,分页返回结果。
+2. 查询我/资源的粉丝列表:
+   - 根据resourceId查询relation表,分页返回结果。
 3. 查询A是否关注B:
-   - 查询Redis,判断A的关注列表是否包含B。
+   - 优先查询Redis,判断A的关注列表是否包含B，不存在则查询relation表。
 4. 批量查询A是否关注B、C、D:
-   - 查询Redis,一次获取A的关注列表,判断是否包含B、C、D。
+   - 优先查询Redis,一次获取A的关注列表,判断是否包含B、C、D不存在则查询relation表。
 5. 查询A和B是否互相关注:
    - 先查询A是否关注B,再查询B是否关注A。
 
@@ -42,7 +42,11 @@
 
 ### 消息推送
 
+### **其他**
 
+- 使用一致性哈希算法，根据uid计算分表索引，以提高查询性能。
+- 使用缓存机制，减少对数据库的访问。
+- 定期清理缓存，以保持缓存的有效期。
 
 ## 3.架构设计
 
@@ -65,6 +69,7 @@ type Relation struct {
     uid   int64 `json:"uid"`   // 用户id，也就是发起关注行为的用户id
     Type     int64 `json:"type"`   // 资源类型
     ResourceID int64 `json:"resource_id"` // 被关注的资源或者人
+    Platform int64 `json:"platform"` // 相关的平台
     Status     int   `json:"status"`   // 状态
     CreatedAt  int64 `json:"created_at"` // 发起关注时间
     UpdateAt  int64 `json:"update_at"`
@@ -73,6 +78,8 @@ type Relation struct {
 ```
 
 分表可以使用一致性哈希算法,根据uid计算分表索引。这样可以提高查询性能,同时也可以应对未来的高并发和海量数据。
+
+unique_key： uid_type_resource_id
 
 
 
@@ -146,32 +153,196 @@ type Relation struct {
 
 ### 接口设计
 
-1. 关注用户:
-   - 接口:POST /api/relation/follow
-   - 请求参数:
-     - userId:当前用户ID
-     - followUserId:要关注的用户ID
-   - 返回结果:
-     - success:是否关注成功
-     - message:关注结果信息
-2. 获取关注列表:
-   - 接口:GET /api/relation/get_follower
-   - 请求参数:
-     - userId:当前用户ID
-     - page:页码
-     - pageSize:每页数量
-   - 返回结果:
-     - userList:关注的用户列表
-     - totalCount:关注用户总数
-3. 获取粉丝列表:
-   - 接口:GET /api/relation/get_fans
-   - 请求参数:
-     - userId:当前用户ID
-     - page:页码
-     - pageSize:每页数量
-   - 返回结果:
-     - userList:粉丝用户列表
-     - totalCount:粉丝总数
+### 1. 关注操作接口
+
+- **HTTP方法**：POST
+
+- **路径**：`/api/relation/relation`
+
+- 请求体
+
+  ```go
+  {
+    "source": "用户来源",
+    "uid": "发起关注的用户ID",
+    "type": "资源类型",
+    "platform": "平台",
+    "op_type": "操作类型,关注或者取关",
+    "resource_id": "被关注的资源或人的ID"
+  }
+  ```
+
+- 成功响应
+
+  ```go
+  {
+    "code": 200,
+    "message": "Follow/Unfollow operation successful."
+  }
+  ```
+
+- 错误响应
+
+  ```go
+  {
+    "code": 400,
+    "message": "Error message based on the failure reason."
+  }
+  ```
+
+### 2. 查询用户或者资源的关注数/粉丝数接口
+
+- **HTTP方法**：GET
+
+- **路径**：`/api/relation/relation_count`
+
+- 请求参数
+
+  - `uid`: 用户ID或资源ID
+  - type: 资源类型
+  - platform： 平台
+
+- 响应体
+
+  ```go
+  {
+    "code": 200,
+    "followCount": 102,
+     "fansCount": 102,  
+    "message": "Query successful."
+  }
+  ```
+
+### 3. 查询我的关注列表接口
+
+- **HTTP方法**：GET
+
+- **路径**：`/api/relation/following`
+
+- 请求参数
+
+  - `uid`: 用户ID
+  - `page`: 页码
+  - `limit`: 每页数量
+
+- 响应体
+
+  ```go
+  {
+    "code": 200,
+    "data": [
+      {
+        "resource_id": "被关注资源或人的ID",
+        "type": "资源类型",
+        "status": "关注状态",
+        "created_at": "关注时间"
+      }
+    ],
+    "message": "Query successful."
+  }
+  ```
+
+### 4. 查询我/资源的粉丝列表接口
+
+- **HTTP方法**：GET
+
+- **路径**：`/api/relation/fans`
+
+- 请求参数
+
+  - `resource_id`: 资源或人的ID
+  - `page`: 页码
+  - `limit`: 每页数量
+
+- 响应体
+
+  ：
+
+  ```go
+  {
+    "code": 200,
+    "data": [
+      {
+        "uid": "粉丝的用户ID",
+        "type": "资源类型",
+        "status": "关注状态",
+        "created_at": "关注时间"
+      }
+    ],
+    "message": "Query successful."
+  }
+  ```
+
+### 5. 查询A是否关注B接口
+
+- **HTTP方法**：GET
+
+- **路径**：`/api/relation/isFollowing`
+
+- 请求参数
+
+  - `uid`: A的用户ID
+  - `resource_id`: B的资源或人的ID
+
+- 响应体
+
+  ```go
+  {
+    "code": 200,
+    "isFollowing": true,
+    "message": "Query successful."
+  }
+  ```
+
+### 6. 批量查询A是否关注B、C、D接口
+
+- **HTTP方法**：POST
+
+- **路径**：`/api/relation/isFollowingBatch`
+
+- 请求体
+
+  ```go
+  {
+    "uid": "A的用户ID",
+    "resource_ids": ["B的ID", "C的ID", "D的ID"]
+  }
+  ```
+
+- 响应体
+
+  ```go
+  {
+    "code": 200,
+    "data": {
+      "B的ID": true,
+      "C的ID": false,
+      "D的ID": true
+    },
+    "message": "Query successful."
+  }
+  ```
+
+### 7. 查询A和B是否互相关注接口
+
+- **HTTP方法**：GET
+
+- **路径**：`/api/relation/mutualFollow`
+
+- 请求参数
+
+  - `uid_a`: A的用户ID
+  - `uid_b`: B的用户ID
+
+- 响应体
+
+  ```go
+  {
+    "code": 200,
+    "isMutualFollow": true,
+    "message": "Query successful."
+  }
+  ```
 
 关键实现:
 
