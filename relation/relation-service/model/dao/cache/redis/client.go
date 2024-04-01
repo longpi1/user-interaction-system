@@ -3,8 +3,8 @@ package redis
 import (
 	"sync"
 
-	"comment-service/libary/conf"
-	"comment-service/libary/log"
+	"relation-service/libary/conf"
+	"relation-service/libary/log"
 
 	"github.com/go-redis/redis"
 )

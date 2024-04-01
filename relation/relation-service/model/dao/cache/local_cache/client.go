@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"comment-service/libary/conf"
-	"comment-service/libary/log"
+	"relation-service/libary/conf"
+	"relation-service/libary/log"
 
 	"github.com/allegro/bigcache"
 )

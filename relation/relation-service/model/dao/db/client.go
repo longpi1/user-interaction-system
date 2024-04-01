@@ -3,8 +3,8 @@ package db
 import (
 	"sync"
 
-	"comment-service/libary/conf"
-	"comment-service/libary/log"
+	"relation-service/libary/conf"
+	"relation-service/libary/log"
 
 	"gorm.io/gorm"
 )

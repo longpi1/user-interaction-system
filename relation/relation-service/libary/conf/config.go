@@ -1,8 +1,8 @@
 package conf
 
 import (
-	"comment-service/libary/log"
 	"os"
+	"relation-service/libary/log"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
