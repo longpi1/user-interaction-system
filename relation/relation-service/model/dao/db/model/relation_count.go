@@ -2,6 +2,7 @@ package model
 
 import (
 	"relation-service/libary/constant"
+	"relation-service/model/dao/db"
 
 	"gorm.io/gorm"
 )
@@ -20,4 +21,40 @@ type RelationCount struct {
 // TableName 自定义表名
 func (RelationCount) TableName() string {
 	return constant.RelationCountTableName
+}
+
+func InsertRelationCount(relationCount *RelationCount) (uint, error) {
+	err := db.GetClient().Create(&relationCount).Error
+	return relationCount.ID, err
+}
+
+func InsertRelationCountWithTx(tx *gorm.DB, relationCount *RelationCount) (uint, error) {
+	err := db.GetClient().Create(&relationCount).Error
+	return relationCount.ID, err
+}
+
+func InsertBatchRelationCount(RelationCounts []*RelationCount) error {
+	err := db.GetClient().Create(&RelationCounts).Error
+	return err
+}
+
+func DeleteRelationCount(relationCount *RelationCount) error {
+	err := db.GetClient().Unscoped().Delete(&relationCount).Error
+	return err
+}
+
+func DeleteRelationCountWithTx(tx *gorm.DB, id uint) error {
+	err := tx.Where(constant.WhereByID, id).Delete(&RelationCount{}).Error
+	return err
+}
+
+func FindRelationCountById(id int) (RelationCount, error) {
+	var relationCount RelationCount
+	err := db.GetClient().Where(constant.WhereByID, id).First(&relationCount).Error
+	return relationCount, err
+}
+
+func UpdateRelationCount(relationCount *RelationCount) error {
+	err := db.GetClient().Updates(&relationCount).Error
+	return err
 }
