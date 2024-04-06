@@ -11,12 +11,12 @@ func Set(key string, value interface{}, duration time.Duration) error {
 	if err != nil {
 		return err
 	}
-	return localCache.Set(key, serialized)
+	return GetClient().Set(key, serialized)
 }
 
 // Get gets a value from bigcache.
 func Get(key string, dest interface{}) error {
-	entry, err := localCache.Get(key)
+	entry, err := GetClient().Get(key)
 	if err != nil {
 		return err
 	}
@@ -25,6 +25,6 @@ func Get(key string, dest interface{}) error {
 
 // Delete delete value from bigcache.
 func Delete(key string) error {
-	err := localCache.Delete(key)
+	err := GetClient().Delete(key)
 	return err
 }

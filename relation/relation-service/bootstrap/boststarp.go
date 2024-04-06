@@ -9,7 +9,7 @@ import (
 	"relation-service/model/dao/db/model"
 )
 
-func Boostrap(config *conf.Config) error {
+func Boostrap(config *conf.WebConfig) error {
 	// 启动db与cache
 	client, err := db.NewClient(config)
 	if err != nil && client != nil {

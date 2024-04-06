@@ -1,26 +1,30 @@
 package service
 
 import (
+	"relation-service/libary/constant"
 	"relation-service/libary/log"
 	"relation-service/model/dao/db/model"
 	"relation-service/model/data"
 )
 
-func Relation(params model.RelationParams) error {
+func Relation(params model.RelationParams) (err error) {
 	// 校验用户是否被封禁或者黑产等
-	err := verify(params)
+	err = verify(params)
 	if err != nil {
-		log.Error("关注校验失败, %v", err)
+		log.Error("参数校验失败, %v", err)
 		return err
 	}
-	data.Relation(params)
+	switch params.OpType {
+	case constant.TypeFollow:
+		err = data.Follow(params)
+	case constant.TypeUnFollow:
+		err = data.UnFollow(params)
+	}
+	if err != nil {
+		return err
+	}
 
 	return nil
-}
-
-func ValidateRelationParams(params model.RelationParams) bool {
-
-	return true
 }
 
 // verify 校验用户是否被封禁或者黑产等

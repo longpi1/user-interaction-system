@@ -30,7 +30,7 @@ func GetClient() *gorm.DB {
 	return db.client
 }
 
-func NewClient(config *conf.Config) (*gorm.DB, error) {
+func NewClient(config *conf.WebConfig) (*gorm.DB, error) {
 	gormConfig := &gorm.Config{}
 	var err error
 	switch config.DBConfig.Type {

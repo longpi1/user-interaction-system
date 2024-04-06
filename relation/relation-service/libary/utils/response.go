@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"comment-service/libary/log"
 	"net/http"
+	"relation-service/libary/log"
 
 	"github.com/gin-gonic/gin"
 )

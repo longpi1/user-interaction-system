@@ -26,7 +26,7 @@ func GetClient() *redis.Client {
 	return redisClient
 }
 
-func NewClient(config *conf.Config) (*redis.Client, error) {
+func NewClient(config *conf.WebConfig) (*redis.Client, error) {
 	// 创建Redis客户端对象
 	redisClient = redis.NewClient(&redis.Options{
 		Addr:     config.RedisConfig.Address,

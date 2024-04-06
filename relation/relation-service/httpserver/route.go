@@ -9,7 +9,7 @@ import (
 )
 
 func SetRouter(port string) {
-	router := gin.New()
+	router := GetServer()
 	router.Use(middleware.CORS())
 	// 设置Recovery中间件，主要用于拦截paic错误，不至于导致进程崩掉
 	router.Use(gin.Recovery())

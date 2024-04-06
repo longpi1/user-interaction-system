@@ -3,7 +3,7 @@ package constant
 const (
 	WhereByID         = "id = ?"
 	WhereByName       = "name = ?"
-	WhereByUserID     = "user_id = ?"
+	WhereByUserID     = "uid = ?"
 	WhereByType       = "type = ?"
 	WhereByResourceID = "resource_id = ?"
 	WhereByPID        = "pid = ?"

@@ -10,7 +10,7 @@ import (
 // Relation 关注信息表
 type Relation struct {
 	gorm.Model
-	Source     string `gorm:"uniqueIndex:idx_relation_platform_source_uid;comment:'来源'"`                  //来源
+	Source     string `gorm:"size:255;uniqueIndex:idx_relation_platform_source_uid;comment:'来源'"`         //来源
 	UID        int64  `gorm:"uniqueIndex:idx_relation_platform_source_uid;comment:'用户id，也就是发起关注行为的用户id'"` // 用户id，也就是发起关注行为的用户id
 	ResourceID int64  `gorm:"index;comment:'被关注的资源或者人id'"`                                                // 被关注的资源或者人id
 	Platform   int    `gorm:"uniqueIndex:idx_relation_platform_source_uid;comment:'相关的平台'"`               // 相关的平台
@@ -44,8 +44,8 @@ func DeleteRelation(relation *Relation) error {
 	return err
 }
 
-func DeleteRelationWithTx(tx *gorm.DB, id uint) error {
-	err := tx.Where(constant.WhereByID, id).Delete(&Relation{}).Error
+func DeleteRelationWithTx(tx *gorm.DB, uid int64, resourceID int64) error {
+	err := tx.Where(constant.WhereByUserID, uid).Where(constant.WhereByResourceID, resourceID).Unscoped().Delete(&Relation{}).Error
 	return err
 }
 
