@@ -60,17 +60,17 @@
 
 #### 数据库设计
 
-采用relation表来存储关注关系:
+**采用relation表来存储关注关系:**
 
 ```go
 type Relation struct {
     ID         int64 `json:"id"`   //主键id
-    source int64 `json:"source"`  //来源
-    uid   int64 `json:"uid"`   // 用户id，也就是发起关注行为的用户id
-    Type     int64 `json:"type"`   // 资源类型
+    Source int64 `json:"source"`  //来源
+    UID   int64 `json:"uid"`   // 用户id，也就是发起关注行为的用户id
     ResourceID int64 `json:"resource_id"` // 被关注的资源或者人
     Platform int64 `json:"platform"` // 相关的平台
     Status     int   `json:"status"`   // 状态
+    Type     int     `gorm:"comment:'类型'"`    // 类型
     CreatedAt  int64 `json:"created_at"` // 发起关注时间
     UpdateAt  int64 `json:"update_at"`
     Ext       string  `json:"ext"` // 额外信息
@@ -80,6 +80,22 @@ type Relation struct {
 分表可以使用一致性哈希算法,根据uid计算分表索引。这样可以提高查询性能,同时也可以应对未来的高并发和海量数据。
 
 unique_key： uid_type_resource_id
+
+**采用relation_counts表来存储关注数/粉丝数关系:**
+
+```go
+// RelationCount 用户关注数/粉丝数表
+type RelationCount struct {
+	gorm.Model
+	ResourceId  int64  `json:"resource_id"`  // 资源/用户id
+	FansCount   int64  `json:"fans_count"`   // 粉丝数
+	FollowCount int64  `json:"follow_count"` // 关注数
+	Platform    int64  `json:"platform"`     // 相关的平台
+	Type        int64  `json:"type"`         // 资源类型
+	Ext         string `json:"ext"`          // 额外信息`
+}
+
+```
 
 
 
@@ -153,7 +169,7 @@ unique_key： uid_type_resource_id
 
 ### 接口设计
 
-### 1. 关注操作接口
+### 1. 关注/取关操作接口
 
 - **HTTP方法**：POST
 

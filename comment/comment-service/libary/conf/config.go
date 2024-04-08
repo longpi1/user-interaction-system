@@ -2,13 +2,16 @@ package conf
 
 import (
 	"comment-service/libary/log"
-	"github.com/fsnotify/fsnotify"
-	"github.com/spf13/viper"
 	"os"
 	"time"
+
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
 )
 
-var conf *Config
+var conf *WebConfig
+
+var mapConfig map[interface{}]interface{}
 
 const (
 	SchemaTypeDev    = "dev"
@@ -27,7 +30,7 @@ const (
 	TypeMSSQL      = "mssql"
 )
 
-type Config struct {
+type WebConfig struct {
 	DBConfig struct {
 		Type string `json:"type"`
 		// 最高优先级
@@ -48,11 +51,25 @@ type Config struct {
 	} `json:"app" mapstructure:"app"`
 }
 
-func GetConfig() *Config {
+func GetConfig() *WebConfig {
+	if conf == nil {
+		filePath := getFilePath()
+		// 初始化web配置文件
+		initWebConfig(filePath)
+	}
 	return conf
 }
 
-func init() {
+func GetMapConfig() map[interface{}]interface{} {
+	if mapConfig == nil {
+		filePath := getFilePath()
+		// 初始化映射配置文件
+		initMapConfig(filePath)
+	}
+	return mapConfig
+}
+
+func getFilePath() string {
 	var filePath string
 	// 通过环境变量获取开发模式
 	schema := os.Getenv("schema")
@@ -65,8 +82,11 @@ func init() {
 	default:
 		filePath = SchemaPathDev
 	}
-
 	appFullPath := "./conf/" + filePath
+	return appFullPath
+}
+
+func initWebConfig(appFullPath string) {
 	// 解析 config
 	viper.SetConfigName("web")
 	viper.AddConfigPath(appFullPath)
@@ -82,6 +102,27 @@ func init() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		if err := viper.Unmarshal(&conf); err != nil {
+			log.Fatal("解析文件失败: ", err)
+		}
+	})
+}
+
+func initMapConfig(appFullPath string) {
+	// 解析 config
+	viper.SetConfigName("mapping")
+	viper.AddConfigPath(appFullPath)
+	viper.SetConfigType("yaml")
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatal("解析文件失败: ", err)
+	}
+	if err := viper.Unmarshal(&mapConfig); err != nil {
+		log.Fatal("解析文件失败: ", err)
+	}
+	// 监听配置更新
+	viper.WatchConfig()
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		if err := viper.Unmarshal(&mapConfig); err != nil {
 			log.Fatal("解析文件失败: ", err)
 		}
 	})
