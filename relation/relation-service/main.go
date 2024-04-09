@@ -8,9 +8,6 @@ import (
 	"relation-service/libary/utils"
 	localcache "relation-service/model/dao/cache/local_cache"
 	"relation-service/model/dao/cache/redis"
-	"relation-service/model/dao/db"
-
-	"go.uber.org/zap"
 )
 
 func main() {
@@ -26,19 +23,6 @@ func main() {
 
 	// 优雅关闭
 	utils.NewHook().Close(
-		// 关闭 db
-		func() {
-			if db.GetClient() != nil {
-				if err := db.GetClient().DbWClose(); err != nil {
-					accessLogger.Error("dbw close err", zap.Error(err))
-				}
-
-				if err := s.Db.DbRClose(); err != nil {
-					accessLogger.Error("dbr close err", zap.Error(err))
-				}
-			}
-		},
-
 		// 关闭 cache
 		func() {
 			if localcache.GetClient() != nil {
