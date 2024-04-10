@@ -2,14 +2,15 @@ package queue
 
 import (
 	"fmt"
+	"relation-service/model/dao/cache/redis"
+	"strconv"
 	"sync"
 	"time"
-
-	"github.com/gogf/gf/v2/frame/g"
 )
 
 type Queue interface {
 	Start() error
+
 	Stop()
 }
 
@@ -75,12 +76,12 @@ func InstanceConsumer() (mqClient Consumer, err error) {
 }
 
 // InstanceProducer 实例化生产者
-func InstanceProducer() (mqClient Producer, err error) {
+func InstanceProducer() (client Producer, err error) {
 	return NewProducer(config.GroupName)
 }
 
 // NewProducer 初始化生产者实例
-func NewProducer(groupName string) (mqClient Producer, err error) {
+func NewProducer(groupName string) (client Producer, err error) {
 
 	if groupName == "" {
 		err = fmt.Errorf("mq groupName is empty.")
@@ -89,24 +90,24 @@ func NewProducer(groupName string) (mqClient Producer, err error) {
 
 	switch config.Driver {
 	case "rocketmq":
-		if len(config.Rocketmq.Address) == 0 {
+		if len(config.Rocket.Address) == 0 {
 			err = fmt.Errorf("queue rocketmq address is not support")
 			return
 		}
-		mqClient, err = RegisterRocketProducer(config.Rocketmq.Address, groupName, config.Retry)
+		client, err = RegisterRocketProducer(config.Rocket.Address, groupName, config.Retry)
 	case "kafka":
 		if len(config.Kafka.Address) == 0 {
 			err = fmt.Errorf("queue kafka address is not support")
 			return
 		}
-		mqClient, err = RegisterKafkaProducer(KafkaConfig{
+		client, err = RegisterKafkaProducer(KafkaConfig{
 			Brokers: config.Kafka.Address,
 			GroupID: groupName,
 			Version: config.Kafka.Version,
 		})
 	case "redis":
-		if _, err = g.Redis().Do(ctx, "ping"); err == nil {
-			mqClient = RegisterRedisProducer(RedisOption{
+		if _, err = redis.Ping(); err == nil {
+			client = RegisterRedisMq(RedisOption{
 				Timeout: config.Redis.Timeout,
 			}, groupName)
 		}
@@ -120,30 +121,31 @@ func NewProducer(groupName string) (mqClient Producer, err error) {
 
 	mutex.Lock()
 	defer mutex.Unlock()
+
 	return
 }
 
 // NewConsumer 初始化消费者实例
-func NewConsumer(groupName string) (mqClient Consumer, err error) {
+func NewConsumer(groupName string) (client Consumer, err error) {
 	if groupName == "" {
-		err = fmt.Errorf("mq groupName is empty.")
+		err = fmt.Errorf("mq groupName is empty")
 		return
 	}
 
 	switch config.Driver {
 	case "rocketmq":
-		if len(config.Rocketmq.Address) == 0 {
-			err = fmt.Errorf("queue.rocketmq.address is empty.")
+		if len(config.Rocket.Address) == 0 {
+			err = fmt.Errorf("queue.rocketmq.address is empty")
 			return
 		}
-		mqClient, err = RegisterRocketConsumer(config.Rocketmq.Address, groupName)
+		client, err = RegisterRocketConsumer(config.Rocket.Address, groupName)
 	case "kafka":
 		if len(config.Kafka.Address) == 0 {
 			err = fmt.Errorf("queue kafka address is not support")
 			return
 		}
 
-		randTag := string(charset.RandomCreateBytes(6))
+		randTag := strconv.FormatInt(time.Now().Unix(), 10)
 		// 是否支持创建多个消费者
 		if !config.Kafka.MultiConsumer {
 			randTag = "001"
@@ -154,21 +156,18 @@ func NewConsumer(groupName string) (mqClient Consumer, err error) {
 			clientId += "-" + randTag
 		}
 
-		mqClient, err = RegisterKafkaConsumer(KafkaConfig{
+		client, err = RegisterKafkaMqConsumer(KafkaConfig{
 			Brokers:  config.Kafka.Address,
 			GroupID:  groupName,
 			Version:  config.Kafka.Version,
 			ClientId: clientId,
 		})
 	case "redis":
-		if _, err = g.Redis().Do(ctx, "ping"); err == nil {
-			mqClient = RegisterRedisConsumer(RedisOption{
+		if _, err = redis.Ping(); err == nil {
+			client = RegisterRedisMqConsumer(RedisOption{
 				Timeout: config.Redis.Timeout,
 			}, groupName)
 		}
-	case "disk":
-		config.Disk.GroupName = groupName
-		mqClient, err = RegisterDiskConsumer(config.Disk)
 	default:
 		err = fmt.Errorf("queue driver is not support")
 	}

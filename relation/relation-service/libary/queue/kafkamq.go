@@ -3,10 +3,10 @@ package queue
 import (
 	"context"
 	"fmt"
+	"relation-service/libary/log"
 	"time"
 
-	"github.com/Shopify/sarama"
-	"github.com/gogf/gf/v2/frame/g"
+	"github.com/IBM/sarama"
 )
 
 type KafkaMq struct {
@@ -27,13 +27,13 @@ type KafkaConfig struct {
 }
 
 // SendMsg 按字符串类型生产数据
-func (r *KafkaMq) SendMsg(topic string, body string) (mqMsg msg, err error) {
+func (r *KafkaMq) SendMsg(topic string, body string) (msg Msg, err error) {
 	return r.SendByteMsg(topic, []byte(body))
 }
 
 // SendByteMsg 生产数据
-func (r *KafkaMq) SendByteMsg(topic string, body []byte) (mqMsg msg, err error) {
-	msg := &sarama.ProducerMessage{
+func (r *KafkaMq) SendByteMsg(topic string, body []byte) (msg Msg, err error) {
+	producerMessage := &sarama.ProducerMessage{
 		Topic:     topic,
 		Value:     sarama.ByteEncoder(body),
 		Timestamp: time.Now(),
@@ -44,13 +44,13 @@ func (r *KafkaMq) SendByteMsg(topic string, body []byte) (mqMsg msg, err error) 
 		return
 	}
 
-	r.producerIns.Input() <- msg
+	r.producerIns.Input() <- producerMessage
 	sendCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	select {
 	case info := <-r.producerIns.Successes():
-		return msg{
+		return Msg{
 			RunType:   SendMsg,
 			Topic:     info.Topic,
 			Offset:    info.Offset,
@@ -59,21 +59,21 @@ func (r *KafkaMq) SendByteMsg(topic string, body []byte) (mqMsg msg, err error) 
 		}, nil
 	case fail := <-r.producerIns.Errors():
 		if nil != fail {
-			return mqMsg, fail.Err
+			return msg, fail.Err
 		}
 	case <-sendCtx.Done():
-		return mqMsg, fmt.Errorf("send mqMst timeout")
+		return msg, fmt.Errorf("send mqMst timeout")
 	}
-	return mqMsg, nil
+	return msg, nil
 }
 
-func (r *KafkaMq) SendDelayMsg(topic string, body string, delaySecond int64) (mqMsg msg, err error) {
-	err = fmt.Errorf("implement me")
+func (r *KafkaMq) SendDelayMsg(topic string, body string, delaySecond int64) (msg Msg, err error) {
+
 	return
 }
 
 // ListenReceiveMsgDo 消费数据
-func (r *KafkaMq) ListenReceiveMsgDo(topic string, receiveDo func(mqMsg msg)) (err error) {
+func (r *KafkaMq) ListenReceiveMsgDo(topic string, receiveDo func(msg Msg)) (err error) {
 	if r.consumerIns == nil {
 		return fmt.Errorf("queue kafka consumer not register")
 	}
@@ -87,11 +87,11 @@ func (r *KafkaMq) ListenReceiveMsgDo(topic string, receiveDo func(mqMsg msg)) (e
 	go func(consumerCtx context.Context) {
 		for {
 			if err = r.consumerIns.Consume(consumerCtx, []string{topic}, &consumer); err != nil {
-				Logger().Fatalf(ctx, "kafka Error from consumer, err%+v", err)
+				log.Error("kafka Error from consumer, err%+v", err)
 			}
 
 			if consumerCtx.Err() != nil {
-				Logger().Debugf(ctx, fmt.Sprintf("kafka consoumer stop : %v", consumerCtx.Err()))
+				log.Error(fmt.Sprintf("kafka consoumer stop : %v", consumerCtx.Err()))
 				return
 			}
 			consumer.ready = make(chan bool)
@@ -100,20 +100,20 @@ func (r *KafkaMq) ListenReceiveMsgDo(topic string, receiveDo func(mqMsg msg)) (e
 
 	// await till the consumer has been set up
 	<-consumer.ready
-	Logger().Debug(ctx, "kafka consumer up and running!...")
+	log.Debug("kafka consumer up and running!...")
 
-	simple.Event().Register(consts.EventServerClose, func(ctx context.Context, args ...interface{}) {
-		Logger().Debug(ctx, "kafka consumer close...")
+	func(args ...interface{}) {
+		log.Debug("kafka consumer close...")
 		cancel()
 		if err = r.consumerIns.Close(); err != nil {
-			Logger().Fatalf(ctx, "kafka Error closing client, err:%+v", err)
+			log.Error("kafka Error closing client, err:%+v", err)
 		}
-	})
+	}()
 	return
 }
 
 // RegisterKafkaMqConsumer 注册消费者
-func RegisterKafkaMqConsumer(connOpt KafkaConfig) (client MqConsumer, err error) {
+func RegisterKafkaMqConsumer(connOpt KafkaConfig) (client Consumer, err error) {
 	mqIns := &KafkaMq{}
 	kfkVersion, err := sarama.ParseKafkaVersion(connOpt.Version)
 	if err != nil {
@@ -148,9 +148,9 @@ func RegisterKafkaMqConsumer(connOpt KafkaConfig) (client MqConsumer, err error)
 }
 
 // RegisterKafkaProducer 注册并启动生产者接口实现
-func RegisterKafkaProducer(connOpt KafkaConfig) (client MqProducer, err error) {
+func RegisterKafkaProducer(connOpt KafkaConfig) (client Producer, err error) {
 	mqIns := &KafkaMq{}
-	connOpt.ClientId = "HOTGO-Producer"
+	connOpt.ClientId = "producer"
 
 	// 这里如果使用go程需要处理chan同步问题
 	if err = doRegisterKafkaProducer(connOpt, mqIns); err != nil {
@@ -195,10 +195,10 @@ func doRegisterKafkaProducer(connOpt KafkaConfig, mqIns *KafkaMq) (err error) {
 		return
 	}
 
-	simple.Event().Register(consts.EventServerClose, func(ctx context.Context, args ...interface{}) {
-		g.Log().Debug(ctx, "kafka producer AsyncClose...")
+	func(args ...interface{}) {
+		log.Info("kafka producer AsyncClose...")
 		mqIns.producerIns.AsyncClose()
-	})
+	}()
 	return
 }
 
@@ -214,7 +214,7 @@ func validateVersion(version sarama.KafkaVersion) bool {
 
 type KaConsumer struct {
 	ready        chan bool
-	receiveDoFun func(mqMsg msg)
+	receiveDoFun func(msg Msg)
 }
 
 // Setup is run at the beginning of a new session, before ConsumeClaim
@@ -237,7 +237,7 @@ func (consumer *KaConsumer) ConsumeClaim(session sarama.ConsumerGroupSession, cl
 	// https://github.com/Shopify/sarama/blob/master/consumer_group.go#L27-L29
 	// `ConsumeClaim` 方法已经是 goroutine 调用 不要在该方法内进行 goroutine
 	for message := range claim.Messages() {
-		consumer.receiveDoFun(msg{
+		consumer.receiveDoFun(Msg{
 			RunType:   ReceiveMsg,
 			Topic:     message.Topic,
 			Body:      message.Value,

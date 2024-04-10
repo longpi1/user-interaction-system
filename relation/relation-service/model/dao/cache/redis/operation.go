@@ -7,6 +7,12 @@ import (
 	"github.com/go-redis/redis"
 )
 
+// Ping
+func Ping() (string, error) {
+	result, err := GetClient().Ping().Result()
+	return result, err
+}
+
 // Set sets a string value with an expiration time
 func Set(key string, value interface{}, expiration time.Duration) error {
 	serialized, err := json.Marshal(value)
@@ -73,4 +79,33 @@ func ZRange(key string, start, stop int64) ([]string, error) {
 // Del deletes keys
 func Del(keys ...string) error {
 	return GetClient().Del(keys...).Err()
+}
+
+// Expire
+func Expire(keys string, expiration time.Duration) error {
+	return GetClient().Expire(keys, expiration).Err()
+}
+
+// Prop
+func Prop(keys string) (string, error) {
+	result, err := GetClient().RPop(keys).Result()
+	return result, err
+}
+
+// ZRem
+func ZRem(keys string) (int64, error) {
+	result, err := GetClient().ZRem(keys).Result()
+	return result, err
+}
+
+// ZRangeByScore
+func ZRangeByScore(keys string, opt redis.ZRangeBy) ([]string, error) {
+	result, err := GetClient().ZRangeByScore(keys, opt).Result()
+	return result, err
+}
+
+// LPop
+func LPop(keys string) (string, error) {
+	result, err := GetClient().LPop(keys).Result()
+	return result, err
 }

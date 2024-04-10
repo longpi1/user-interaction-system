@@ -3,15 +3,14 @@ package queue
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"hotgo/utility/encrypt"
 	"math/rand"
-	"strconv"
+	"relation-service/libary/log"
+	"relation-service/model/dao/cache/redis"
 	"time"
 
-	"github.com/gogf/gf/v2/database/gredis"
-	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/frame/g"
+	redis2 "github.com/go-redis/redis"
 )
 
 type RedisMq struct {
@@ -53,12 +52,12 @@ func (r *RedisMq) SendByteMsg(topic string, body []byte) (mqMsg Msg, err error) 
 	}
 
 	key := r.genKey(r.groupName, topic)
-	if _, err = g.Redis().Do(ctx, "LPUSH", key, data); err != nil {
+	if err = redis.LPush(key, data); err != nil {
 		return
 	}
 
 	if r.timeout > 0 {
-		if _, err = g.Redis().Do(ctx, "EXPIRE", key, r.timeout); err != nil {
+		if err = redis.Expire(key, time.Duration(r.timeout)); err != nil {
 			return
 		}
 	}
@@ -66,7 +65,7 @@ func (r *RedisMq) SendByteMsg(topic string, body []byte) (mqMsg Msg, err error) 
 	return
 }
 
-func (r *RedisMq) SendDelayMsg(topic string, body string, delaySecond int64) (mqMsg Msg, err error) {
+func (r *RedisMq) SendDelayMsg(topic string, body string, delaySecond int64) (msg Msg, err error) {
 	if delaySecond < 1 {
 		return r.SendMsg(topic, body)
 	}
@@ -81,7 +80,7 @@ func (r *RedisMq) SendDelayMsg(topic string, body string, delaySecond int64) (mq
 		return
 	}
 
-	mqMsg = Msg{
+	msg = Msg{
 		RunType:   SendMsg,
 		Topic:     topic,
 		MsgId:     getRandMsgId(),
@@ -89,31 +88,30 @@ func (r *RedisMq) SendDelayMsg(topic string, body string, delaySecond int64) (mq
 		Timestamp: time.Now(),
 	}
 
-	data, err := json.Marshal(mqMsg)
+	data, err := json.Marshal(msg)
 	if err != nil {
 		return
 	}
 
 	var (
-		conn         = g.Redis()
 		key          = r.genKey(r.groupName, "delay:"+topic)
 		expireSecond = time.Now().Unix() + delaySecond
 		timePiece    = fmt.Sprintf("%s:%d", key, expireSecond)
-		z            = gredis.ZAddMember{Score: float64(expireSecond), Member: timePiece}
+		z            = redis2.Z{Score: float64(expireSecond), Member: timePiece}
 	)
 
-	if _, err = conn.ZAdd(ctx, key, &gredis.ZAddOption{}, z); err != nil {
+	if err = redis.ZAdd(key, z); err != nil {
 		return
 	}
 
-	if _, err = conn.RPush(ctx, timePiece, data); err != nil {
+	if err = redis.RPush(timePiece, data); err != nil {
 		return
 	}
 
 	// consumer will also delete the item
 	if r.timeout > 0 {
-		_, _ = conn.Expire(ctx, timePiece, r.timeout+delaySecond)
-		_, _ = conn.Expire(ctx, key, r.timeout)
+		_ = redis.Expire(timePiece, time.Duration(r.timeout+delaySecond))
+		_ = redis.Expire(key, time.Duration(r.timeout))
 	}
 
 	return
@@ -148,8 +146,8 @@ func (r *RedisMq) ListenReceiveMsgDo(topic string, receiveDo func(mqMsg Msg)) (e
 			receiveDo(mqMsg)
 		}
 		for err = range errCh {
-			if err != nil && err != context.Canceled && err != context.DeadlineExceeded {
-				Logger().Infof(ctx, "ListenReceiveMsgDo Delay topic:%v, err:%+v", topic, err)
+			if err != nil && !errors.Is(err, context.Canceled) && !errors.Is(err, context.DeadlineExceeded) {
+				log.Error("ListenReceiveMsgDo Delay topic:%v, err:%+v", topic, err)
 			}
 		}
 	}()
@@ -162,45 +160,40 @@ func (r *RedisMq) genKey(groupName string, topic string) string {
 	return fmt.Sprintf("queue:%s_%s", groupName, topic)
 }
 
-func (r *RedisMq) loopReadQueue(key string) (mqMsgList []Msg) {
-	conn := g.Redis()
+func (r *RedisMq) loopReadQueue(key string) (msgList []Msg) {
 	for {
-		data, err := conn.Do(ctx, "RPOP", key)
+		data, err := redis.Prop(key)
 		if err != nil {
-			Logger().Warningf(ctx, "loopReadQueue redis RPOP err:%+v", err)
+			log.Error("loopReadQueue redis RPOP err:%+v", err)
 			break
 		}
 
-		if data.IsEmpty() {
+		var msg Msg
+		if err = json.Unmarshal([]byte(data), &msg); err != nil {
+			log.Error("loopReadQueue Scan err:%+v", err)
 			break
 		}
 
-		var mqMsg Msg
-		if err = data.Scan(&mqMsg); err != nil {
-			Logger().Warningf(ctx, "loopReadQueue Scan err:%+v", err)
-			break
-		}
-
-		if mqMsg.MsgId != "" {
-			mqMsgList = append(mqMsgList, mqMsg)
+		if msg.MsgId != "" {
+			msgList = append(msgList, msg)
 		}
 	}
-	return mqMsgList
+	return msgList
 }
 
-func RegisterRedisMqProducer(connOpt RedisOption, groupName string) (client MqProducer) {
+func RegisterRedisMqProducer(connOpt RedisOption, groupName string) (client Producer) {
 	return RegisterRedisMq(connOpt, groupName)
 }
 
 // RegisterRedisMqConsumer 注册消费者
-func RegisterRedisMqConsumer(connOpt RedisOption, groupName string) (client MqConsumer) {
+func RegisterRedisMqConsumer(connOpt RedisOption, groupName string) (client Consumer) {
 	return RegisterRedisMq(connOpt, groupName)
 }
 
 // RegisterRedisMq 注册redis实例
 func RegisterRedisMq(connOpt RedisOption, groupName string) *RedisMq {
 	return &RedisMq{
-		poolName:  encrypt.Md5ToString(fmt.Sprintf("%s-%d", groupName, time.Now().UnixNano())),
+		poolName:  fmt.Sprintf("%s-%d", groupName, time.Now().UnixNano()),
 		groupName: groupName,
 		timeout:   connOpt.Timeout,
 	}
@@ -221,50 +214,31 @@ func (r *RedisMq) loopReadDelayQueue(key string) (resCh chan Msg, errCh chan err
 		defer close(resCh)
 		defer close(errCh)
 
-		conn := g.Redis()
 		for {
-			now := time.Now().Unix()
-			do, err := conn.Do(ctx, "zrangebyscore", key, "0", strconv.FormatInt(now, 10), "limit", 0, 1)
+			val, err := redis.ZRangeByScore(key, redis2.ZRangeBy{Offset: 0})
 			if err != nil {
 				return
 			}
 
-			val := do.Strings()
-			if len(val) == 0 {
-				select {
-				case <-ctx.Done():
-					errCh <- ctx.Err()
-					return
-				case <-time.After(time.Second):
-					continue
-				}
-			}
 			for _, listK := range val {
 				for {
-					pop, err := conn.LPop(ctx, listK)
+					pop, err := redis.LPop(listK)
 					if err != nil {
 						errCh <- err
 						return
-					} else if pop.IsEmpty() {
-						_, _ = conn.ZRem(ctx, key, listK)
-						_, _ = conn.Del(ctx, listK)
-						break
 					} else {
-						var mqMsg Msg
-						if err = pop.Scan(&mqMsg); err != nil {
-							g.Log().Warningf(ctx, "loopReadDelayQueue Scan err:%+v", err)
+						var msg Msg
+						if err = json.Unmarshal([]byte(pop), &msg); err != nil {
+							log.Error("loopReadDelayQueue Scan err:%+v", err)
 							break
 						}
 
-						if mqMsg.MsgId == "" {
+						if msg.MsgId == "" {
 							continue
 						}
 
 						select {
-						case resCh <- mqMsg:
-						case <-ctx.Done():
-							errCh <- ctx.Err()
-							return
+						case resCh <- msg:
 						}
 					}
 				}

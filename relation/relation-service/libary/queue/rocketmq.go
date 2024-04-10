@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/rocketmq-client-go/v2"
 	"github.com/apache/rocketmq-client-go/v2/consumer"
 	"github.com/apache/rocketmq-client-go/v2/primitive"
 	"github.com/apache/rocketmq-client-go/v2/producer"
-	"github.com/apache/rocketmq-client-go/v2/rlog"
-	"github.com/gogf/gf/v2/frame/g"
 )
 
 type RocketMq struct {
@@ -17,14 +16,8 @@ type RocketMq struct {
 	consumerIns rocketmq.PushConsumer
 }
 
-// rewriteLog 重写日志
-func rewriteLog() {
-	rlog.SetLogger(&RocketMqLogger{Flag: "[rocket_mq]", LevelLog: g.Cfg().MustGet(ctx, "queue.rocketmq.logLevel", "debug").String()})
-}
-
 // RegisterRocketProducer 注册并启动生产者接口实现
-func RegisterRocketProducer(endPoints []string, groupName string, retry int) (client MqProducer, err error) {
-	rewriteLog()
+func RegisterRocketProducer(endPoints []string, groupName string, retry int) (client Producer, err error) {
 	client, err = RegisterRocketMqProducer(endPoints, groupName, retry)
 	if err != nil {
 		return
@@ -33,8 +26,7 @@ func RegisterRocketProducer(endPoints []string, groupName string, retry int) (cl
 }
 
 // RegisterRocketConsumer 注册消费者
-func RegisterRocketConsumer(endPoints []string, groupName string) (client MqConsumer, err error) {
-	rewriteLog()
+func RegisterRocketConsumer(endPoints []string, groupName string) (client Consumer, err error) {
 	client, err = RegisterRocketMqConsumer(endPoints, groupName)
 	if err != nil {
 		return
@@ -43,12 +35,12 @@ func RegisterRocketConsumer(endPoints []string, groupName string) (client MqCons
 }
 
 // SendMsg 按字符串类型生产数据
-func (r *RocketMq) SendMsg(topic string, body string) (mqMsg msg, err error) {
+func (r *RocketMq) SendMsg(topic string, body string) (mqMsg Msg, err error) {
 	return r.SendByteMsg(topic, []byte(body))
 }
 
 // SendByteMsg 生产数据
-func (r *RocketMq) SendByteMsg(topic string, body []byte) (mqMsg msg, err error) {
+func (r *RocketMq) SendByteMsg(topic string, body []byte) (mqMsg Msg, err error) {
 	if r.producerIns == nil {
 		return mqMsg, fmt.Errorf("rocketMq producer not register")
 	}
@@ -62,10 +54,10 @@ func (r *RocketMq) SendByteMsg(topic string, body []byte) (mqMsg msg, err error)
 		return
 	}
 	if result.Status != primitive.SendOK {
-		return mqMsg, fmt.Errorff("rocketMq producer send msg error status:%v", result.Status)
+		return mqMsg, fmt.Errorf("rocketMq producer send msg error status:%v", result.Status)
 	}
 
-	mqMsg = msg{
+	mqMsg = Msg{
 		RunType: SendMsg,
 		Topic:   topic,
 		MsgId:   result.MsgID,
@@ -74,20 +66,20 @@ func (r *RocketMq) SendByteMsg(topic string, body []byte) (mqMsg msg, err error)
 	return mqMsg, nil
 }
 
-func (r *RocketMq) SendDelayMsg(topic string, body string, delaySecond int64) (mqMsg msg, err error) {
+func (r *RocketMq) SendDelayMsg(topic string, body string, delaySecond int64) (mqMsg Msg, err error) {
 	err = fmt.Errorf("implement me")
 	return
 }
 
 // ListenReceiveMsgDo 消费数据
-func (r *RocketMq) ListenReceiveMsgDo(topic string, receiveDo func(mqMsg msg)) (err error) {
+func (r *RocketMq) ListenReceiveMsgDo(topic string, receiveDo func(mqMsg Msg)) (err error) {
 	if r.consumerIns == nil {
 		return fmt.Errorf("rocketMq consumer not register")
 	}
 
 	err = r.consumerIns.Subscribe(topic, consumer.MessageSelector{}, func(ctx context.Context, msgs ...*primitive.MessageExt) (consumer.ConsumeResult, error) {
 		for _, item := range msgs {
-			go receiveDo(msg{
+			go receiveDo(Msg{
 				RunType: ReceiveMsg,
 				Topic:   item.Topic,
 				MsgId:   item.MsgId,
