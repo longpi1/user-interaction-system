@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand"
 	"relation-service/libary/log"
 	"relation-service/model/dao/cache/redis"
 	"time"
@@ -197,13 +196,6 @@ func RegisterRedisMq(connOpt RedisOption, groupName string) *RedisMq {
 		groupName: groupName,
 		timeout:   connOpt.Timeout,
 	}
-}
-
-func getRandMsgId() string {
-	rand.NewSource(time.Now().UnixNano())
-	radium := rand.Intn(999) + 1
-	timeCode := time.Now().UnixNano()
-	return fmt.Sprintf("%d%.4d", timeCode, radium)
 }
 
 func (r *RedisMq) loopReadDelayQueue(key string) (resCh chan Msg, errCh chan error) {

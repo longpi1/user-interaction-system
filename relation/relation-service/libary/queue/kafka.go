@@ -9,7 +9,7 @@ import (
 	"github.com/IBM/sarama"
 )
 
-type KafkaMq struct {
+type Kafka struct {
 	Partitions  int32
 	producerIns sarama.AsyncProducer
 	consumerIns sarama.ConsumerGroup
@@ -27,12 +27,12 @@ type KafkaConfig struct {
 }
 
 // SendMsg 按字符串类型生产数据
-func (r *KafkaMq) SendMsg(topic string, body string) (msg Msg, err error) {
+func (r *Kafka) SendMsg(topic string, body string) (msg Msg, err error) {
 	return r.SendByteMsg(topic, []byte(body))
 }
 
 // SendByteMsg 生产数据
-func (r *KafkaMq) SendByteMsg(topic string, body []byte) (msg Msg, err error) {
+func (r *Kafka) SendByteMsg(topic string, body []byte) (msg Msg, err error) {
 	producerMessage := &sarama.ProducerMessage{
 		Topic:     topic,
 		Value:     sarama.ByteEncoder(body),
@@ -67,13 +67,13 @@ func (r *KafkaMq) SendByteMsg(topic string, body []byte) (msg Msg, err error) {
 	return msg, nil
 }
 
-func (r *KafkaMq) SendDelayMsg(topic string, body string, delaySecond int64) (msg Msg, err error) {
+func (r *Kafka) SendDelayMsg(topic string, body string, delaySecond int64) (msg Msg, err error) {
 
 	return
 }
 
 // ListenReceiveMsgDo 消费数据
-func (r *KafkaMq) ListenReceiveMsgDo(topic string, receiveDo func(msg Msg)) (err error) {
+func (r *Kafka) ListenReceiveMsgDo(topic string, receiveDo func(msg Msg)) (err error) {
 	if r.consumerIns == nil {
 		return fmt.Errorf("queue kafka consumer not register")
 	}
@@ -112,9 +112,9 @@ func (r *KafkaMq) ListenReceiveMsgDo(topic string, receiveDo func(msg Msg)) (err
 	return
 }
 
-// RegisterKafkaMqConsumer 注册消费者
-func RegisterKafkaMqConsumer(connOpt KafkaConfig) (client Consumer, err error) {
-	mqIns := &KafkaMq{}
+// RegisterKafkaConsumer 注册消费者
+func RegisterKafkaConsumer(connOpt KafkaConfig) (client Consumer, err error) {
+	mqIns := &Kafka{}
 	kfkVersion, err := sarama.ParseKafkaVersion(connOpt.Version)
 	if err != nil {
 		return
@@ -149,7 +149,7 @@ func RegisterKafkaMqConsumer(connOpt KafkaConfig) (client Consumer, err error) {
 
 // RegisterKafkaProducer 注册并启动生产者接口实现
 func RegisterKafkaProducer(connOpt KafkaConfig) (client Producer, err error) {
-	mqIns := &KafkaMq{}
+	mqIns := &Kafka{}
 	connOpt.ClientId = "producer"
 
 	// 这里如果使用go程需要处理chan同步问题
@@ -161,7 +161,7 @@ func RegisterKafkaProducer(connOpt KafkaConfig) (client Producer, err error) {
 }
 
 // doRegisterKafkaProducer 注册同步类型实例
-func doRegisterKafkaProducer(connOpt KafkaConfig, mqIns *KafkaMq) (err error) {
+func doRegisterKafkaProducer(connOpt KafkaConfig, mqIns *Kafka) (err error) {
 	kfkVersion, err := sarama.ParseKafkaVersion(connOpt.Version)
 	if err != nil {
 		return

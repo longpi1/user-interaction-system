@@ -2,6 +2,7 @@ package queue
 
 import (
 	"fmt"
+	"math/rand"
 	"relation-service/model/dao/cache/redis"
 	"strconv"
 	"sync"
@@ -84,18 +85,18 @@ func InstanceProducer() (client Producer, err error) {
 func NewProducer(groupName string) (client Producer, err error) {
 
 	if groupName == "" {
-		err = fmt.Errorf("mq groupName is empty.")
+		err = fmt.Errorf("mq groupName is empty")
 		return
 	}
 
 	switch config.Driver {
-	case "rocketmq":
+	case RocketMqName:
 		if len(config.Rocket.Address) == 0 {
 			err = fmt.Errorf("queue rocketmq address is not support")
 			return
 		}
 		client, err = RegisterRocketProducer(config.Rocket.Address, groupName, config.Retry)
-	case "kafka":
+	case KafkaMqName:
 		if len(config.Kafka.Address) == 0 {
 			err = fmt.Errorf("queue kafka address is not support")
 			return
@@ -105,7 +106,7 @@ func NewProducer(groupName string) (client Producer, err error) {
 			GroupID: groupName,
 			Version: config.Kafka.Version,
 		})
-	case "redis":
+	case RedisMqName:
 		if _, err = redis.Ping(); err == nil {
 			client = RegisterRedisMq(RedisOption{
 				Timeout: config.Redis.Timeout,
@@ -133,13 +134,13 @@ func NewConsumer(groupName string) (client Consumer, err error) {
 	}
 
 	switch config.Driver {
-	case "rocketmq":
+	case RocketMqName:
 		if len(config.Rocket.Address) == 0 {
 			err = fmt.Errorf("queue.rocketmq.address is empty")
 			return
 		}
 		client, err = RegisterRocketConsumer(config.Rocket.Address, groupName)
-	case "kafka":
+	case KafkaMqName:
 		if len(config.Kafka.Address) == 0 {
 			err = fmt.Errorf("queue kafka address is not support")
 			return
@@ -156,13 +157,13 @@ func NewConsumer(groupName string) (client Consumer, err error) {
 			clientId += "-" + randTag
 		}
 
-		client, err = RegisterKafkaMqConsumer(KafkaConfig{
+		client, err = RegisterKafkaConsumer(KafkaConfig{
 			Brokers:  config.Kafka.Address,
 			GroupID:  groupName,
 			Version:  config.Kafka.Version,
 			ClientId: clientId,
 		})
-	case "redis":
+	case RedisMqName:
 		if _, err = redis.Ping(); err == nil {
 			client = RegisterRedisMqConsumer(RedisOption{
 				Timeout: config.Redis.Timeout,
@@ -184,4 +185,11 @@ func NewConsumer(groupName string) (client Consumer, err error) {
 // BodyString 返回消息体
 func (m *Msg) BodyString() string {
 	return string(m.Body)
+}
+
+func getRandMsgId() string {
+	rand.NewSource(time.Now().UnixNano())
+	radium := rand.Intn(999) + 1
+	timeCode := time.Now().UnixNano()
+	return fmt.Sprintf("%d%.4d", timeCode, radium)
 }
