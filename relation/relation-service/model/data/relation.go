@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"relation-service/libary/conf"
 	"relation-service/libary/log"
+	"relation-service/libary/utils"
 	"relation-service/model/dao/cache"
 	"relation-service/model/dao/db"
 	"relation-service/model/dao/db/model"
@@ -19,7 +20,7 @@ func Follow(params model.RelationParams) error {
 		return fmt.Errorf("数据库插入失败")
 	}
 	// 删除原有缓存
-	key := cache.GetRelationListKey(params.UID, params.Platform, params.Type)
+	key := cache.GetRelationListKey(params.UID, relation.Platform, relation.Type, params.Status)
 	cache.DeleteRelationCache(key)
 	return nil
 }
@@ -32,7 +33,7 @@ func UnFollow(params model.RelationParams) error {
 		return fmt.Errorf("数据库删除失败")
 	}
 	// 删除原有缓存
-	key := cache.GetRelationListKey(params.UID, params.Platform, params.Type)
+	key := cache.GetRelationListKey(params.UID, utils.ConvertPlatform(params.Platform), utils.ConvertType(params.Type), params.Status)
 	cache.DeleteRelationCache(key)
 	return nil
 }

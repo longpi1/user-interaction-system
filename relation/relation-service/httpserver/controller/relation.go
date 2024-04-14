@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"relation-service/libary/conf"
 	"relation-service/libary/constant"
 	"relation-service/libary/log"
 	"relation-service/libary/utils"
@@ -33,15 +32,7 @@ func validateRelationParams(params model.RelationParams) bool {
 		log.Error("操作类型错误")
 		return false
 	}
-	mapConfig := conf.GetMapConfig()
-	_, hasType := mapConfig.TypeMap[params.Type]
-	if !hasType {
-		log.Error("类型不存在")
-		return false
-	}
-	_, hasPlatform := mapConfig.PlatformMap[params.Platform]
-	if !hasPlatform {
-		log.Error("平台不存在")
+	if VaildTypeAndPlatform(utils.ConvertType(params.Type), utils.ConvertPlatform(params.Platform)) {
 		return false
 	}
 	return true

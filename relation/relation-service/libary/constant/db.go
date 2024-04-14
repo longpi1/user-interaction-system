@@ -2,6 +2,7 @@ package constant
 
 const (
 	WhereByID         = "id = ?"
+	WhereByPlatform   = "Platform = ?"
 	WhereByName       = "name = ?"
 	WhereByUserID     = "uid = ?"
 	WhereByType       = "type = ?"

@@ -10,12 +10,12 @@ import (
 // RelationCount 用户关注数/粉丝数表
 type RelationCount struct {
 	gorm.Model
-	ResourceId  int64  `json:"resource_id"`  // 资源/用户id
-	FansCount   int64  `json:"fans_count"`   // 粉丝数
-	FollowCount int64  `json:"follow_count"` // 关注数
-	Platform    int64  `json:"platform"`     // 相关的平台
-	Type        int64  `json:"type"`         // 资源类型
-	Ext         string `json:"ext"`          // 额外信息`
+	ResourceId  int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;comment:'资源/用户id'"` // 资源/用户id
+	FansCount   int64  `gorm:"comment:'粉丝数'"`                                                              // 粉丝数
+	FollowCount int64  `gorm:"comment:'关注数'"`                                                              // 关注数
+	Platform    int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;comment:'相关的平台d'"`  // 相关的平台
+	Type        int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;comment:'资源类型'"`    // 资源类型
+	Ext         string `gorm:"comment:'额外信息'"`                                                             // 额外信息`
 }
 
 // TableName 自定义表名
@@ -48,9 +48,16 @@ func DeleteRelationCountWithTx(tx *gorm.DB, id uint) error {
 	return err
 }
 
-func FindRelationCountById(id int) (RelationCount, error) {
+func FindRelationCountByParams(params RelationCountParams) (RelationCount, error) {
 	var relationCount RelationCount
-	err := db.GetClient().Where(constant.WhereByID, id).First(&relationCount).Error
+	client := db.GetClient()
+	if params.Platform >= 0 {
+		client.Where(constant.WhereByPlatform, params.Platform)
+	}
+	if params.Type >= 0 {
+		client.Where(constant.WhereByType, params.Type)
+	}
+	err := db.GetClient().Where(constant.WhereByResourceID, params.ResourceId).First(&relationCount).Error
 	return relationCount, err
 }
 
