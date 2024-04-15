@@ -1,7 +1,10 @@
 package service
 
-import "github.com/gin-gonic/gin"
+import (
+	"relation-service/model/dao/db/model"
+	"relation-service/model/data"
+)
 
-func Following(c *gin.Context) {
-
+func Following(params model.RelationFollowingParams) (model.RelationFollowingListResponse, error) {
+	data.GetFollowingList(params)
 }

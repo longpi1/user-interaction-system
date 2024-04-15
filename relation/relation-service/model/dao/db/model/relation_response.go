@@ -13,9 +13,13 @@ type RelationResponse struct {
 	Ext          string `json:"ext"`      // 额外信息
 }
 
-type RelationListResponse struct {
+type RelationFansListResponse struct {
 	RelationResponse []RelationResponse
-	FollowCount      int // 关注数
+	FansCount        int // 粉丝数
+}
+
+type RelationFollowingListResponse struct {
+	RelationResponse []RelationResponse
 	FansCount        int // 粉丝数
 }
 

@@ -30,7 +30,7 @@ func InsertRelation(relation *Relation) (uint, error) {
 }
 
 func InsertRelationWithTx(tx *gorm.DB, relation *Relation) (uint, error) {
-	err := db.GetClient().Create(&relation).Error
+	err := tx.Create(&relation).Error
 	return relation.ID, err
 }
 

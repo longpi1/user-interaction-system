@@ -8,7 +8,7 @@ import (
 )
 
 func GetRelationCount(params model.RelationCountParams) (countResponse model.RelationCountResponse, err error) {
-	key := cache.GetRelationCountKey(params.ResourceId, params.Platform, params.Type)
+	key := cache.GetRelationCountKey(params.ResourceID, params.Platform, params.Type)
 	// 首先从缓存中获取对应数据
 	if countResponse, err = cache.GetRelationCountFromLocalCache(key); err == nil {
 		return countResponse, nil

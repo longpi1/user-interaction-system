@@ -32,7 +32,7 @@ func validateRelationParams(params model.RelationParams) bool {
 		log.Error("操作类型错误")
 		return false
 	}
-	if VaildTypeAndPlatform(utils.ConvertType(params.Type), utils.ConvertPlatform(params.Platform)) {
+	if VerifyTypeAndPlatform(utils.ConvertType(params.Type), utils.ConvertPlatform(params.Platform)) {
 		return false
 	}
 	return true

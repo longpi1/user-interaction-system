@@ -5,7 +5,7 @@ import (
 	"relation-service/libary/log"
 )
 
-func VaildTypeAndPlatform(relationType int, platform int) bool {
+func VerifyTypeAndPlatform(relationType int, platform int) bool {
 	mapConfig := conf.GetMapConfig()
 	var hasType, hasPlatform bool
 	for _, value := range mapConfig.TypeMap {

@@ -1,7 +1,10 @@
 package service
 
-import "github.com/gin-gonic/gin"
+import (
+	"relation-service/model/dao/db/model"
+	"relation-service/model/data"
+)
 
-func Fans(c *gin.Context) {
-
+func Fans(params model.RelationFansParams) (model.RelationFollowingListResponse, error) {
+	list, err := data.GetFansList(params)
 }

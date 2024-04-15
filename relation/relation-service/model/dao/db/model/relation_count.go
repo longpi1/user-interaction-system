@@ -57,7 +57,7 @@ func FindRelationCountByParams(params RelationCountParams) (RelationCount, error
 	if params.Type >= 0 {
 		client.Where(constant.WhereByType, params.Type)
 	}
-	err := db.GetClient().Where(constant.WhereByResourceID, params.ResourceId).First(&relationCount).Error
+	err := db.GetClient().Where(constant.WhereByResourceID, params.ResourceID).First(&relationCount).Error
 	return relationCount, err
 }
 

@@ -13,15 +13,17 @@ import (
 func Follow(params model.RelationParams) error {
 	relation := formatRelation(params)
 
-	tx := db.GetClient().Begin()
-	_, err := model.InsertRelationWithTx(tx, &relation)
+	_, err := model.InsertRelation(&relation)
 	if err != nil {
-		log.Error("数据库插入失败", err)
-		return fmt.Errorf("数据库插入失败")
+		log.Error("数据库更新失败", err)
+		return fmt.Errorf("数据库更新失败")
 	}
 	// 删除原有缓存
-	key := cache.GetRelationListKey(params.UID, relation.Platform, relation.Type, params.Status)
-	cache.DeleteRelationCache(key)
+	followingListKey := cache.GetFollowingListKey(params.UID, relation.Platform, relation.Type, params.Status)
+	fansListLey := cache.GetFansListKey(params.ResourceID, relation.Platform, relation.Type, params.Status)
+	cache.DeleteRelationCache(followingListKey)
+	cache.DeleteRelationCache(fansListLey)
+	// todo 通过job去更新粉丝数、关注数数据库与缓存，如果分平台则需要更新整体数量
 	return nil
 }
 
@@ -33,8 +35,11 @@ func UnFollow(params model.RelationParams) error {
 		return fmt.Errorf("数据库删除失败")
 	}
 	// 删除原有缓存
-	key := cache.GetRelationListKey(params.UID, utils.ConvertPlatform(params.Platform), utils.ConvertType(params.Type), params.Status)
-	cache.DeleteRelationCache(key)
+	followingListKey := cache.GetFollowingListKey(params.UID, utils.ConvertPlatform(params.Platform), utils.ConvertType(params.Type), params.Status)
+	fansListLey := cache.GetFansListKey(params.ResourceID, utils.ConvertPlatform(params.Platform), utils.ConvertType(params.Type), params.Status)
+	cache.DeleteRelationCache(followingListKey)
+	cache.DeleteRelationCache(fansListLey)
+	// todo 通过job去更新粉丝数、关注数数据库与缓存，如果分平台则需要更新整体数量
 	return nil
 }
 

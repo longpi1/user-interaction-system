@@ -27,7 +27,7 @@ func RelationCount(c *gin.Context) {
 }
 
 func validateRelationCountParams(params model.RelationCountParams) bool {
-	if VaildTypeAndPlatform(params.Type, params.Platform) {
+	if VerifyTypeAndPlatform(params.Type, params.Platform) {
 		return false
 	}
 	return true
