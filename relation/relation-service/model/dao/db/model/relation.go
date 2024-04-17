@@ -59,3 +59,33 @@ func UpdateRelation(relation *Relation) error {
 	err := db.GetClient().Updates(&relation).Error
 	return err
 }
+
+func GetFansList(param RelationFansParams) (relations []Relation, err error) {
+	client := db.GetClient()
+	if param.Platform != 0 {
+		client.Where(constant.WhereByPlatform, param.Platform)
+	}
+	if param.Type != 0 {
+		client.Where(constant.WhereByType, param.Type)
+	}
+	if param.Status != 0 {
+		client.Where(constant.WhereByStatus, param.Status)
+	}
+	err = client.Where(constant.WhereByResourceID, param.ResourceID).Limit(param.Limit).Offset(param.Offset).Find(&relations).Error
+	return relations, err
+}
+
+func GetFollowingList(param RelationFollowingParams) (relations []Relation, err error) {
+	client := db.GetClient()
+	if param.Platform != 0 {
+		client.Where(constant.WhereByPlatform, param.Platform)
+	}
+	if param.Type != 0 {
+		client.Where(constant.WhereByType, param.Type)
+	}
+	if param.Status != 0 {
+		client.Where(constant.WhereByStatus, param.Status)
+	}
+	err = client.Where(constant.WhereByUserID, param.UID).Limit(param.Limit).Offset(param.Offset).Find(&relations).Error
+	return relations, err
+}

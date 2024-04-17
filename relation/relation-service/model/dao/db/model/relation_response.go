@@ -20,7 +20,7 @@ type RelationFansListResponse struct {
 
 type RelationFollowingListResponse struct {
 	RelationResponse []RelationResponse
-	FansCount        int // 粉丝数
+	FollowingCount   int // 关注数
 }
 
 type RelationCountResponse struct {

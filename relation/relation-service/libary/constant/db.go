@@ -8,6 +8,7 @@ const (
 	WhereByType       = "type = ?"
 	WhereByResourceID = "resource_id = ?"
 	WhereByPID        = "pid = ?"
+	WhereByStatus     = "status = ?"
 )
 
 const (

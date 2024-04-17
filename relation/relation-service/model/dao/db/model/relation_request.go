@@ -18,6 +18,9 @@ type RelationFansParams struct {
 	Platform   int    `json:"platform"`    // 相关的平台
 	Status     int    `json:"status"`      // 状态
 	Ext        string `json:"ext"`         // 额外信息
+	Limit      int    `json:"limit"`
+	Offset     int    `json:"offset"`
+	OrderBy    string `json:"oderby"`
 }
 
 type RelationFollowingParams struct {
@@ -27,6 +30,9 @@ type RelationFollowingParams struct {
 	Platform int    `json:"platform"` // 相关的平台
 	Status   int    `json:"status"`   // 状态
 	Ext      string `json:"ext"`      // 额外信息
+	Limit    int    `json:"limit"`
+	Offset   int    `json:"offset"`
+	OrderBy  string `json:"oderby"`
 }
 
 type RelationMutualFollowParams struct {

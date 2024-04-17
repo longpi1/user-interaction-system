@@ -17,12 +17,12 @@ func GetFansList(params model.RelationFansParams) (fansList model.RelationFansLi
 		return fansList, nil
 	}
 	// 缓存中获取失败则从数据库中获取
-	relationCount, err := model.Fin(params)
+	relationList, err := model.GetFansList(params)
 	if err != nil {
-		log.Error("数据库获取关注数、粉丝数失败： %v", err)
-		return fansList, fmt.Errorf("数据库获取关注数、粉丝数失败")
+		log.Error("数据库获取粉丝列表败： %v", err)
+		return fansList, fmt.Errorf("数据库获取粉丝列表败")
 	}
-	countResponse = formatRelationCountResponse(relationCount)
+	fansList = formatFansListResponse(relationList)
 
 	// 更新缓存
 	cache.SetFansListToLocalCache(fansListLey, fansList)
@@ -30,6 +30,19 @@ func GetFansList(params model.RelationFansParams) (fansList model.RelationFansLi
 	return
 }
 
-func formatFansListResponse() {
-
+func formatFansListResponse(relations []model.Relation) (fansList model.RelationFansListResponse) {
+	fansList.FansCount = len(relations)
+	for _, relation := range relations {
+		relationResponse := model.RelationResponse{
+			UID:        relation.UID,
+			Source:     relation.Source,
+			Platform:   relation.Platform,
+			Status:     relation.Status,
+			Ext:        relation.Ext,
+			Type:       relation.Type,
+			ResourceID: relation.ResourceID,
+		}
+		fansList.RelationResponse = append(fansList.RelationResponse, relationResponse)
+	}
+	return fansList
 }

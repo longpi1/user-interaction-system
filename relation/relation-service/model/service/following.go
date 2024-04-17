@@ -6,5 +6,6 @@ import (
 )
 
 func Following(params model.RelationFollowingParams) (model.RelationFollowingListResponse, error) {
-	data.GetFollowingList(params)
+	followingList, err := data.GetFollowingList(params)
+	return followingList, err
 }

@@ -7,25 +7,42 @@ import (
 	"relation-service/model/dao/db/model"
 )
 
-func GetFollowingList(params model.RelationFollowingParams) {
-	followingListKey := cache.GetRelationFollowingListKey(params.UID, relation.Platform, relation.Type, params.Status)
+func GetFollowingList(params model.RelationFollowingParams) (followingList model.RelationFollowingListResponse, err error) {
+	followingListLey := cache.GetFollowingListKey(params.UID, params.Platform, params.Type, params.Status)
 	// 首先从缓存中获取对应数据
-	if countResponse, err = cache.Get(key); err == nil {
-		return countResponse, nil
+	if followingList, err = cache.GetFollowingListFromLocalCache(followingListLey); err == nil {
+		return followingList, nil
 	}
-	if countResponse, err = cache.GetRelationCountFromRedisCache(key); err == nil {
-		return countResponse, nil
+	if followingList, err = cache.GetFollowingListFromRedisCache(followingListLey); err == nil {
+		return followingList, nil
 	}
 	// 缓存中获取失败则从数据库中获取
-	relationCount, err := model.FindRelationCountByParams(params)
+	relationList, err := model.GetFollowingList(params)
 	if err != nil {
-		log.Error("数据库获取关注数、粉丝数失败： %v", err)
-		return countResponse, fmt.Errorf("数据库获取关注数、粉丝数失败")
+		log.Error("数据库获取关注列表失败： %v", err)
+		return followingList, fmt.Errorf("数据库获取关注列表失败")
 	}
-	countResponse = formatRelationCountResponse(relationCount)
+	followingList = formatFollowingListResponse(relationList)
 
 	// 更新缓存
-	cache.SetRelationCountToLocalCache(key, countResponse)
-	cache.SetRelationCountToRedisCache(key, countResponse)
+	cache.SetFollowingListToLocalCache(followingListLey, followingList)
+	cache.SetFollowingListToRedisCache(followingListLey, followingList)
 	return
+}
+
+func formatFollowingListResponse(relations []model.Relation) (followingList model.RelationFollowingListResponse) {
+	followingList.FollowingCount = len(relations)
+	for _, relation := range relations {
+		relationResponse := model.RelationResponse{
+			UID:        relation.UID,
+			Source:     relation.Source,
+			Platform:   relation.Platform,
+			Status:     relation.Status,
+			Ext:        relation.Ext,
+			Type:       relation.Type,
+			ResourceID: relation.ResourceID,
+		}
+		followingList.RelationResponse = append(followingList.RelationResponse, relationResponse)
+	}
+	return followingList
 }
