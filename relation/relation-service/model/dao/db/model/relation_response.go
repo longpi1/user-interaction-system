@@ -30,3 +30,11 @@ type RelationCountResponse struct {
 	Platform    int   `json:"platform"` // 相关的平台
 	Type        int   `json:"type"`     // 资源类型
 }
+
+type RelationIsFollowingResponse struct {
+	IsFollowing bool
+}
+
+type RelationIsFollowingBatchResponse struct {
+	Data map[int64]RelationIsFollowingResponse
+}

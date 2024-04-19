@@ -12,6 +12,10 @@ const (
 )
 
 func GetFollowingListKey(UID int64, platform int, relationType int, status int) string {
+	// -1 表示获取所有状态
+	if status == -1 {
+		return fmt.Sprintf(RelationFollowingListRedisKey, UID, platform, relationType, "*")
+	}
 	key := fmt.Sprintf(RelationFollowingListRedisKey, UID, platform, relationType, status)
 	return key
 }

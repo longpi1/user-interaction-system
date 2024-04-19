@@ -1,11 +1,14 @@
 package service
 
-import "github.com/gin-gonic/gin"
+import (
+	"relation-service/model/dao/db/model"
+	"relation-service/model/data"
+)
 
-func IsFollowing(c *gin.Context) {
-
+func IsFollowing(params model.RelationIsFollowingParams) (model.RelationIsFollowingResponse, error) {
+	return data.IsFollowing(params)
 }
 
-func IsFollowingBatch(c *gin.Context) {
-
+func IsFollowingBatch(params model.RelationIsFollowingBatchParams) (model.RelationIsFollowingBatchResponse, error) {
+	return data.IsFollowingBatch(params)
 }

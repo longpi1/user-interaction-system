@@ -89,3 +89,9 @@ func GetFollowingList(param RelationFollowingParams) (relations []Relation, err 
 	err = client.Where(constant.WhereByUserID, param.UID).Limit(param.Limit).Offset(param.Offset).Find(&relations).Error
 	return relations, err
 }
+
+func GetIsFollowing(uid int64, relationType int, platform int, resourceId int64) (relation *Relation, err error) {
+	client := db.GetClient()
+	err = client.Where(constant.WhereByUserID, uid).Where(constant.WhereByType, relationType).Where(constant.WhereByPlatform, platform).Where(constant.WhereByResourceID, resourceId).Find(&relation).Error
+	return
+}

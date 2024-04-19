@@ -28,3 +28,8 @@ const (
 	RelationTableName      = "relation"
 	RelationCountTableName = "relation_count"
 )
+
+const (
+	_ = iota
+	FollowingStatus
+)

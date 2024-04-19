@@ -36,7 +36,7 @@ type RelationFollowingParams struct {
 }
 
 type RelationMutualFollowParams struct {
-	Source     string `json:"source"`      //来源
+	Source     string `json:"source"`      // 来源
 	ResourceID int64  `json:"resource_id"` // 被关注的资源或者人
 	Type       int    `json:"type"`        // 资源类型
 	Platform   int    `json:"platform"`    // 相关的平台
@@ -49,4 +49,22 @@ type RelationCountParams struct {
 	Type       int    `json:"type"`        // 资源类型
 	Platform   int    `json:"platform"`    // 相关的平台
 	Ext        string `json:"ext"`         // 额外信息
+}
+
+type RelationIsFollowingParams struct {
+	Source     string `json:"source"`      // 来源
+	UID        int64  `json:"uid"`         // 发起关注的人
+	Type       string `json:"type"`        // 资源类型
+	Platform   string `json:"platform"`    // 相关的平台
+	ResourceID int64  `json:"resource_id"` // 被关注的资源或者人
+	Ext        string `json:"ext"`         // 额外信息
+}
+
+type RelationIsFollowingBatchParams struct {
+	Source      string  `json:"source"`       // 来源
+	UID         int64   `json:"uid"`          // 发起关注的人
+	Type        string  `json:"type"`         // 资源类型
+	Platform    string  `json:"platform"`     // 相关的平台
+	ResourceIDs []int64 `json:"resource_ids"` // 被关注的资源或者人集合
+	Ext         string  `json:"ext"`          // 额外信息
 }

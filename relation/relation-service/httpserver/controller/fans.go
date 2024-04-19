@@ -18,12 +18,12 @@ func Fans(c *gin.Context) {
 		utils.RespError(c, constant.InvalidParam)
 		return
 	}
-	err = service.Fans(params)
+	fansListResponse, err := service.Fans(params)
 	if err != nil {
 		utils.RespError(c, err.Error())
 		return
 	}
-	utils.RespData(c, "获取粉丝列表成功", data)
+	utils.RespData(c, "获取粉丝列表成功", fansListResponse)
 }
 
 func validateRelationFansParams(params model.RelationFansParams) bool {

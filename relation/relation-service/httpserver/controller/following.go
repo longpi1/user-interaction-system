@@ -18,12 +18,12 @@ func Following(c *gin.Context) {
 		utils.RespError(c, constant.InvalidParam)
 		return
 	}
-	err = service.Following(params)
+	followingList, err := service.Following(params)
 	if err != nil {
 		utils.RespError(c, err.Error())
 		return
 	}
-	utils.RespData(c, "获取关注列表成功", data)
+	utils.RespData(c, "获取关注列表成功", followingList)
 }
 
 func validateRelationFollowingParams(params model.RelationFollowingParams) bool {
