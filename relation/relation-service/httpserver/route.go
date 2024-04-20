@@ -53,7 +53,6 @@ func setRelationRouter(router *gin.Engine) {
 	{
 		groupRouter.Use()
 		{
-			//todo 关注相关操作实现
 			groupRouter.POST("/relation", controller.Relation)
 			groupRouter.POST("/relation_count", controller.RelationCount)
 			groupRouter.POST("/following", controller.Following)
