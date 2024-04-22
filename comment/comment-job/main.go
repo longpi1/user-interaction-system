@@ -5,7 +5,6 @@ import (
 	"comment-job/libary/conf"
 	"comment-job/libary/log"
 	"comment-job/libary/utils"
-	localcache "comment-job/model/dao/cache/local_cache"
 	"comment-job/model/dao/cache/redis"
 )
 
@@ -22,11 +21,6 @@ func main() {
 	utils.NewHook().Close(
 		// 关闭 cache
 		func() {
-			if localcache.GetClient() != nil {
-				if err := localcache.GetClient().Close(); err != nil {
-					log.Error("local cache close err", err)
-				}
-			}
 			if redis.GetClient() != nil {
 				if err := redis.GetClient().Close(); err != nil {
 					log.Error("redis cache close err", err)

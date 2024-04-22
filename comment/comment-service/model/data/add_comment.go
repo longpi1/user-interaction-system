@@ -42,7 +42,7 @@ func FormatCommentInfo(param model.CommentParamsAdd) (model.CommentIndex, model.
 	commentIndex := model.CommentIndex{
 		UserID:     param.UserID,
 		UserName:   param.UserName,
-		ResourceId: param.ResourceId,
+		ResourceID: param.ResourceId,
 		IP:         param.IP,
 		IPArea:     utils.GetIPArea(param.IP),
 		PID:        param.Pid,

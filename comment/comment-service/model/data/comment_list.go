@@ -44,7 +44,7 @@ func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, e
 func FormatCommentResponse(index model.CommentIndex, content model.CommentContent) model.CommentResponse {
 	return model.CommentResponse{
 		CommentId:   index.ID,
-		ResourceId:  index.ResourceId,
+		ResourceId:  index.ResourceID,
 		Pid:         index.PID,
 		Type:        index.Type,
 		Content:     content.Content,

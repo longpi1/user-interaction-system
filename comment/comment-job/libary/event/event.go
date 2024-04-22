@@ -44,7 +44,8 @@ func Send(e interface{}) {
 	}
 }
 
-func RegHandler(t reflect.Type, handler func(i interface{})) {
+// RegisterHandler 注册任务处理器
+func RegisterHandler(t reflect.Type, handler func(i interface{})) {
 	m.Lock()
 	defer m.Unlock()
 

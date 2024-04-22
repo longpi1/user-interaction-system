@@ -12,7 +12,7 @@ func VerifyDeletePermission(commentID, userID uint) error {
 		return errors.New("获取对应评论相关信息失败")
 	}
 
-	resourceID := comment.ResourceId
+	resourceID := comment.ResourceID
 	resource, err := model.FindResourceById(int(resourceID))
 	if err != nil {
 		return errors.New("获取对应资源相关信息失败")
@@ -32,7 +32,7 @@ func VerifyHighLightPermission(commentID, userID uint) error {
 		return errors.New("获取对应评论相关信息失败")
 	}
 
-	resourceID := comment.ResourceId
+	resourceID := comment.ResourceID
 	resource, err := model.FindResourceById(int(resourceID))
 	if err != nil {
 		return errors.New("获取对应资源相关信息失败")
@@ -52,7 +52,7 @@ func VerifyTopPermission(commentID, userID uint) error {
 		return errors.New("获取对应评论相关信息失败")
 	}
 
-	resourceID := comment.ResourceId
+	resourceID := comment.ResourceID
 	resource, err := model.FindResourceById(int(resourceID))
 	if err != nil {
 		return errors.New("获取对应资源相关信息失败")
