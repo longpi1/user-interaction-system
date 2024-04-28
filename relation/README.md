@@ -193,7 +193,7 @@ type RelationCount struct {
   ```go
   {
     "code": 200,
-    "message": "Follow/Unfollow operation successful."
+    "event": "Follow/Unfollow operation successful."
   }
   ```
 
@@ -202,7 +202,7 @@ type RelationCount struct {
   ```go
   {
     "code": 400,
-    "message": "Error message based on the failure reason."
+    "event": "Error event based on the failure reason."
   }
   ```
 
@@ -225,7 +225,7 @@ type RelationCount struct {
     "code": 200,
     "followCount": 102,
      "fansCount": 102,  
-    "message": "Query successful."
+    "event": "Query successful."
   }
   ```
 
@@ -254,7 +254,7 @@ type RelationCount struct {
         "created_at": "关注时间"
       }
     ],
-    "message": "Query successful."
+    "event": "Query successful."
   }
   ```
 
@@ -285,7 +285,7 @@ type RelationCount struct {
         "created_at": "关注时间"
       }
     ],
-    "message": "Query successful."
+    "event": "Query successful."
   }
   ```
 
@@ -306,7 +306,7 @@ type RelationCount struct {
   {
     "code": 200,
     "isFollowing": true,
-    "message": "Query successful."
+    "event": "Query successful."
   }
   ```
 
@@ -335,7 +335,7 @@ type RelationCount struct {
       "C的ID": false,
       "D的ID": true
     },
-    "message": "Query successful."
+    "event": "Query successful."
   }
   ```
 
@@ -356,7 +356,7 @@ type RelationCount struct {
   {
     "code": 200,
     "isMutualFollow": true,
-    "message": "Query successful."
+    "event": "Query successful."
   }
   ```
 

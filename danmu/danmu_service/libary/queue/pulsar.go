@@ -70,7 +70,7 @@ func (p *Pulsar) SendByteMsg(topic string, body []byte) (msg Msg, err error) {
 		Payload: body,
 	})
 	if err != nil {
-		return msg, fmt.Errorf("could not send message: %d, %v", messageID, err)
+		return msg, fmt.Errorf("could not send event: %d, %v", messageID, err)
 	}
 
 	msg = Msg{
@@ -98,7 +98,7 @@ func (p *Pulsar) ListenReceiveMsgDo(topic string, receiveDo func(msg Msg)) (err 
 		for {
 			data, err := p.Consumer.Receive(context.Background())
 			if err != nil {
-				log.Printf("Error receiving message: %v", err)
+				log.Printf("Error receiving event: %v", err)
 				continue
 			}
 			msg := Msg{
@@ -111,8 +111,8 @@ func (p *Pulsar) ListenReceiveMsgDo(topic string, receiveDo func(msg Msg)) (err 
 			// 回调方法进行处理
 			receiveDo(msg)
 			if err != nil {
-				log.Printf("Error handling message: %v", err)
-				// Consider what to do with the message: Ack/Nack
+				log.Printf("Error handling event: %v", err)
+				// Consider what to do with the event: Ack/Nack
 				p.Consumer.Nack(data)
 			} else {
 				err = p.Consumer.Ack(data)

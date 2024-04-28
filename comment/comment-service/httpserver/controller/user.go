@@ -6,9 +6,10 @@ import (
 	"comment-service/model/dao/db/model"
 	"comment-service/model/service"
 	"encoding/json"
+	"net/http"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func Register(c *gin.Context) {
@@ -17,27 +18,27 @@ func Register(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": constant.InvalidParam,
+			"event":   constant.InvalidParam,
 		})
 		return
 	}
 	if err := utils.Validate.Struct(&user); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "输入不合法 " + err.Error(),
+			"event":   "输入不合法 " + err.Error(),
 		})
 		return
 	}
 	if err := service.Register(&user); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": err.Error(),
+			"event":   err.Error(),
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"message": "",
+		"event":   "",
 	})
 }
 

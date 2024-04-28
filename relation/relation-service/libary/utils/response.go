@@ -11,7 +11,7 @@ func RespData(c *gin.Context, msg string, data interface{}) {
 	LogWithHttpInfo(c, false)
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"message": msg,
+		"event":   msg,
 		"data":    data,
 	})
 }
@@ -19,7 +19,7 @@ func RespData(c *gin.Context, msg string, data interface{}) {
 func RespSuccess(c *gin.Context, msg string) {
 	LogWithHttpInfo(c, false)
 	c.JSON(http.StatusOK, gin.H{
-		"message": msg,
+		"event":   msg,
 		"success": true,
 	})
 }
@@ -27,7 +27,7 @@ func RespSuccess(c *gin.Context, msg string) {
 func RespError(c *gin.Context, msg string) {
 	LogWithHttpInfo(c, true)
 	c.JSON(http.StatusOK, gin.H{
-		"message": msg,
+		"event":   msg,
 		"success": false,
 	})
 }

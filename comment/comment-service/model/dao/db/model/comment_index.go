@@ -52,7 +52,7 @@ func InsertCommentIndexWithTx(tx *gorm.DB, commentIndex *CommentIndex) (uint, er
 	} else {
 		commentIndex.FloorCount++
 	}
-	err := db.GetClient().Create(&commentIndex).Error
+	err := tx.Create(&commentIndex).Error
 	return commentIndex.ID, err
 }
 

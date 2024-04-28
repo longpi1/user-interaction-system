@@ -34,4 +34,5 @@ const (
 	CommentContentTableName = "comment_content"
 	UserTableName           = "user"
 	UserCommentTableName    = "user_comment"
+	MessageTableName        = "event"
 )

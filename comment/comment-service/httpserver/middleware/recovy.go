@@ -2,8 +2,9 @@ package middleware
 
 import (
 	"comment-service/libary/log"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // 自定义Recovery中间件
@@ -15,8 +16,8 @@ func CustomRecovery() gin.HandlerFunc {
 				log.Error("panic: %v\n", err)
 				// 发送自定义错误响应
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-					"code":    http.StatusInternalServerError,
-					"message": "Internal Server Error",
+					"code":  http.StatusInternalServerError,
+					"event": "Internal Server Error",
 				})
 			}
 		}()

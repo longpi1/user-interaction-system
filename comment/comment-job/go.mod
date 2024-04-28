@@ -10,10 +10,12 @@ require (
 	github.com/apache/rocketmq-client-go/v2 v2.1.2
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/jinzhu/gorm v1.9.16
 	github.com/mlogclub/simple v1.2.25
 	github.com/panjf2000/ants/v2 v2.9.1
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.9.3
+	github.com/spf13/cast v1.6.0
 	github.com/spf13/viper v1.18.2
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	gorm.io/driver/mysql v1.5.6
@@ -93,7 +95,6 @@ require (
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
-	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tidwall/gjson v1.13.0 // indirect

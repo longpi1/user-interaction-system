@@ -50,12 +50,12 @@ func DeleteCommentContent(commentContent *CommentContent) error {
 	return err
 }
 
-func DeleteCommentContentWithTx(tx *gorm.DB, commentId uint) error {
+func DeleteCommentContentWithTx(tx *gorm.DB, commentId int64) error {
 	err := tx.Where(constant.WhereByCommentID, commentId).Delete(&CommentContent{}).Error
 	return err
 }
 
-func FindCommentContentByCommentId(commentId uint) (CommentContent, error) {
+func FindCommentContentByCommentId(commentId int64) (CommentContent, error) {
 	var commentContent CommentContent
 	err := db.GetClient().Where(constant.WhereByCommentID, commentId).First(&commentContent).Error
 	return commentContent, err
@@ -64,15 +64,6 @@ func FindCommentContentByCommentId(commentId uint) (CommentContent, error) {
 func UpdateCommentContent(commentContent *CommentContent) error {
 	err := db.GetClient().Updates(&commentContent).Error
 	return err
-}
-
-func GetCommentContentList(param CommentParamsList) (CommentContents []CommentContent, err error) {
-	tx := db.GetClient()
-	if param.Limit == 0 {
-		param.Limit = constant.DefaultLimit
-	}
-	err = tx.Order(constant.OrderDescById).Limit(param.Limit).Offset(param.Offset).Find(&CommentContents).Error
-	return CommentContents, err
 }
 
 func DeleteCommentContentByTime(deleteTime int) error {

@@ -52,7 +52,7 @@ func InsertCommentIndexWithTx(tx *gorm.DB, commentIndex *CommentIndex) (uint, er
 	} else {
 		commentIndex.FloorCount++
 	}
-	err := db.GetClient().Create(&commentIndex).Error
+	err := tx.Create(&commentIndex).Error
 	return commentIndex.ID, err
 }
 
@@ -71,8 +71,8 @@ func DeleteCommentIndexWithTx(tx *gorm.DB, commentID uint) error {
 	return err
 }
 
-func FindCommentIndexById(id int64) (CommentIndex, error) {
-	var commentIndex CommentIndex
+func FindCommentIndexById(id int64) (*CommentIndex, error) {
+	var commentIndex *CommentIndex
 	err := db.GetClient().Where(constant.WhereByCommentID, id).First(&commentIndex).Error
 	return commentIndex, err
 }
@@ -80,33 +80,6 @@ func FindCommentIndexById(id int64) (CommentIndex, error) {
 func UpdateCommentIndex(commentIndex *CommentIndex) error {
 	err := db.GetClient().Updates(&commentIndex).Error
 	return err
-}
-
-func GetCommentIndexList(param CommentParamsList) (commentIndexs []CommentIndex, err error) {
-	tx := db.GetClient()
-	if param.ResourceId != 0 {
-		tx = tx.Where(constant.WhereByResourceID, param.ResourceId)
-	}
-	if param.Pid != 0 {
-		tx = tx.Where(constant.WhereByPID, param.Pid)
-	}
-	if param.Limit == 0 {
-		param.Limit = constant.DefaultLimit
-	}
-	err = tx.Order(constant.OrderDescById).Limit(param.Limit).Offset(param.Offset).Find(&commentIndexs).Error
-	return commentIndexs, err
-}
-
-func GetCommentListCount(param CommentParamsList) (count int64, err error) {
-	tx := db.GetClient()
-	if param.ResourceId != 0 {
-		tx = tx.Where(constant.WhereByResourceID, param.ResourceId)
-	}
-	if param.Pid != 0 {
-		tx = tx.Where(constant.WhereByPID, param.Pid)
-	}
-	err = tx.Count(&count).Error
-	return count, err
 }
 
 func DeleteCommentIndexByTime(deleteTime int) error {
