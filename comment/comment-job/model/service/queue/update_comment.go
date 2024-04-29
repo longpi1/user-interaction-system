@@ -1,1 +1,5 @@
 package queue
+
+func UpdateComment() {
+
+}
