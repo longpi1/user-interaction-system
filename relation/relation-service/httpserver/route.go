@@ -3,7 +3,8 @@ package httpserver
 import (
 	"relation-service/httpserver/controller"
 	"relation-service/httpserver/middleware"
-	"relation-service/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/gin-gonic/gin"
 )

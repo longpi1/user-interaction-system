@@ -1,10 +1,11 @@
 package service
 
 import (
-	"comment-service/libary/log"
 	"comment-service/model/dao/cache"
 	"comment-service/model/dao/db/model"
 	"comment-service/model/data"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func CommentHighLight(param model.CommentParamsHighLight) error {

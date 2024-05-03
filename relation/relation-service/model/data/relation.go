@@ -3,11 +3,13 @@ package data
 import (
 	"fmt"
 	"relation-service/libary/conf"
-	"relation-service/libary/log"
-	"relation-service/libary/utils"
 	"relation-service/model/dao/cache"
 	"relation-service/model/dao/db"
 	"relation-service/model/dao/db/model"
+
+	"github.com/longpi1/gopkg/libary/utils"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func Follow(params model.RelationParams) error {

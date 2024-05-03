@@ -4,10 +4,12 @@ import (
 	"comment-service/bootstrap"
 	"comment-service/httpserver"
 	"comment-service/libary/conf"
-	"comment-service/libary/log"
-	"comment-service/libary/utils"
 	localcache "comment-service/model/dao/cache/local_cache"
 	"comment-service/model/dao/cache/redis"
+
+	"github.com/longpi1/gopkg/libary/utils"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func main() {

@@ -2,9 +2,10 @@ package service
 
 import (
 	"relation-service/libary/constant"
-	"relation-service/libary/log"
 	"relation-service/model/dao/db/model"
 	"relation-service/model/data"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func Relation(params model.RelationParams) (err error) {

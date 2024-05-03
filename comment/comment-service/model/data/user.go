@@ -1,11 +1,13 @@
 package data
 
 import (
-	"comment-service/libary/log"
-	"comment-service/libary/utils"
 	userdao "comment-service/model/dao/db/model"
 	"errors"
 	_ "fmt"
+
+	"github.com/longpi1/gopkg/libary/utils"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func InsertUser(user *userdao.User) error {

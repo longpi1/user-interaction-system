@@ -1,8 +1,9 @@
 package pkg
 
 import (
-	"comment-service/libary/log"
 	"text/template"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 // Make sure that the template compiles during package initialization

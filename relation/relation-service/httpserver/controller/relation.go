@@ -3,10 +3,12 @@ package controller
 import (
 	"encoding/json"
 	"relation-service/libary/constant"
-	"relation-service/libary/log"
-	"relation-service/libary/utils"
 	"relation-service/model/dao/db/model"
 	"relation-service/model/service"
+
+	"github.com/longpi1/gopkg/libary/utils"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/gin-gonic/gin"
 )

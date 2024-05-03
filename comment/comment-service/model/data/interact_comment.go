@@ -2,9 +2,10 @@ package data
 
 import (
 	"comment-service/libary/constant"
-	"comment-service/libary/log"
 	"comment-service/model/dao/db/model"
 	"errors"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func CommentInteract(param model.CommentParamsInteract) error {

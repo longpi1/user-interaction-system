@@ -2,11 +2,12 @@ package bootstrap
 
 import (
 	"relation-service/libary/conf"
-	"relation-service/libary/log"
 	localcache "relation-service/model/dao/cache/local_cache"
 	"relation-service/model/dao/cache/redis"
 	"relation-service/model/dao/db"
 	"relation-service/model/dao/db/model"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func Boostrap(config *conf.WebConfig) error {

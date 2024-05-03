@@ -4,7 +4,8 @@ import (
 	"sync"
 
 	"comment-job/libary/conf"
-	"comment-job/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"gorm.io/gorm"
 )

@@ -1,11 +1,12 @@
 package cache
 
 import (
-	"relation-service/libary/log"
 	localcache "relation-service/model/dao/cache/local_cache"
 	"relation-service/model/dao/cache/redis"
 	"relation-service/model/dao/db/model"
 	"time"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func GetRelationCountFromLocalCache(key string) (response model.RelationCountResponse, err error) {

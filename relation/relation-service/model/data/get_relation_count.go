@@ -2,9 +2,10 @@ package data
 
 import (
 	"fmt"
-	"relation-service/libary/log"
 	"relation-service/model/dao/cache"
 	"relation-service/model/dao/db/model"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func GetRelationCount(params model.RelationCountParams) (countResponse model.RelationCountResponse, err error) {

@@ -70,7 +70,7 @@ type Relation struct {
     ResourceID int64 `json:"resource_id"` // 被关注的资源或者人
     Platform int64 `json:"platform"` // 相关的平台
     Status     int   `json:"status"`   // 状态
-    Type     int     `gorm:"comment:'类型'"`    // 类型
+    Type     int     `gorm:"queue:'类型'"`    // 类型
     CreatedAt  int64 `json:"created_at"` // 发起关注时间
     UpdateAt  int64 `json:"update_at"`
     Ext       string  `json:"ext"` // 额外信息

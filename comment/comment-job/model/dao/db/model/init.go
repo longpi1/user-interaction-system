@@ -1,8 +1,9 @@
 package model
 
 import (
-	"comment-job/libary/log"
 	"comment-job/model/dao/db"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func InitTable() error {

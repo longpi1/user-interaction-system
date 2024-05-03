@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"relation-service/libary/log"
 	"relation-service/model/dao/cache/redis"
 	"time"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	redis2 "github.com/go-redis/redis"
 )

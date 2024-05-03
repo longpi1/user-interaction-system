@@ -3,8 +3,9 @@ package queue
 import (
 	"context"
 	"fmt"
-	"relation-service/libary/log"
 	"time"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/IBM/sarama"
 )

@@ -4,7 +4,8 @@ import (
 	"sync"
 
 	"relation-service/libary/conf"
-	"relation-service/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"gorm.io/gorm"
 )

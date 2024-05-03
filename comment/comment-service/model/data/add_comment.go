@@ -1,9 +1,11 @@
 package data
 
 import (
-	"comment-service/libary/log"
-	"comment-service/libary/utils"
 	"comment-service/model/dao/db/model"
+
+	"github.com/longpi1/gopkg/libary/utils"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"gorm.io/gorm"
 )

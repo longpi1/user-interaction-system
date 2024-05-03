@@ -1,8 +1,9 @@
 package model
 
 import (
-	"relation-service/libary/log"
 	"relation-service/model/dao/db"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func InitTable() error {

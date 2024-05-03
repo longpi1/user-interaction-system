@@ -3,8 +3,8 @@ package dao
 import (
 	"sync"
 
-	_ "comment-service/model/dao/cache"
-	_ "comment-service/model/dao/db"
+	_ "queue-service/model/dao/cache"
+	_ "queue-service/model/dao/db"
 
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"

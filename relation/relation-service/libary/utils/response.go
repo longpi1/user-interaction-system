@@ -2,7 +2,8 @@ package utils
 
 import (
 	"net/http"
-	"relation-service/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"comment-job/libary/utils"
+	"github.com/longpi1/gopkg/libary/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/troian/healthcheck"

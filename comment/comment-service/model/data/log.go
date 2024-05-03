@@ -3,8 +3,9 @@ package data
 import (
 	"errors"
 
-	"comment-service/libary/log"
 	"comment-service/model/dao/db/model"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func SearchLogs(param model.LogParam) ([]model.Log, error) {

@@ -3,7 +3,8 @@ package httpserver
 import (
 	"comment-service/httpserver/controller"
 	"comment-service/httpserver/middleware"
-	"comment-service/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -64,7 +65,7 @@ func setBaseRouter(router *gin.Engine) {
 }
 
 func setCommentRouter(router *gin.Engine) {
-	groupRouter := router.Group("/v1/comment")
+	groupRouter := router.Group("/v1/queue")
 	// 认证
 	groupRouter.Use(middleware.Auth())
 	{

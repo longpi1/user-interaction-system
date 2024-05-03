@@ -2,8 +2,9 @@ package model
 
 import (
 	"comment-service/libary/constant"
-	"comment-service/libary/log"
 	"comment-service/model/dao/db"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"gorm.io/gorm"
 )

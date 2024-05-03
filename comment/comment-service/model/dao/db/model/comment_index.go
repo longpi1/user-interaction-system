@@ -16,24 +16,24 @@ floor 记录评论层级，也需要更新主题表中的楼层数，
 */
 type CommentIndex struct {
 	gorm.Model
-	ResourceID      int64  `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
-	ResourceType    string `gorm:"comment:'评论所关联的资源类型'"`       // 评论所关联的资源类型
-	UserID          int64  `gorm:"index;comment:'发表者id'"`      // 发表者id
-	UserName        string `gorm:"comment:'发表者名称'"`            // 发表者名称
-	IP              string `gorm:"comment:'发表者ip'"`            // 发表者ip
-	IPArea          string `gorm:"comment:'ip属地'"`             // ip属地
-	PID             int64  `gorm:"comment:'父评论ID'"`            // 父评论 ID
-	Type            uint   `gorm:"comment:'评论类型'"`             // 评论类型，文字评论、图评等
-	IsCollapsed     bool   `gorm:"default:false;comment:'折叠'"` // 折叠
-	IsPending       bool   `gorm:"default:false;comment:'待审'"` // 待审
-	IsPinned        bool   `gorm:"default:false;comment:'置顶'"` // 置顶
-	IsHighLight     bool   `gorm:"default:false;comment:'高亮'"` // 高亮
-	State           uint   `gorm:"comment:'状态'"`               // 状态
-	LikeCount       uint   `gorm:"comment:'点赞数'"`              // 点赞数
-	HateCount       uint   `gorm:"comment:'点踩数'"`              // 点踩数
-	ReplyCount      uint   `gorm:"comment:'回复数'"`              // 回复数
-	RootReplayCount uint   `gorm:"comment:'根评论回复数'"`           // 根评论回复数
-	FloorCount      uint   `gorm:"comment:'评论层数'"`             // 评论层数
+	ResourceID      int64  `gorm:"index;queue:'评论所关联的资源id'"` // 评论所关联的资源id
+	ResourceType    string `gorm:"queue:'评论所关联的资源类型'"`       // 评论所关联的资源类型
+	UserID          int64  `gorm:"index;queue:'发表者id'"`      // 发表者id
+	UserName        string `gorm:"queue:'发表者名称'"`            // 发表者名称
+	IP              string `gorm:"queue:'发表者ip'"`            // 发表者ip
+	IPArea          string `gorm:"queue:'ip属地'"`             // ip属地
+	PID             int64  `gorm:"queue:'父评论ID'"`            // 父评论 ID
+	Type            uint   `gorm:"queue:'评论类型'"`             // 评论类型，文字评论、图评等
+	IsCollapsed     bool   `gorm:"default:false;queue:'折叠'"` // 折叠
+	IsPending       bool   `gorm:"default:false;queue:'待审'"` // 待审
+	IsPinned        bool   `gorm:"default:false;queue:'置顶'"` // 置顶
+	IsHighLight     bool   `gorm:"default:false;queue:'高亮'"` // 高亮
+	State           uint   `gorm:"queue:'状态'"`               // 状态
+	LikeCount       uint   `gorm:"queue:'点赞数'"`              // 点赞数
+	HateCount       uint   `gorm:"queue:'点踩数'"`              // 点踩数
+	ReplyCount      uint   `gorm:"queue:'回复数'"`              // 回复数
+	RootReplayCount uint   `gorm:"queue:'根评论回复数'"`           // 根评论回复数
+	FloorCount      uint   `gorm:"queue:'评论层数'"`             // 评论层数
 }
 
 // TableName 自定义表名

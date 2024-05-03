@@ -2,12 +2,14 @@ package main
 
 import (
 	"comment-job/bootstrap"
+	"comment-job/httpserver"
 	"comment-job/libary/conf"
 	"comment-job/model/dao/cache/redis"
-
-	"github.com/longpi1/gopkg/libary/utils"
+	"context"
 
 	"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/queue"
+	"github.com/longpi1/gopkg/libary/utils"
 )
 
 func main() {
@@ -18,6 +20,11 @@ func main() {
 	if err != nil {
 		log.Fatal("boostrap fail", err)
 	}
+	// 启动http服务路由
+	httpserver.SetRouter(config.AppConfig.Port)
+
+	// 启动队列进行消费
+	queue.StartConsumersListener(context.Background())
 
 	// 优雅关闭
 	utils.NewHook().Close(

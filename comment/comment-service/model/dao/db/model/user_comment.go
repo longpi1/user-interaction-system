@@ -13,9 +13,9 @@ UserComment：用户评论相关表
 */
 type UserComment struct {
 	gorm.Model
-	UserID       uint `gorm:"index;comment:'发表者id'"` //  发表者id
-	PublishCount uint `gorm:"comment:'发表评论数量'"`      // 发表评论数量
-	ReceiveCount uint `gorm:"comment:'收到评论数量'"`      // 收到评论数量
+	UserID       uint `gorm:"index;queue:'发表者id'"` //  发表者id
+	PublishCount uint `gorm:"queue:'发表评论数量'"`      // 发表评论数量
+	ReceiveCount uint `gorm:"queue:'收到评论数量'"`      // 收到评论数量
 }
 
 // TableName 自定义表名

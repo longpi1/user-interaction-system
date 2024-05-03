@@ -11,18 +11,18 @@ import (
 type Message struct {
 	gorm.Model
 	FromId        int64  `gorm:"not null" json:"fromId" form:"fromId"` // 消息的资源id
-	ResourceId    uint   `gorm:"comment:'资源id'"`                       // 评论所关联的资源id
-	ResourceTitle string `gorm:"comment:'资源标题'"`                       // 资源的title
-	FromSource    string `gorm:"comment:'来源'"`
+	ResourceId    uint   `gorm:"queue:'资源id'"`                         // 评论所关联的资源id
+	ResourceTitle string `gorm:"queue:'资源标题'"`                         // 资源的title
+	FromSource    string `gorm:"queue:'来源'"`
 	FromUserID    int64  `gorm:"not null" json:"fromUserId" form:"fromUserId"`                    // 消息发送人id
 	ToUserId      int64  `gorm:"not null;index:idx_message_user_id;" json:"userId" form:"userId"` // 用户编号(消息接收人)
 	Title         string `gorm:"size:1024" json:"title" form:"title"`                             // 消息标题
 	Content       string `gorm:"type:text;not null" json:"content" form:"content"`                // 消息内容
 	QuoteContent  string `gorm:"type:text" json:"quoteContent" form:"quoteContent"`               // 引用内容
 	Type          int    `gorm:"type:int(11);not null" json:"type" form:"type"`                   // 消息类型
-	Platform      string `gorm:"comment:'平台'"`
+	Platform      string `gorm:"queue:'平台'"`
 	ExtraData     string `gorm:"type:text" json:"extraData" form:"extraData"` // 扩展数据
-	Owner         string `gorm:"comment:'操作者名称'"`
+	Owner         string `gorm:"queue:'操作者名称'"`
 	Status        int    `gorm:"type:int(11);not null" json:"status" form:"status"` // 状态：0：未读、1：已读
 }
 

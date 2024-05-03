@@ -1,7 +1,7 @@
 package conf
 
 import (
-	"comment-service/libary/log"
+	"github.com/longpi1/gopkg/libary/log"
 	"os"
 	"time"
 

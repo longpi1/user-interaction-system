@@ -3,9 +3,10 @@ package service
 import (
 	"errors"
 
-	"comment-service/libary/utils"
 	userdao "comment-service/model/dao/db/model"
 	userservice "comment-service/model/data"
+
+	"github.com/longpi1/gopkg/libary/utils"
 )
 
 func Login(user userdao.User) error {

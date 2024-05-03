@@ -3,7 +3,8 @@ package httpserver
 import (
 	"comment-job/httpserver/controller"
 	"comment-job/httpserver/middleware"
-	"comment-job/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"

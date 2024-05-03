@@ -5,7 +5,8 @@ import (
 	"time"
 
 	"relation-service/libary/conf"
-	"relation-service/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/allegro/bigcache"
 )

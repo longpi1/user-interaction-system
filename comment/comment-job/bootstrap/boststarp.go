@@ -2,10 +2,11 @@ package bootstrap
 
 import (
 	"comment-job/libary/conf"
-	"comment-job/libary/log"
 	localcache "comment-job/model/dao/cache/local_cache"
 	"comment-job/model/dao/cache/redis"
 	"comment-job/model/dao/db"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func Boostrap(config *conf.WebConfig) error {

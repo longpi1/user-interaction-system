@@ -3,10 +3,11 @@ package event
 import (
 	"comment-job/libary/constant"
 	"comment-job/libary/event"
-	"comment-job/libary/log"
 	"comment-job/libary/msg"
 	"comment-job/model/dao/db/model"
 	"reflect"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func init() {
@@ -81,7 +82,7 @@ func handleReplyMsg(comment *model.CommentIndex, commentMsg *CommentMsg) {
 		return
 	}
 
-	//repliedContent, err := model.FindCommentContentByCommentId(comment.ID)
+	//repliedContent, err := model.FindCommentContentByCommentId(queue.ID)
 	//if err != nil {
 	//	log.Error("数据库获取评论内容失败： %v", err)
 	//}
@@ -104,7 +105,7 @@ func handleQuoteMsg(comment *model.CommentIndex, commentMsg *CommentMsg) {
 	if from == to {
 		return
 	}
-	//repliedContent, err := model.FindCommentContentByCommentId(comment.ID)
+	//repliedContent, err := model.FindCommentContentByCommentId(queue.ID)
 	//if err != nil {
 	//	log.Error("数据库获取评论内容失败： %v", err)
 	//}

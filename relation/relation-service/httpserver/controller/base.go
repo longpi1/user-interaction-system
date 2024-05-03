@@ -2,7 +2,8 @@ package controller
 
 import (
 	"relation-service/libary/conf"
-	"relation-service/libary/log"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func VerifyTypeAndPlatform(relationType int, platform int) bool {

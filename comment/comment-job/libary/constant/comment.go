@@ -11,7 +11,7 @@ const (
 	// ResourceVideo 视频
 	ResourceVideo = "video"
 	// ResourceComment 评论
-	ResourceComment = "comment"
+	ResourceComment = "queue"
 )
 
 // 状态相关数据常量

@@ -1,8 +1,9 @@
 package middleware
 
 import (
-	"comment-service/libary/log"
 	"net/http"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/gin-gonic/gin"
 )

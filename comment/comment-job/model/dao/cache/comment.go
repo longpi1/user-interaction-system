@@ -1,10 +1,11 @@
 package cache
 
 import (
-	"comment-job/libary/log"
 	"comment-job/model/dao/cache/redis"
 	"comment-job/model/dao/db/model"
 	"time"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func GetCommentListFromRedisCache(key string) (response model.CommentListResponse, err error) {

@@ -10,12 +10,12 @@ import (
 // RelationCount 用户关注数/粉丝数表
 type RelationCount struct {
 	gorm.Model
-	ResourceId  int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;comment:'资源/用户id'"` // 资源/用户id
-	FansCount   int64  `gorm:"comment:'粉丝数'"`                                                              // 粉丝数
-	FollowCount int64  `gorm:"comment:'关注数'"`                                                              // 关注数
-	Platform    int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;comment:'相关的平台d'"`  // 相关的平台
-	Type        int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;comment:'资源类型'"`    // 资源类型
-	Ext         string `gorm:"comment:'额外信息'"`                                                             // 额外信息`
+	ResourceId  int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;queue:'资源/用户id'"` // 资源/用户id
+	FansCount   int64  `gorm:"queue:'粉丝数'"`                                                              // 粉丝数
+	FollowCount int64  `gorm:"queue:'关注数'"`                                                              // 关注数
+	Platform    int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;queue:'相关的平台d'"`  // 相关的平台
+	Type        int64  `gorm:"uniqueIndex:idx_relation_count_resource_id_platform_type;queue:'资源类型'"`    // 资源类型
+	Ext         string `gorm:"queue:'额外信息'"`                                                             // 额外信息`
 }
 
 // TableName 自定义表名

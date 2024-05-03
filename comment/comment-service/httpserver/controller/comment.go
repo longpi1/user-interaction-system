@@ -2,10 +2,12 @@ package controller
 
 import (
 	"comment-service/libary/constant"
-	"comment-service/libary/log"
-	"comment-service/libary/utils"
 	"comment-service/model/dao/db/model"
 	"comment-service/model/service"
+
+	"github.com/longpi1/gopkg/libary/utils"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"

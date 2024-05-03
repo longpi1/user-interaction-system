@@ -2,8 +2,9 @@ package conf
 
 import (
 	"os"
-	"relation-service/libary/log"
 	"time"
+
+	"github.com/longpi1/gopkg/libary/log"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"

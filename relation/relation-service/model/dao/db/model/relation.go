@@ -10,13 +10,13 @@ import (
 // Relation 关系信息表
 type Relation struct {
 	gorm.Model
-	Source     string `gorm:"size:255;comment:'来源'"`                                                           //来源
-	UID        int64  `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;comment:'用户id，也就是发起关注行为的用户id'"` // 用户id，也就是发起关注行为的用户id
-	ResourceID int64  `gorm:"index;comment:'被关注的资源或者人id'"`                                                     // 被关注的资源或者人id
-	Platform   int    `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;comment:'相关的平台'"`               // 相关的平台
-	Status     int    `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;comment:'状态， 0关注，1互相关注， 2拉黑'"`  // 状态 0关注，1互相关注， 2拉黑
-	Type       int    `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;comment:'类型'"`                  // 类型
-	Ext        string `gorm:"comment:'额外信息'"`                                                                  // 额外信息
+	Source     string `gorm:"size:255;queue:'来源'"`                                                           //来源
+	UID        int64  `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;queue:'用户id，也就是发起关注行为的用户id'"` // 用户id，也就是发起关注行为的用户id
+	ResourceID int64  `gorm:"index;queue:'被关注的资源或者人id'"`                                                     // 被关注的资源或者人id
+	Platform   int    `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;queue:'相关的平台'"`               // 相关的平台
+	Status     int    `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;queue:'状态， 0关注，1互相关注， 2拉黑'"`  // 状态 0关注，1互相关注， 2拉黑
+	Type       int    `gorm:"uniqueIndex:idx_relation_uid_platform_type_status;queue:'类型'"`                  // 类型
+	Ext        string `gorm:"queue:'额外信息'"`                                                                  // 额外信息
 }
 
 // TableName 自定义表名
