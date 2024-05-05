@@ -1,6 +1,7 @@
-package queue
+package comment
 
 import (
+	"comment-job/libary/conf"
 	"context"
 
 	"github.com/longpi1/gopkg/libary/queue"
@@ -9,18 +10,14 @@ import (
 var commentQueue = CommentQueue{}
 
 type CommentQueue struct {
-	TopicName string
 }
 
 func (queue CommentQueue) GetTopic() string {
-	return ""
+	topicName := conf.GetConfig().QueueConfig.TopicName
+	return topicName
 }
 
 func (queue CommentQueue) Handle(ctx context.Context, msg queue.Msg) (err error) {
 	// todo
 	return err
-}
-
-func Register() {
-	queue.RegisterConsumer(commentQueue)
 }

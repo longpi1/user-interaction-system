@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: queue-service
+  name: comment-service
   labels:
-    app: queue-service
+    app: comment-service
     env: prod
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: queue-service
+      app: comment-service
   template:
     metadata:
       labels:
-        app: queue-service
+        app: comment-service
         env: prod
     spec:
       containers:
-        - name: queue-service
-          image: longping1999/queue-service
+        - name: comment-service
+          image: longping1999/comment-service
           ports:
             - containerPort: 8080
           env:

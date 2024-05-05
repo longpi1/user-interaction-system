@@ -82,7 +82,7 @@ func handleReplyMsg(comment *model.CommentIndex, commentMsg *CommentMsg) {
 		return
 	}
 
-	//repliedContent, err := model.FindCommentContentByCommentId(queue.ID)
+	//repliedContent, err := model.FindCommentContentByCommentId(comment.ID)
 	//if err != nil {
 	//	log.Error("数据库获取评论内容失败： %v", err)
 	//}
@@ -105,7 +105,7 @@ func handleQuoteMsg(comment *model.CommentIndex, commentMsg *CommentMsg) {
 	if from == to {
 		return
 	}
-	//repliedContent, err := model.FindCommentContentByCommentId(queue.ID)
+	//repliedContent, err := model.FindCommentContentByCommentId(comment.ID)
 	//if err != nil {
 	//	log.Error("数据库获取评论内容失败： %v", err)
 	//}

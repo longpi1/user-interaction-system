@@ -102,13 +102,13 @@ func NewProducer(groupName string) (client Producer, err error) {
 	switch config.Driver {
 	case constant.RocketMqName:
 		if len(config.Rocket.Address) == 0 {
-			err = fmt.Errorf("queue rocketmq address is not support")
+			err = fmt.Errorf("comment rocketmq address is not support")
 			return
 		}
 		client, err = RegisterRocketProducer(config.Rocket.Address, groupName, config.Retry)
 	case constant.KafkaMqName:
 		if len(config.Kafka.Address) == 0 {
-			err = fmt.Errorf("queue kafka address is not support")
+			err = fmt.Errorf("comment kafka address is not support")
 			return
 		}
 		client, err = RegisterKafkaProducer(KafkaConfig{
@@ -124,12 +124,12 @@ func NewProducer(groupName string) (client Producer, err error) {
 		}
 	case constant.PulsarMqName:
 		if len(config.Pulsar.Address) == 0 {
-			err = fmt.Errorf("queue pulsar address is not support")
+			err = fmt.Errorf("comment pulsar address is not support")
 			return
 		}
 		client, err = RegisterPulsarProducer(config.Pulsar)
 	default:
-		err = fmt.Errorf("queue driver is not support")
+		err = fmt.Errorf("comment driver is not support")
 	}
 
 	if err != nil {
@@ -152,13 +152,13 @@ func NewConsumer(groupName string) (client Consumer, err error) {
 	switch config.Driver {
 	case constant.RocketMqName:
 		if len(config.Rocket.Address) == 0 {
-			err = fmt.Errorf("queue.rocketmq.address is empty")
+			err = fmt.Errorf("comment.rocketmq.address is empty")
 			return
 		}
 		client, err = RegisterRocketConsumer(config.Rocket.Address, groupName)
 	case constant.KafkaMqName:
 		if len(config.Kafka.Address) == 0 {
-			err = fmt.Errorf("queue kafka address is not support")
+			err = fmt.Errorf("comment kafka address is not support")
 			return
 		}
 
@@ -187,12 +187,12 @@ func NewConsumer(groupName string) (client Consumer, err error) {
 		}
 	case constant.PulsarMqName:
 		if len(config.Pulsar.Address) == 0 {
-			err = fmt.Errorf("queue pulsar address is not support")
+			err = fmt.Errorf("comment pulsar address is not support")
 			return
 		}
 		client, err = RegisterPulsarConsumer(config.Pulsar)
 	default:
-		err = fmt.Errorf("queue driver is not support")
+		err = fmt.Errorf("comment driver is not support")
 	}
 
 	if err != nil {

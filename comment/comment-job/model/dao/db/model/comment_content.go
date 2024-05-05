@@ -13,16 +13,16 @@ CommentContent：评论内容表
 */
 type CommentContent struct {
 	gorm.Model
-	CommentIndex CommentIndex `gorm:"foreignKey:CommentId;queue:'主键'"`
-	CommentId    uint         `gorm:"queue:'评论id'"`             // 评论id
-	ResourceId   uint         `gorm:"index;queue:'评论所关联的资源id'"` // 评论所关联的资源id
-	Content      string       `gorm:"queue:'文本信息'"`             // 文本信息
-	ContentMeta  string       `gorm:"queue:'存储一些关键的附属信息'"`      // 存储一些关键的附属信息
-	ContentRich  string       `gorm:"queue:'富文本'"`              // 富文本
-	Pid          uint         `gorm:"queue:'父评论id'"`            // 父评论 ID
-	UserID       uint         `gorm:"index;queue:'发表者id'"`      // 发表者id
-	UserName     string       `gorm:"queue:'发表者名称'"`            // 发表者名称
-	Ext          string       `gorm:"queue:'额外信息存储'"`           // 额外信息存储
+	CommentIndex CommentIndex `gorm:"foreignKey:CommentId;comment:'主键'"`
+	CommentId    uint         `gorm:"comment:'评论id'"`             // 评论id
+	ResourceId   uint         `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
+	Content      string       `gorm:"comment:'文本信息'"`             // 文本信息
+	ContentMeta  string       `gorm:"comment:'存储一些关键的附属信息'"`      // 存储一些关键的附属信息
+	ContentRich  string       `gorm:"comment:'富文本'"`              // 富文本
+	Pid          uint         `gorm:"comment:'父评论id'"`            // 父评论 ID
+	UserID       uint         `gorm:"index;comment:'发表者id'"`      // 发表者id
+	UserName     string       `gorm:"comment:'发表者名称'"`            // 发表者名称
+	Ext          string       `gorm:"comment:'额外信息存储'"`           // 额外信息存储
 }
 
 // TableName 自定义表名

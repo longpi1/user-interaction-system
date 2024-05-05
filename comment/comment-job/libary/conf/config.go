@@ -2,17 +2,15 @@ package conf
 
 import (
 	"os"
-	"time"
 
 	"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/queue"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
 var conf *WebConfig
-
-var mapConfig *MapConfig
 
 const (
 	SchemaTypeDev    = "dev"
@@ -42,14 +40,32 @@ type WebConfig struct {
 		Db       int    `json:"db"`
 		Password string `json:"password"`
 	} `json:"redis" mapstructure:"redis"`
-	LocalCache struct {
-		EvictionTime time.Duration `json:"eviction_time" mapstructure:"eviction_time"`
-	} `json:"local_cache" mapstructure:"local_cache"`
+	QueueConfig struct {
+		TopicName string       `json:"topic_name"`
+		Config    queue.Config `json:"config"`
+	} `json:"comment" mapstructure:"comment"`
 	AppConfig struct {
 		Port        string `json:"port"`
 		Debug       bool   `json:"debug"`
 		LogFilePath string `json:"log_path" mapstructure:"log_path"`
 	} `json:"app" mapstructure:"app"`
+}
+
+type RocketConf struct {
+	Address  []string `json:"address"`
+	LogLevel string   `json:"logLevel"`
+}
+
+type PulsarConf struct {
+	Address  []string `json:"address"`
+	LogLevel string   `json:"logLevel"`
+}
+
+type KafkaConf struct {
+	Address       []string `json:"address"`
+	Version       string   `json:"version"`
+	RandClient    bool     `json:"randClient"`
+	MultiConsumer bool     `json:"multiConsumer"`
 }
 
 type MapConfig struct {
@@ -64,15 +80,6 @@ func GetConfig() *WebConfig {
 		initWebConfig(filePath)
 	}
 	return conf
-}
-
-func GetMapConfig() *MapConfig {
-	if mapConfig == nil {
-		filePath := getFilePath()
-		// 初始化映射配置文件
-		initMapConfig(filePath)
-	}
-	return mapConfig
 }
 
 func getFilePath() string {
@@ -108,27 +115,6 @@ func initWebConfig(appFullPath string) {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		if err := viper.Unmarshal(&conf); err != nil {
-			log.Fatal("解析文件失败: ", err)
-		}
-	})
-}
-
-func initMapConfig(appFullPath string) {
-	// 解析 config
-	viper.SetConfigName("mapping")
-	viper.AddConfigPath(appFullPath)
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatal("解析文件失败: ", err)
-	}
-	if err := viper.Unmarshal(&mapConfig); err != nil {
-		log.Fatal("解析文件失败: ", err)
-	}
-	// 监听配置更新
-	viper.WatchConfig()
-	viper.OnConfigChange(func(e fsnotify.Event) {
-		if err := viper.Unmarshal(&mapConfig); err != nil {
 			log.Fatal("解析文件失败: ", err)
 		}
 	})

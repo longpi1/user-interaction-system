@@ -9,16 +9,16 @@ import (
 
 type Resource struct {
 	gorm.Model
-	Nid          string `gorm:"index;queue:'资源的nid'"`
-	Title        string `gorm:"index;queue:'资源标题'"`
-	SubTitle     string `gorm:"index;queue:'资源子标题'"`
-	Content      string `gorm:"index;queue:'资源内容'"`
-	CommentCount string `gorm:"index;queue:'资源评论数量'"`
-	UserID       uint   `gorm:"index;queue:'发表者id'"` // 发表者id
-	UserName     string `gorm:"queue:'发表者名称'"`       // 发表者名称
-	IP           string `gorm:"queue:'发表者ip'"`       // 发表者ip
-	IPArea       string `gorm:"queue:'ip属地'"`        // ip属地
-	Status       string `gorm:"index;queue:'资源当前状态'"`
+	Nid          string `gorm:"index;comment:'资源的nid'"`
+	Title        string `gorm:"index;comment:'资源标题'"`
+	SubTitle     string `gorm:"index;comment:'资源子标题'"`
+	Content      string `gorm:"index;comment:'资源内容'"`
+	CommentCount string `gorm:"index;comment:'资源评论数量'"`
+	UserID       uint   `gorm:"index;comment:'发表者id'"` // 发表者id
+	UserName     string `gorm:"comment:'发表者名称'"`       // 发表者名称
+	IP           string `gorm:"comment:'发表者ip'"`       // 发表者ip
+	IPArea       string `gorm:"comment:'ip属地'"`        // ip属地
+	Status       string `gorm:"index;comment:'资源当前状态'"`
 }
 
 type ResourceParamsList struct {

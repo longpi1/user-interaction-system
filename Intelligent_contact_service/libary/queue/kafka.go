@@ -41,7 +41,7 @@ func (r *Kafka) SendByteMsg(topic string, body []byte) (msg Msg, err error) {
 	}
 
 	if r.producerIns == nil {
-		err = fmt.Errorf("queue kafka producerIns is nil")
+		err = fmt.Errorf("comment kafka producerIns is nil")
 		return
 	}
 
@@ -76,7 +76,7 @@ func (r *Kafka) SendDelayMsg(topic string, body string, delaySecond int64) (msg 
 // ListenReceiveMsgDo 消费数据
 func (r *Kafka) ListenReceiveMsgDo(topic string, receiveDo func(msg Msg)) (err error) {
 	if r.consumerIns == nil {
-		return fmt.Errorf("queue kafka consumer not register")
+		return fmt.Errorf("comment kafka consumer not register")
 	}
 
 	consumer := KaConsumer{

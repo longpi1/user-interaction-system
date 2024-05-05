@@ -9,7 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/jinzhu/gorm v1.9.16
-	github.com/longpi1/gopkg v0.0.0-20240502085530-495b32733a48
+	github.com/longpi1/gopkg v0.0.0-20240504114709-fd429ace7da9
 	github.com/mlogclub/simple v1.2.25
 	github.com/panjf2000/ants/v2 v2.9.1
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5

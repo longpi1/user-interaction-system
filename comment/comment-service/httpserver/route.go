@@ -65,7 +65,7 @@ func setBaseRouter(router *gin.Engine) {
 }
 
 func setCommentRouter(router *gin.Engine) {
-	groupRouter := router.Group("/v1/queue")
+	groupRouter := router.Group("/v1/comment")
 	// 认证
 	groupRouter.Use(middleware.Auth())
 	{

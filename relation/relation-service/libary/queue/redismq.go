@@ -157,7 +157,7 @@ func (r *RedisMq) ListenReceiveMsgDo(topic string, receiveDo func(mqMsg Msg)) (e
 
 // 生成队列key
 func (r *RedisMq) genKey(groupName string, topic string) string {
-	return fmt.Sprintf("queue:%s_%s", groupName, topic)
+	return fmt.Sprintf("comment:%s_%s", groupName, topic)
 }
 
 func (r *RedisMq) loopReadQueue(key string) (msgList []Msg) {
