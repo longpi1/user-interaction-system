@@ -98,7 +98,7 @@ func DeleteChildCommentsWithTx(tx *gorm.DB, commentID uint) error {
 	// 遍历子评论
 	for _, childComment := range childComments {
 		// 删除子评论的内容
-		if err := DeleteCommentContentWithTx(tx, childComment.ID); err != nil {
+		if err := DeleteCommentContentWithTx(tx, int64(childComment.ID)); err != nil {
 			return err
 		}
 

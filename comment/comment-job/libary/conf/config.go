@@ -41,36 +41,14 @@ type WebConfig struct {
 		Password string `json:"password"`
 	} `json:"redis" mapstructure:"redis"`
 	QueueConfig struct {
-		TopicName string       `json:"topic_name"`
+		TopicName string       `json:"topicName"`
 		Config    queue.Config `json:"config"`
-	} `json:"comment" mapstructure:"comment"`
+	} `json:"queue" mapstructure:"queue"`
 	AppConfig struct {
 		Port        string `json:"port"`
 		Debug       bool   `json:"debug"`
 		LogFilePath string `json:"log_path" mapstructure:"log_path"`
 	} `json:"app" mapstructure:"app"`
-}
-
-type RocketConf struct {
-	Address  []string `json:"address"`
-	LogLevel string   `json:"logLevel"`
-}
-
-type PulsarConf struct {
-	Address  []string `json:"address"`
-	LogLevel string   `json:"logLevel"`
-}
-
-type KafkaConf struct {
-	Address       []string `json:"address"`
-	Version       string   `json:"version"`
-	RandClient    bool     `json:"randClient"`
-	MultiConsumer bool     `json:"multiConsumer"`
-}
-
-type MapConfig struct {
-	TypeMap     map[string]int `json:"type_map"  mapstructure:"type_map"`
-	PlatformMap map[string]int `json:"platform_map"  mapstructure:"platform_map"`
 }
 
 func GetConfig() *WebConfig {

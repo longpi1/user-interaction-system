@@ -1,11 +1,18 @@
 package queue
 
-import "comment-job/libary/event"
+import (
+	"comment-job/job/comment"
+	"comment-job/libary/event"
+)
 
-func UpdateComment() {
-	// 发送事件
+func UpdateComment(commentInfo comment.CommentInfo) error {
+	// todo redis相关更新操作
+
+	// 发送事件，进行后置更新，消息通知等行为
 	event.Send(event.CommentUpdateEvent{
-		UserId:    userId,
-		CommentId: comment.Id,
+		UserId:     commentInfo.UserID,
+		ResourceId: commentInfo.ResourceId,
+		CommentId:  commentInfo.CommentId,
 	})
+	return nil
 }
