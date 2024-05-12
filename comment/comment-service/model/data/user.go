@@ -1,9 +1,10 @@
 package data
 
 import (
-	userdao "comment-service/model/dao/db/model"
 	"errors"
 	_ "fmt"
+
+	userdao "github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
 
 	"github.com/longpi1/gopkg/libary/utils"
 

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"comment-service/model/dao/cache"
-	"comment-service/model/dao/db/model"
-	"comment-service/model/data"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/data"
 
 	"github.com/longpi1/gopkg/libary/log"
 )

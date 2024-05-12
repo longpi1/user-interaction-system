@@ -1,6 +1,6 @@
 package data
 
-import "comment-service/model/dao/db/model"
+import "github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
 
 func CommentTop(param model.CommentParamsTop) error {
 	commentIndex, err := model.FindCommentIndexById(int(param.CommentID))

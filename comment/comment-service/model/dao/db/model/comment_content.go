@@ -1,8 +1,8 @@
 package model
 
 import (
-	"comment-service/libary/constant"
-	"comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
 
 	"gorm.io/gorm"
 )
@@ -14,13 +14,13 @@ CommentContent：评论内容表
 type CommentContent struct {
 	gorm.Model
 	CommentIndex CommentIndex `gorm:"foreignKey:CommentId;comment:'主键'"`
-	CommentId    uint         `gorm:"comment:'评论id'"`             // 评论id
-	ResourceId   uint         `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
+	CommentId    int64        `gorm:"comment:'评论id'"`             // 评论id
+	ResourceId   int64        `gorm:"index;comment:'评论所关联的资源id'"` // 评论所关联的资源id
 	Content      string       `gorm:"comment:'文本信息'"`             // 文本信息
 	ContentMeta  string       `gorm:"comment:'存储一些关键的附属信息'"`      // 存储一些关键的附属信息
 	ContentRich  string       `gorm:"comment:'富文本'"`              // 富文本
-	Pid          uint         `gorm:"comment:'父评论id'"`            // 父评论 ID
-	UserID       uint         `gorm:"index;comment:'发表者id'"`      // 发表者id
+	Pid          int64        `gorm:"comment:'父评论id'"`            // 父评论 ID
+	UserID       int64        `gorm:"index;comment:'发表者id'"`      // 发表者id
 	UserName     string       `gorm:"comment:'发表者名称'"`            // 发表者名称
 	Ext          string       `gorm:"comment:'额外信息存储'"`           // 额外信息存储
 }

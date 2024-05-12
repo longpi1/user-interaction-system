@@ -1,12 +1,13 @@
 package service
 
 import (
-	"comment-service/model/dao/cache"
 	"fmt"
 
-	"comment-service/model/dao/db"
-	"comment-service/model/dao/db/model"
-	"comment-service/model/data"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache"
+
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/data"
 )
 
 func AddComment(param model.CommentParamsAdd) error {
@@ -23,7 +24,7 @@ func AddComment(param model.CommentParamsAdd) error {
 	id, err := data.AddCommentIndex(tx, &commentIndex)
 
 	// 写入评论内容
-	commentContent.CommentId = id
+	commentContent.CommentId = int64(id)
 	err = data.AddCommentContent(tx, &commentContent)
 
 	// 更新用户评论数量

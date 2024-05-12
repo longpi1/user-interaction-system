@@ -1,9 +1,10 @@
 package cache
 
 import (
-	"comment-job/model/dao/cache/redis"
-	"comment-job/model/dao/db/model"
 	"time"
+
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/cache/redis"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db/model"
 
 	"github.com/longpi1/gopkg/libary/log"
 )

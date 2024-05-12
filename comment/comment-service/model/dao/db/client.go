@@ -3,7 +3,7 @@ package db
 import (
 	"sync"
 
-	"comment-service/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/conf"
 
 	"github.com/longpi1/gopkg/libary/log"
 

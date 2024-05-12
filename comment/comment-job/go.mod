@@ -1,4 +1,4 @@
-module comment-job
+module github.com/longpi1/user-interaction-system/comment/comment-job
 
 go 1.22.2
 

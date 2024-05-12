@@ -1,11 +1,12 @@
 package event
 
 import (
-	"comment-job/libary/constant"
-	"comment-job/libary/event"
-	"comment-job/libary/msg"
-	"comment-job/model/dao/db/model"
 	"reflect"
+
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/event"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/msg"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db/model"
 
 	"github.com/longpi1/gopkg/libary/log"
 )

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"comment-job/bootstrap"
-	"comment-job/httpserver"
-	"comment-job/job"
-	"comment-job/libary/conf"
-	"comment-job/model/dao/cache/redis"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/bootstrap"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/httpserver"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/job"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/cache/redis"
 
 	"github.com/longpi1/gopkg/libary/log"
 	"github.com/longpi1/gopkg/libary/utils"

@@ -1,8 +1,8 @@
 package data
 
 import (
-	"comment-service/model/dao/cache"
-	"comment-service/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
 )
 
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
@@ -43,7 +43,7 @@ func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, e
 
 func FormatCommentResponse(index model.CommentIndex, content model.CommentContent) model.CommentResponse {
 	return model.CommentResponse{
-		CommentId:   index.ID,
+		CommentId:   int64(index.ID),
 		ResourceId:  index.ResourceID,
 		Pid:         index.PID,
 		Type:        index.Type,

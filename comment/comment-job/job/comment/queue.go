@@ -1,11 +1,12 @@
 package comment
 
 import (
-	"comment-job/libary/conf"
 	"context"
 	"encoding/json"
 
-	service_queue "comment-job/model/service/queue"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/conf"
+
+	service_queue "github.com/longpi1/user-interaction-system/comment/comment-job/model/service/queue"
 
 	"github.com/longpi1/gopkg/libary/queue"
 )

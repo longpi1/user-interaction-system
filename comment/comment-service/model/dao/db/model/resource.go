@@ -1,8 +1,8 @@
 package model
 
 import (
-	"comment-service/libary/constant"
-	"comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
 
 	"gorm.io/gorm"
 )
@@ -14,7 +14,7 @@ type Resource struct {
 	SubTitle     string `gorm:"index;comment:'资源子标题'"`
 	Content      string `gorm:"index;comment:'资源内容'"`
 	CommentCount string `gorm:"index;comment:'资源评论数量'"`
-	UserID       uint   `gorm:"index;comment:'发表者id'"` // 发表者id
+	UserID       int64  `gorm:"index;comment:'发表者id'"` // 发表者id
 	UserName     string `gorm:"comment:'发表者名称'"`       // 发表者名称
 	IP           string `gorm:"comment:'发表者ip'"`       // 发表者ip
 	IPArea       string `gorm:"comment:'ip属地'"`        // ip属地
@@ -33,11 +33,11 @@ type ResourceParamsList struct {
 type ResourceParamsAdd struct {
 	UserName      string `form:"username"`
 	Content       string `form:"content" validate:"required"`
-	ResourceId    uint   `form:"content" validate:"required"` // 评论所关联的资源id
+	ResourceId    int64  `form:"content" validate:"required"` // 评论所关联的资源id
 	ResourceTitle string `form:"content" validate:"required"` // 资源的title
 	ContentMeta   string `form:"content_meta"`                // 存储一些关键的附属信息
-	Pid           uint   `form:"pid"`                         // 父评论 ID
-	UserID        uint   `form:"user_id" validate:"required"` //  发表者id
+	Pid           int64  `form:"pid"`                         // 父评论 ID
+	UserID        int64  `form:"user_id" validate:"required"` //  发表者id
 	Ext           string `form:"ext"`                         // 额外信息存储
 	IP            string `form:"ip"`
 	ContentRich   string `form:"content_rich"`

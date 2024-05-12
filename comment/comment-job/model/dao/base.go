@@ -3,7 +3,7 @@ package dao
 import (
 	"sync"
 
-	_ "comment-job/model/dao/db"
+	_ "github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db"
 
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"

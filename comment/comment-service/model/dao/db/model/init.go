@@ -1,7 +1,7 @@
 package model
 
 import (
-	"comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
 
 	"github.com/longpi1/gopkg/libary/log"
 )

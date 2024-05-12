@@ -1,8 +1,8 @@
 package model
 
 import (
-	"comment-service/libary/constant"
-	"comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
 
 	"gorm.io/gorm"
 )
@@ -13,9 +13,9 @@ UserComment：用户评论相关表
 */
 type UserComment struct {
 	gorm.Model
-	UserID       uint `gorm:"index;comment:'发表者id'"` //  发表者id
-	PublishCount uint `gorm:"comment:'发表评论数量'"`      // 发表评论数量
-	ReceiveCount uint `gorm:"comment:'收到评论数量'"`      // 收到评论数量
+	UserID       int64 `gorm:"index;comment:'发表者id'"` //  发表者id
+	PublishCount uint  `gorm:"comment:'发表评论数量'"`      // 发表评论数量
+	ReceiveCount uint  `gorm:"comment:'收到评论数量'"`      // 收到评论数量
 }
 
 // TableName 自定义表名

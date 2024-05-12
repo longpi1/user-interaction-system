@@ -1,12 +1,13 @@
 package service
 
 import (
-	"comment-service/model/dao/db/model"
 	"errors"
+
+	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
 )
 
 // VerifyDeletePermission 验证用户是否有权限删除评论
-func VerifyDeletePermission(commentID, userID uint) error {
+func VerifyDeletePermission(commentID, userID int64) error {
 	comment, err := model.FindCommentIndexById(int(commentID))
 	if err != nil {
 		return errors.New("获取对应评论相关信息失败")
@@ -26,7 +27,7 @@ func VerifyDeletePermission(commentID, userID uint) error {
 }
 
 // VerifyHighLightPermission 验证用户是否有权限高亮
-func VerifyHighLightPermission(commentID, userID uint) error {
+func VerifyHighLightPermission(commentID, userID int64) error {
 	comment, err := model.FindCommentIndexById(int(commentID))
 	if err != nil {
 		return errors.New("获取对应评论相关信息失败")
@@ -46,7 +47,7 @@ func VerifyHighLightPermission(commentID, userID uint) error {
 }
 
 // VerifyTopPermission 验证用户是否有权限置顶
-func VerifyTopPermission(commentID, userID uint) error {
+func VerifyTopPermission(commentID, userID int64) error {
 	comment, err := model.FindCommentIndexById(int(commentID))
 	if err != nil {
 		return errors.New("获取对应评论相关信息失败")

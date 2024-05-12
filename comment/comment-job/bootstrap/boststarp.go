@@ -1,10 +1,10 @@
 package bootstrap
 
 import (
-	"comment-job/libary/conf"
-	localcache "comment-job/model/dao/cache/local_cache"
-	"comment-job/model/dao/cache/redis"
-	"comment-job/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/conf"
+	localcache "github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/cache/local_cache"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/cache/redis"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db"
 
 	"github.com/longpi1/gopkg/libary/log"
 )

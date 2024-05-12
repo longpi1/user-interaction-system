@@ -1,10 +1,11 @@
 package event
 
 import (
-	"comment-job/model/dao/db/model"
 	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db/model"
 
 	"github.com/mlogclub/simple/common/jsons"
 )

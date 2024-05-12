@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 
-	userdao "comment-service/model/dao/db/model"
-	userservice "comment-service/model/data"
+	userdao "github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
+	userservice "github.com/longpi1/user-interaction-system/comment/comment-service/model/data"
 
 	"github.com/longpi1/gopkg/libary/utils"
 )

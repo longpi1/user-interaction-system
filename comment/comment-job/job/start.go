@@ -1,9 +1,10 @@
 package job
 
 import (
-	"comment-job/job/comment"
-	"comment-job/libary/conf"
 	"context"
+
+	"github.com/longpi1/user-interaction-system/comment/comment-job/job/comment"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/conf"
 
 	"github.com/longpi1/gopkg/libary/queue"
 )

@@ -3,7 +3,7 @@ package redis
 import (
 	"sync"
 
-	"comment-job/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/conf"
 
 	"github.com/longpi1/gopkg/libary/log"
 

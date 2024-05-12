@@ -1,8 +1,8 @@
 package model
 
 import (
-	"comment-job/libary/constant"
-	"comment-job/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db"
 
 	"github.com/jinzhu/gorm"
 )
