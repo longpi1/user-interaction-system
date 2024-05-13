@@ -4,7 +4,7 @@ import (
 	"comment-service/model/dao/db/model"
 	"errors"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment-service/libary/constant"
 
 	"github.com/longpi1/gopkg/libary/log"
 )

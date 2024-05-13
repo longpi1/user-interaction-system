@@ -4,7 +4,7 @@ import (
 	"errors"
 	_ "fmt"
 
-	userdao "github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
+	userdao "github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 
 	"github.com/longpi1/gopkg/libary/utils"
 

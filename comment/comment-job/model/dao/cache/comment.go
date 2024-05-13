@@ -3,10 +3,11 @@ package cache
 import (
 	"time"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/cache/redis"
-	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 
-	"github.com/longpi1/gopkg/libary/log"
+github.com/longpi1/user-interaction-system/comment-job"/model/dao/cache/redis"
+
+"github.com/longpi1/gopkg/libary/log"
 )
 
 func GetCommentListFromRedisCache(key string) (response model.CommentListResponse, err error) {

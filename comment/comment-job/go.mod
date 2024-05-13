@@ -1,15 +1,16 @@
-module github.com/longpi1/user-interaction-system/comment/comment-job
+module github.com/longpi1/user-interaction-system/comment-job
 
 go 1.22.2
+
+replace github.com/longpi1/user-interaction-system/comment-service => ../comment-service
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gin-contrib/cors v1.7.1
-	github.com/gin-contrib/pprof v1.4.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/jinzhu/gorm v1.9.16
 	github.com/longpi1/gopkg v0.0.0-20240504114709-fd429ace7da9
+	github.com/longpi1/user-interaction-system/comment-service v0.0.0-00010101000000-000000000000
 	github.com/mlogclub/simple v1.2.25
 	github.com/panjf2000/ants/v2 v2.9.1
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
@@ -60,7 +61,6 @@ require (
 	github.com/golang/mock v1.4.4 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect

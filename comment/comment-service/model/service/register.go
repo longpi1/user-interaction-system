@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 
-	userdao "github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
-	userdata "github.com/longpi1/user-interaction-system/comment/comment-service/model/data"
+	userdao "github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
+	userdata "github.com/longpi1/user-interaction-system/comment-service/model/data"
 )
 
 func Register(user *userdao.User) error {

@@ -1,8 +1,8 @@
 package httpserver
 
 import (
-	"github.com/longpi1/user-interaction-system/comment/comment-service/httpserver/controller"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/httpserver/middleware"
+	"github.com/longpi1/user-interaction-system/comment-service/httpserver/controller"
+	"github.com/longpi1/user-interaction-system/comment-service/httpserver/middleware"
 
 	"github.com/longpi1/gopkg/libary/log"
 

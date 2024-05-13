@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/constant"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/service"
+	"github.com/longpi1/user-interaction-system/comment-service/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment-service/model/service"
 
 	"github.com/longpi1/gopkg/libary/utils"
 

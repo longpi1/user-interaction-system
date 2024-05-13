@@ -3,10 +3,10 @@ package event
 import (
 	"reflect"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/constant"
-	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/event"
-	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/msg"
-	"github.com/longpi1/user-interaction-system/comment/comment-job/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment-job/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment-job/libary/event"
+	"github.com/longpi1/user-interaction-system/comment-job/libary/msg"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 
 	"github.com/longpi1/gopkg/libary/log"
 )
@@ -18,7 +18,7 @@ func init() {
 func addComment(comment interface{}) {
 	e := comment.(event.CommentUpdateEvent)
 
-	commentIndex, err := model.FindCommentIndexById(e.CommentId)
+	commentIndex, err := model.FindCommentIndexById(int(e.CommentId))
 	if err != nil {
 		log.Error("数据库评论查询失败，%v", comment)
 	}
@@ -122,7 +122,7 @@ func getCommentMsg(comment *model.CommentIndex) *CommentMsg {
 	switch comment.ResourceType {
 	// 如果是回复时赋值父评论消息
 	case constant.ResourceComment:
-		parentComment, err := model.FindCommentIndexById(comment.PID)
+		parentComment, err := model.FindCommentIndexById(int(comment.PID))
 		if err != nil || parentComment == nil {
 			log.Error("数据库获取父评论失败: %v", err)
 			return nil
@@ -184,7 +184,7 @@ func (c *CommentMsg) getMsgTitle() string {
 
 // msgContent 回复内容
 func (c *CommentMsg) msgContent(commentID int) string {
-	commentContent, err := model.FindCommentContentByCommentId(int64(commentID))
+	commentContent, err := model.FindCommentContentByCommentId(uint(commentID))
 	if err != nil {
 		return ""
 	}

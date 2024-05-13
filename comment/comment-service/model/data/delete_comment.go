@@ -1,8 +1,8 @@
 package data
 
 import (
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 )
 
 // DeleteComment 删除评论

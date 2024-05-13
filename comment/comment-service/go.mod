@@ -1,4 +1,4 @@
-module github.com/longpi1/user-interaction-system/comment/comment-service
+module github.com/longpi1/user-interaction-system/comment-service
 
 go 1.22.2
 

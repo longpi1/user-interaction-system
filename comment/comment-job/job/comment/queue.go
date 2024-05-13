@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/conf"
+github.com/longpi1/user-interaction-system/comment-job"/libary/conf"
 
-	service_queue "github.com/longpi1/user-interaction-system/comment/comment-job/model/service/queue"
+service_queue "github.com/longpi1/user-interaction-system/comment-job/model/service/queue"
 
-	"github.com/longpi1/gopkg/libary/queue"
+"github.com/longpi1/gopkg/libary/queue"
 )
 
 var commentQueue = CommentQueue{}

@@ -3,11 +3,11 @@ package service
 import (
 	"fmt"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/cache"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/data"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment-service/model/data"
 )
 
 func AddComment(param model.CommentParamsAdd) error {

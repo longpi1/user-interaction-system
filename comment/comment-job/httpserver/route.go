@@ -1,13 +1,12 @@
 package httpserver
 
-import (
-	"github.com/longpi1/user-interaction-system/comment/comment-job/httpserver/controller"
-	"github.com/longpi1/user-interaction-system/comment/comment-job/httpserver/middleware"
+github.com/longpi1/user-interaction-system/comment-job"/httpserver/controller"
+"github.com/longpi1/user-interaction-system/comment-job/httpserver/middleware"
 
-	"github.com/longpi1/gopkg/libary/log"
+"github.com/longpi1/gopkg/libary/log"
 
-	"github.com/gin-contrib/pprof"
-	"github.com/gin-gonic/gin"
+"github.com/gin-contrib/pprof"
+"github.com/gin-gonic/gin"
 )
 
 func SetRouter(port string) {

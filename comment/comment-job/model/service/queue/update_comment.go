@@ -1,8 +1,8 @@
 package queue
 
 import (
-	"github.com/longpi1/user-interaction-system/comment/comment-job/job/comment"
-	"github.com/longpi1/user-interaction-system/comment/comment-job/libary/event"
+	"github.com/longpi1/user-interaction-system/comment-job/job/comment"
+	"github.com/longpi1/user-interaction-system/comment-job/libary/event"
 )
 
 func UpdateComment(commentInfo comment.CommentInfo) error {

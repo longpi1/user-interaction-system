@@ -3,9 +3,9 @@ package cache
 import (
 	"time"
 
-	localcache "github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache/local_cache"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache/redis"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
+	localcache "github.com/longpi1/user-interaction-system/comment-service/model/dao/cache/local_cache"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/cache/redis"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 
 	"github.com/longpi1/gopkg/libary/log"
 )

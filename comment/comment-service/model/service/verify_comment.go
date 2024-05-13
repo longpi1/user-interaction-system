@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db/model"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 )
 
 // VerifyDeletePermission 验证用户是否有权限删除评论

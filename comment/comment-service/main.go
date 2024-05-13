@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/longpi1/user-interaction-system/comment/comment-service/bootstrap"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/httpserver"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/conf"
-	localcache "github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache/local_cache"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/cache/redis"
+	"github.com/longpi1/user-interaction-system/comment-service/bootstrap"
+	"github.com/longpi1/user-interaction-system/comment-service/httpserver"
+	"github.com/longpi1/user-interaction-system/comment-service/libary/conf"
+	localcache "github.com/longpi1/user-interaction-system/comment-service/model/dao/cache/local_cache"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/cache/redis"
 
 	"github.com/longpi1/gopkg/libary/utils"
 

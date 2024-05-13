@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/longpi1/user-interaction-system/comment/comment-service/libary/constant"
-	"github.com/longpi1/user-interaction-system/comment/comment-service/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment-service/libary/constant"
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db"
 
 	"gorm.io/gorm"
 )
@@ -71,8 +71,8 @@ func DeleteCommentIndexWithTx(tx *gorm.DB, commentID uint) error {
 	return err
 }
 
-func FindCommentIndexById(id int) (CommentIndex, error) {
-	var commentIndex CommentIndex
+func FindCommentIndexById(id int) (*CommentIndex, error) {
+	var commentIndex *CommentIndex
 	err := db.GetClient().Where(constant.WhereByCommentID, id).First(&commentIndex).Error
 	return commentIndex, err
 }
