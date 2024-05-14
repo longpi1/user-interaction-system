@@ -10,7 +10,7 @@ func CommentTop(param model.CommentParamsTop) error {
 	commentIndex.IsPinned = param.IsPinned
 
 	// 更新评论索引
-	if err := model.UpdateCommentIndex(&commentIndex); err != nil {
+	if err := model.UpdateCommentIndex(commentIndex); err != nil {
 		return err
 	}
 	return nil

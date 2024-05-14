@@ -1,11 +1,12 @@
 package bootstrap
 
-github.com/longpi1/user-interaction-system/comment-job"/libary/conf"
-localcache "github.com/longpi1/user-interaction-system/comment-job/model/dao/cache/local_cache"
-"github.com/longpi1/user-interaction-system/comment-job/model/dao/cache/redis"
-"github.com/longpi1/user-interaction-system/comment-job/model/dao/db"
+import (
+	"github.com/longpi1/user-interaction-system/comment-job/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment-job/model/dao/cache/redis"
+	"github.com/longpi1/user-interaction-system/comment-job/model/dao/db"
+	"github.com/longpi1/user-interaction-system/comment-job/model/dao/db/model"
 
-"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 func Boostrap(config *conf.WebConfig) error {
@@ -14,17 +15,13 @@ func Boostrap(config *conf.WebConfig) error {
 	if err != nil && client != nil {
 		log.Fatal("db run err", err)
 	}
-	//err = model.InitTable()
-	//if err != nil {
-	//	log.Fatal("初始化表失败")
-	//}
+	err = model.InitTable()
+	if err != nil {
+		log.Fatal("初始化表失败")
+	}
 	_, err = redis.NewClient(config)
 	if err != nil {
 		log.Fatal("redis cache run err", err)
-	}
-	_, err = localcache.NewClient(config)
-	if err != nil {
-		log.Fatal("local cache run err", err)
 	}
 
 	return err

@@ -1,13 +1,15 @@
 package main
 
-github.com/longpi1/user-interaction-system/comment-job"/bootstrap"
-"github.com/longpi1/user-interaction-system/comment-job/httpserver"
-"github.com/longpi1/user-interaction-system/comment-job/job"
-"github.com/longpi1/user-interaction-system/comment-job/libary/conf"
-"github.com/longpi1/user-interaction-system/comment-job/model/dao/cache/redis"
+import (
+	"github.com/longpi1/user-interaction-system/comment-job/job"
 
-"github.com/longpi1/gopkg/libary/log"
-"github.com/longpi1/gopkg/libary/utils"
+	"github.com/longpi1/user-interaction-system/comment-job/bootstrap"
+	"github.com/longpi1/user-interaction-system/comment-job/httpserver"
+	"github.com/longpi1/user-interaction-system/comment-job/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment-job/model/dao/cache/redis"
+
+	"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/utils"
 )
 
 func main() {

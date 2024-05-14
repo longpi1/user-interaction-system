@@ -3,11 +3,11 @@ package redis
 import (
 	"sync"
 
-github.com/longpi1/user-interaction-system/comment-job"/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment-job/libary/conf"
 
-"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/log"
 
-"github.com/go-redis/redis"
+	"github.com/go-redis/redis"
 )
 
 var redisClient *redis.Client

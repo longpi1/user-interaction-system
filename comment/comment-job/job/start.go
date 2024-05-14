@@ -3,10 +3,10 @@ package job
 import (
 	"context"
 
-github.com/longpi1/user-interaction-system/comment-job"/job/comment"
-"github.com/longpi1/user-interaction-system/comment-job/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment-job/job/comment"
+	"github.com/longpi1/user-interaction-system/comment-job/libary/conf"
 
-"github.com/longpi1/gopkg/libary/queue"
+	"github.com/longpi1/gopkg/libary/queue"
 )
 
 func Start() {

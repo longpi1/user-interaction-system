@@ -6,3 +6,5 @@ const (
 	RocketMqName = "rocketmq"
 	PulsarMqName = "pulsar"
 )
+
+const ()

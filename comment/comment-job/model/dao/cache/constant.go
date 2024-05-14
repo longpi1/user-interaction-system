@@ -7,7 +7,7 @@ const (
 	CommentListRedisKeyWithNilPid = "comment_list_%d_*"
 )
 
-func GetCommentListKey(resourceId uint, pid uint) string {
+func GetCommentListKey(resourceId int64, pid int64) string {
 	// 如果pid为默认值也就是零则用_*
 	if pid == 0 {
 		key := fmt.Sprintf(CommentListRedisKeyWithNilPid, resourceId)

@@ -11,7 +11,7 @@ func DeleteComment(param model.CommentParamsDelete) error {
 	tx := db.GetClient().Begin()
 
 	// 删除评论内容
-	if err := model.DeleteCommentContentWithTx(tx, param.CommentID); err != nil {
+	if err := model.DeleteCommentContentWithTx(tx, int(param.CommentID)); err != nil {
 		return err
 	}
 

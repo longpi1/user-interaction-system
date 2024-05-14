@@ -50,7 +50,7 @@ func DeleteCommentContent(commentContent *CommentContent) error {
 	return err
 }
 
-func DeleteCommentContentWithTx(tx *gorm.DB, commentId uint) error {
+func DeleteCommentContentWithTx(tx *gorm.DB, commentId int) error {
 	err := tx.Where(constant.WhereByCommentID, commentId).Delete(&CommentContent{}).Error
 	return err
 }

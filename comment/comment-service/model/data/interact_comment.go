@@ -1,8 +1,9 @@
 package data
 
 import (
-	"comment-service/model/dao/db/model"
 	"errors"
+
+	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 
 	"github.com/longpi1/user-interaction-system/comment-service/libary/constant"
 
@@ -36,7 +37,7 @@ func CommentInteract(param model.CommentParamsInteract) error {
 	}
 
 	// 更新评论索引
-	if err := model.UpdateCommentIndex(&commentIndex); err != nil {
+	if err := model.UpdateCommentIndex(commentIndex); err != nil {
 		return err
 	}
 

@@ -3,8 +3,9 @@ package service
 import (
 	"fmt"
 
-	"github.com/longpi1/user-interaction-system/comment-service/model/dao/cache"
-
+	"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/queue"
+	"github.com/longpi1/user-interaction-system/comment-service/libary/conf"
 	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db"
 	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 	"github.com/longpi1/user-interaction-system/comment-service/model/data"
@@ -38,8 +39,9 @@ func AddComment(param model.CommentParamsAdd) error {
 		tx.Rollback()
 		return fmt.Errorf("添加评论失败")
 	}
-	// 删除相关评论列表缓存数据
-	key := cache.GetCommentListKey(param.ResourceId, param.Pid)
-	cache.DeleteCommentListCache(key)
+	queueConfig := conf.GetConfig().QueueConfig
+	if err := queue.Push(queueConfig.TopicName, commentIndex, queueConfig.Config); err != nil {
+		log.Error("队列发送数据失败：")
+	}
 	return nil
 }

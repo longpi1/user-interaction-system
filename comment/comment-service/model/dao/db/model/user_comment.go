@@ -59,9 +59,9 @@ func UpdateUserCommentWithTx(tx *gorm.DB, userComment *UserComment) error {
 	return err
 }
 
-func DecreaseCommentCount(tx *gorm.DB, userID uint) error {
+func DecreaseCommentCount(tx *gorm.DB, userID int64) error {
 	var userComment UserComment
-	if err := tx.First(&userComment).Error; err != nil {
+	if err := tx.First(&userComment).Where(constant.WhereByUserID, userID).Error; err != nil {
 		return err
 	}
 

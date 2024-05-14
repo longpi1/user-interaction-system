@@ -4,10 +4,9 @@ import (
 	"sync"
 
 	_ ""
-github.com/longpi1/user-interaction-system/comment-job"/model/dao/db"
 
-"github.com/go-redis/redis"
-"gorm.io/gorm"
+	"github.com/go-redis/redis"
+	"gorm.io/gorm"
 )
 
 var dao *Dao

@@ -12,7 +12,7 @@ func CommentHighLight(param model.CommentParamsHighLight) error {
 	commentIndex.IsHighLight = param.IsHighLight
 
 	// 更新评论索引
-	if err := model.UpdateCommentIndex(&commentIndex); err != nil {
+	if err := model.UpdateCommentIndex(commentIndex); err != nil {
 		return err
 	}
 	return nil

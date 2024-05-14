@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/queue"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -42,6 +43,10 @@ type WebConfig struct {
 		Db       int    `json:"db"`
 		Password string `json:"password"`
 	} `json:"redis" mapstructure:"redis"`
+	QueueConfig struct {
+		TopicName string       `json:"topicName"`
+		Config    queue.Config `json:"config"`
+	} `json:"queue" mapstructure:"queue"`
 	LocalCache struct {
 		EvictionTime time.Duration `json:"eviction_time" mapstructure:"eviction_time"`
 	} `json:"local_cache" mapstructure:"local_cache"`
