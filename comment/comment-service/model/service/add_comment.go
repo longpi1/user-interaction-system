@@ -6,6 +6,7 @@ import (
 	"github.com/longpi1/gopkg/libary/log"
 	"github.com/longpi1/gopkg/libary/queue"
 	"github.com/longpi1/user-interaction-system/comment-service/libary/conf"
+	"github.com/longpi1/user-interaction-system/comment-service/libary/constant"
 	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db"
 	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
 	"github.com/longpi1/user-interaction-system/comment-service/model/data"
@@ -39,9 +40,11 @@ func AddComment(param model.CommentParamsAdd) error {
 		tx.Rollback()
 		return fmt.Errorf("添加评论失败")
 	}
+	// 队列发送
 	queueConfig := conf.GetConfig().QueueConfig
-	if err := queue.Push(queueConfig.TopicName, commentIndex, queueConfig.Config); err != nil {
-		log.Error("队列发送数据失败：")
+	commentInfo := model.FormatCommentInfo(commentIndex, commentContent, constant.AddComment)
+	if err := queue.Push(queueConfig.TopicName, commentInfo, queueConfig.Config); err != nil {
+		log.Error("队列发送数据失败：", id)
 	}
 	return nil
 }

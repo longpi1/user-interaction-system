@@ -13,3 +13,12 @@ const (
 	ActionHighLight
 	ActionTop
 )
+
+// type
+const (
+	AddComment = iota
+	DeleteComment
+	AuditCommentPass
+	AuditCommentNoPass
+	UpdateComment
+)

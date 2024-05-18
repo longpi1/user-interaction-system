@@ -35,5 +35,6 @@ func DeleteComment(param model.CommentParamsDelete) error {
 		tx.Rollback()
 		return err
 	}
+
 	return nil
 }
