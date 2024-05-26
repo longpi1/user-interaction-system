@@ -1,25 +1,34 @@
 package data
 
 import (
+	"context"
+	"fmt"
+	"strconv"
+
 	"github.com/longpi1/user-interaction-system/comment-service/model/dao/cache"
 	"github.com/longpi1/user-interaction-system/comment-service/model/dao/db/model"
+	log "github.com/sirupsen/logrus"
+	"golang.org/x/sync/singleflight"
 )
 
 func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, error) {
-	// 将查询结果更新到缓存中
 	key := cache.GetCommentListKey(param.ResourceId, param.Pid)
-	// localcache相关操作
+	// 1.localcache相关操作
 	if response, err := cache.GetCommentListFromLocalCache(key); err == nil {
 		return response, nil
 	}
 
-	// redis相关操作
+	// 2.redis相关操作
 	if response, err := cache.GetCommentListFromRedisCache(key); err == nil {
 		return response, nil
 	}
 
-	// 查找评论索引集合
+	// 3.db查找查找评论索引集合
 	commentIndexs, err := model.GetCommentIndexList(param)
+	if err != nil {
+		log.Error("数据库获取评论数据失败:%v", err)
+		return model.CommentListResponse{}, fmt.Errorf("获取评论数据失败")
+	}
 
 	var commentResponses []model.CommentResponse
 	for _, index := range commentIndexs {
@@ -27,18 +36,31 @@ func GetCommentList(param model.CommentParamsList) (model.CommentListResponse, e
 		if commentContent, err := model.FindCommentContentByCommentId(index.ID); err == nil {
 			commentResponse := FormatCommentResponse(index, commentContent)
 			commentResponses = append(commentResponses, commentResponse)
+		} else {
+			log.Error("数据库获取评论内容失败:%v, id: %v", err, index.ID)
 		}
 	}
-	listCount, err := model.GetCommentListCount(param)
+	if err != nil {
+		log.Error("数据库获取评论数失败:%v, id: %v", err, param.ResourceId)
+	}
 	commentListResponse := model.CommentListResponse{
 		CommentResponses: commentResponses,
-		RootReplyCount:   uint(listCount),
 	}
 
+	// 4.更新缓存
 	cache.SetCommentListToLocalCache(key, commentListResponse)
 	cache.SetCommentListToRedisCache(key, commentListResponse)
 
 	return commentListResponse, err
+}
+
+// GetCommentListBySingleFlight 基于SingleFlight 获取评论数据
+func GetCommentListBySingleFlight(sg *singleflight.Group, ctx context.Context, param model.CommentParamsList) (model.CommentListResponse, error) {
+	result, err, _ := sg.Do(strconv.FormatInt(param.ResourceId, 10), func() (interface{}, error) {
+		return GetCommentList(param)
+	})
+
+	return result.(model.CommentListResponse), err
 }
 
 func FormatCommentResponse(index model.CommentIndex, content model.CommentContent) model.CommentResponse {

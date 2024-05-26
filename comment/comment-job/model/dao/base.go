@@ -3,8 +3,6 @@ package dao
 import (
 	"sync"
 
-	_ ""
-
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"
 )

@@ -27,5 +27,4 @@ type CommentResponse struct {
 
 type CommentListResponse struct {
 	CommentResponses []CommentResponse
-	RootReplyCount   uint // 根评论回复数
 }
