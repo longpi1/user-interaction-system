@@ -11,14 +11,14 @@ import (
 )
 
 func TestEvent(t *testing.T) {
-	RegisterHandler(reflect.TypeOf(model.CommentIndex{}), func(i interface{}) {
+	RegisterHandler(reflect.TypeOf(model.Relation{}), func(i interface{}) {
 		fmt.Println("处理用户1")
 		fmt.Println(jsons.ToStr(i))
 	})
-	RegisterHandler(reflect.TypeOf(model.CommentIndex{}), func(i interface{}) {
+	RegisterHandler(reflect.TypeOf(model.Relation{}), func(i interface{}) {
 		fmt.Println("处理用户2")
 		fmt.Println(jsons.ToStr(i))
 	})
-	Send(model.CommentIndex{})
+	Send(model.Relation{})
 	//w.Wait()
 }

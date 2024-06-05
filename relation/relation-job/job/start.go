@@ -9,7 +9,7 @@ import (
 )
 
 func Start() {
-	// 注册评论队列的消费者
+	// 注册队列的消费者
 
 	// 启动队列进行消费
 	queue.StartConsumersListener(context.Background(), conf.GetConfig().QueueConfig.Config)
