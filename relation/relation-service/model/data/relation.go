@@ -7,18 +7,23 @@ import (
 	"relation-service/model/dao/db"
 	"relation-service/model/dao/db/model"
 
-	"github.com/longpi1/gopkg/libary/utils"
-
 	"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/queue"
+	"github.com/longpi1/gopkg/libary/utils"
 )
 
 func Follow(params model.RelationParams) error {
 	relation := formatRelation(params)
-
-	_, err := model.InsertRelation(&relation)
+	tx := db.GetClient().Begin()
+	_, err := model.InsertRelationWithTx(tx, &relation)
 	if err != nil {
 		log.Error("数据库更新失败", err)
 		return fmt.Errorf("数据库更新失败")
+	}
+	// 队列发送关注数据进行后置更新
+	queueConfig := conf.GetConfig().QueueConfig
+	if err := queue.Push(queueConfig.TopicName, relation, queueConfig.Config); err != nil {
+		log.Error("队列发送数据失败：%v", relation)
 	}
 	// 删除原有缓存
 	followingListKey := cache.GetFollowingListKey(params.UID, relation.Platform, relation.Type, params.Status)
@@ -30,11 +35,17 @@ func Follow(params model.RelationParams) error {
 }
 
 func UnFollow(params model.RelationParams) error {
+	relation := formatRelation(params)
 	tx := db.GetClient().Begin()
 	err := model.DeleteRelationWithTx(tx, params.UID, params.ResourceID)
 	if err != nil {
 		log.Error("数据库删除失败", err)
 		return fmt.Errorf("数据库删除失败")
+	}
+	// 队列发送关注数据进行后置更新
+	queueConfig := conf.GetConfig().QueueConfig
+	if err := queue.Push(queueConfig.TopicName, relation, queueConfig.Config); err != nil {
+		log.Error("队列发送数据失败：%v", relation)
 	}
 	// 删除原有缓存
 	followingListKey := cache.GetFollowingListKey(params.UID, utils.ConvertPlatform(params.Platform), utils.ConvertType(params.Type), params.Status)

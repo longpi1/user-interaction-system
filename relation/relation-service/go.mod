@@ -13,7 +13,7 @@ require (
 	github.com/go-playground/validator/v10 v10.20.0
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/lionsoul2014/ip2region/binding/golang v0.0.0-20240419130813-d2b12ef0c81c
-	github.com/longpi1/gopkg v0.0.0-20240501063402-060b2e011c1e
+	github.com/longpi1/gopkg v0.0.0-20240525100434-6794f66c2a3e
 	github.com/mlogclub/simple v1.2.25
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.9.3
@@ -52,6 +52,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2 // indirect
+	github.com/gogf/gf/v2 v2.7.0 // indirect
 	github.com/golang-jwt/jwt v3.2.1+incompatible // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
@@ -115,6 +116,8 @@ require (
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
+	go.opentelemetry.io/otel v1.14.0 // indirect
+	go.opentelemetry.io/otel/trace v1.14.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/arch v0.7.0 // indirect

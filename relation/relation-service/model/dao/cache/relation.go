@@ -75,8 +75,4 @@ func DeleteRelationCache(key string) {
 	if err != nil {
 		log.Error("删除localcache缓存失败", key)
 	}
-	err = redis.Del(key)
-	if err != nil {
-		log.Error("删除redis缓存失败", key)
-	}
 }
