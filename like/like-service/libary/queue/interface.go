@@ -2,9 +2,9 @@ package queue
 
 import (
 	"fmt"
+	"like-service/libary/constant"
+	"like-service/model/dao/cache/redis"
 	"math/rand"
-	"relation-service/libary/constant"
-	"relation-service/model/dao/cache/redis"
 	"strconv"
 	"sync"
 	"time"

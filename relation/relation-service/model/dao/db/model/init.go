@@ -9,7 +9,7 @@ import (
 func InitTable() error {
 	// Migrate the schema
 	// 注意表的创建顺序，因为有关联字段
-	err := db.GetClient().AutoMigrate(&Relation{}, &RelationCount{})
+	err := db.GetClient().AutoMigrate()
 	if err != nil {
 		return err
 	}

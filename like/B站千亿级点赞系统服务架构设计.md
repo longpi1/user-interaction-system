@@ -318,7 +318,7 @@ key-value = user:likes:patten:{mid}:{business_id} - member(messageID)-score(like
 
 
 
-### **三、未来规划**
+# **三、未来规划**
 
 1、点赞服务单元化：要陆续往服务单元化的方向迭代、演进。
 
