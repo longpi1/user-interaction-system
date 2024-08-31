@@ -3,7 +3,7 @@ package redis
 import (
 	"sync"
 
-	"github.com/longpi1/user-interaction-system/like-service/libary/conf"
+	"like-service/libary/conf"
 
 	"github.com/longpi1/gopkg/libary/log"
 
@@ -27,7 +27,7 @@ func GetClient() *redis.Client {
 	return redisClient
 }
 
-func NewClient(config *conf.Config) (*redis.Client, error) {
+func NewClient(config *conf.WebConfig) (*redis.Client, error) {
 	// 创建Redis客户端对象
 	redisClient = redis.NewClient(&redis.Options{
 		Addr:     config.RedisConfig.Address,

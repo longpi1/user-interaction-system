@@ -3,10 +3,11 @@ package db
 import (
 	"sync"
 
-	"github.com/longpi1/gopkg/libary/log"
-	"github.com/longpi1/user-interaction-system/like-service/libary/conf"
-
 	"gorm.io/gorm"
+
+	"like-service/libary/conf"
+
+	"github.com/longpi1/gopkg/libary/log"
 )
 
 var db = &DB{}
@@ -30,7 +31,7 @@ func GetClient() *gorm.DB {
 	return db.client
 }
 
-func NewClient(config *conf.Config) (*gorm.DB, error) {
+func NewClient(config *conf.WebConfig) (*gorm.DB, error) {
 	gormConfig := &gorm.Config{}
 	var err error
 	switch config.DBConfig.Type {

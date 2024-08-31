@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/longpi1/user-interaction-system/like-service/libary/conf"
+	"like-service/libary/conf"
 
 	"github.com/longpi1/gopkg/libary/log"
 
@@ -27,7 +27,7 @@ func GetClient() *bigcache.BigCache {
 	return localCache
 }
 
-func NewClient(config *conf.Config) (*bigcache.BigCache, error) {
+func NewClient(config *conf.WebConfig) (*bigcache.BigCache, error) {
 	var err error
 	evictionTime := config.LocalCache.EvictionTime
 	localCache, err = bigcache.NewBigCache(bigcache.DefaultConfig(evictionTime * time.Minute))
