@@ -1,13 +1,12 @@
 package conf
 
 import (
-	"github.com/longpi1/gopkg/libary/log"
-	"github.com/longpi1/gopkg/libary/queue"
-
 	"os"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/longpi1/gopkg/libary/log"
+	"github.com/longpi1/gopkg/libary/queue"
 	"github.com/spf13/viper"
 )
 

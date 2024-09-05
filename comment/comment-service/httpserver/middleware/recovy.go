@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 自定义Recovery中间件
+// CustomRecovery 自定义Recovery中间件
 func CustomRecovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {

@@ -1,8 +1,9 @@
 package model
 
 import (
-	"like-service/model/dao/db"
 	"time"
+
+	"github.com/longpi1/user-interaction-system/like-service/model/dao/db"
 
 	"gorm.io/gorm"
 )

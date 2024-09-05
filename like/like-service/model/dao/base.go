@@ -3,7 +3,7 @@ package dao
 import (
 	"sync"
 
-	_ "like-service/model/dao/db"
+	_ "github.com/longpi1/user-interaction-system/like-service/model/dao/db"
 
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"

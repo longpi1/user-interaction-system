@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"like-service/libary/conf"
+	"github.com/longpi1/user-interaction-system/like-service/libary/conf"
 
 	"github.com/longpi1/gopkg/libary/log"
 )
